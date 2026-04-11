@@ -1,0 +1,398 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		09085F7393E219789230AE9C /* SessionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82999FC15F430EB868F5ED /* SessionSummaryView.swift */; };
+		0D1DF0FAA6F3D2082C680B89 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BBD2DBE381223DE6313ECE /* StatsView.swift */; };
+		1339C7A61124E01F9154198E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BFCEB44F63999C06D14C70 /* ContentView.swift */; };
+		169FE448669AEAFC0222A29D /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C944A304B37663A684E3F7 /* SessionView.swift */; };
+		56AE3AA1C6C08DB8773FFCBB /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97D6F5A7D157A54A8AE13D /* SplashView.swift */; };
+		5BBA16477D6927A3AFEA62D7 /* SessionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841B8C9DC0789C59492CC63A /* SessionRecord.swift */; };
+		5C64E9CA0EFB554FABC5BD14 /* SituremApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED8CF95E49373BEED26515E /* SituremApp.swift */; };
+		619F7F831CA5D8214B0F504C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9939668564E814F39210C13 /* HomeView.swift */; };
+		72C7A1E5F2B455F92ED96014 /* SessionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9967C956042C857BB59F3BBD /* SessionEngine.swift */; };
+		7F4EDDF40605E2B397A23F36 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D57D0584530035947C75A99 /* HealthKitService.swift */; };
+		8FB39094B5BE66B5D1C1ADF6 /* SessionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F06258190A3F0E83B149FF /* SessionConfiguration.swift */; };
+		BCECC060C80E2D431D1F7A8C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8561C2DD2BFEFF8D7F001EF1 /* SettingsView.swift */; };
+		D49DB4EDB95FA0A22118D0D2 /* StatsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D47B101F87528EE1751FB60 /* StatsStore.swift */; };
+		E5AC98210005C209479E041D /* PreferencesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F89194112BB337F148B388F /* PreferencesStore.swift */; };
+		F655E73B8805200B0E833195 /* SessionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870A2CBA71CDA3AE368BB740 /* SessionModels.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1ED8CF95E49373BEED26515E /* SituremApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SituremApp.swift; sourceTree = "<group>"; };
+		4D47B101F87528EE1751FB60 /* StatsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsStore.swift; sourceTree = "<group>"; };
+		56BBD2DBE381223DE6313ECE /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		5D1FBDC489F112B48A3B4139 /* Siturem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Siturem.entitlements; sourceTree = "<group>"; };
+		6D57D0584530035947C75A99 /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
+		841B8C9DC0789C59492CC63A /* SessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecord.swift; sourceTree = "<group>"; };
+		8561C2DD2BFEFF8D7F001EF1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		870A2CBA71CDA3AE368BB740 /* SessionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionModels.swift; sourceTree = "<group>"; };
+		95273A2C4013FEB1086D4ECE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		97A10DC34DC56DE9C0FE5056 /* Siturem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Siturem.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		98BFCEB44F63999C06D14C70 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9967C956042C857BB59F3BBD /* SessionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEngine.swift; sourceTree = "<group>"; };
+		9F89194112BB337F148B388F /* PreferencesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesStore.swift; sourceTree = "<group>"; };
+		AF82999FC15F430EB868F5ED /* SessionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryView.swift; sourceTree = "<group>"; };
+		DE97D6F5A7D157A54A8AE13D /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		E4F06258190A3F0E83B149FF /* SessionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionConfiguration.swift; sourceTree = "<group>"; };
+		F2C944A304B37663A684E3F7 /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
+		F9939668564E814F39210C13 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		13410CFD65963CE3166A320C /* Siturem */ = {
+			isa = PBXGroup;
+			children = (
+				95273A2C4013FEB1086D4ECE /* Info.plist */,
+				5D1FBDC489F112B48A3B4139 /* Siturem.entitlements */,
+				A7ED7FEF17783382F24BF1C4 /* App */,
+				F430851D72E49F6139C5C191 /* Models */,
+				1E9AD2868FD71433085159C7 /* Resources */,
+				72377A11F771FD81E10F2F87 /* Services */,
+				80862D7A613DE65ABC112819 /* Views */,
+			);
+			path = Siturem;
+			sourceTree = "<group>";
+		};
+		1E9AD2868FD71433085159C7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		438F2C23C932E866BFD503E8 = {
+			isa = PBXGroup;
+			children = (
+				13410CFD65963CE3166A320C /* Siturem */,
+				9458A66B90EE2AFE9FF02B06 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		72377A11F771FD81E10F2F87 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				6D57D0584530035947C75A99 /* HealthKitService.swift */,
+				9F89194112BB337F148B388F /* PreferencesStore.swift */,
+				9967C956042C857BB59F3BBD /* SessionEngine.swift */,
+				4D47B101F87528EE1751FB60 /* StatsStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		80862D7A613DE65ABC112819 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				98BFCEB44F63999C06D14C70 /* ContentView.swift */,
+				F9939668564E814F39210C13 /* HomeView.swift */,
+				AF82999FC15F430EB868F5ED /* SessionSummaryView.swift */,
+				F2C944A304B37663A684E3F7 /* SessionView.swift */,
+				8561C2DD2BFEFF8D7F001EF1 /* SettingsView.swift */,
+				DE97D6F5A7D157A54A8AE13D /* SplashView.swift */,
+				56BBD2DBE381223DE6313ECE /* StatsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9458A66B90EE2AFE9FF02B06 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				97A10DC34DC56DE9C0FE5056 /* Siturem.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A7ED7FEF17783382F24BF1C4 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				1ED8CF95E49373BEED26515E /* SituremApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		F430851D72E49F6139C5C191 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E4F06258190A3F0E83B149FF /* SessionConfiguration.swift */,
+				870A2CBA71CDA3AE368BB740 /* SessionModels.swift */,
+				841B8C9DC0789C59492CC63A /* SessionRecord.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		63FE6C488C977458A5BF0C8D /* Siturem */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3EAD0ED4DFAEF03B1CCAF9F0 /* Build configuration list for PBXNativeTarget "Siturem" */;
+			buildPhases = (
+				5E8200C6AF5E92BE75C01CB4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Siturem;
+			packageProductDependencies = (
+			);
+			productName = Siturem;
+			productReference = 97A10DC34DC56DE9C0FE5056 /* Siturem.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F1603258FB5A76EDD41DA8BD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 389D6C2CBF66499B4FE219F0 /* Build configuration list for PBXProject "Siturem" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 438F2C23C932E866BFD503E8;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 9458A66B90EE2AFE9FF02B06 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				63FE6C488C977458A5BF0C8D /* Siturem */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5E8200C6AF5E92BE75C01CB4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1339C7A61124E01F9154198E /* ContentView.swift in Sources */,
+				7F4EDDF40605E2B397A23F36 /* HealthKitService.swift in Sources */,
+				619F7F831CA5D8214B0F504C /* HomeView.swift in Sources */,
+				E5AC98210005C209479E041D /* PreferencesStore.swift in Sources */,
+				8FB39094B5BE66B5D1C1ADF6 /* SessionConfiguration.swift in Sources */,
+				72C7A1E5F2B455F92ED96014 /* SessionEngine.swift in Sources */,
+				F655E73B8805200B0E833195 /* SessionModels.swift in Sources */,
+				5BBA16477D6927A3AFEA62D7 /* SessionRecord.swift in Sources */,
+				09085F7393E219789230AE9C /* SessionSummaryView.swift in Sources */,
+				169FE448669AEAFC0222A29D /* SessionView.swift in Sources */,
+				BCECC060C80E2D431D1F7A8C /* SettingsView.swift in Sources */,
+				5C64E9CA0EFB554FABC5BD14 /* SituremApp.swift in Sources */,
+				56AE3AA1C6C08DB8773FFCBB /* SplashView.swift in Sources */,
+				D49DB4EDB95FA0A22118D0D2 /* StatsStore.swift in Sources */,
+				0D1DF0FAA6F3D2082C680B89 /* StatsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		06A39630EB8511BE944013E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.benoitabot.siturem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+			};
+			name = Release;
+		};
+		31C293EDD3B01F66CC71DA77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Siturem/Siturem.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 3Q33594A3N;
+				INFOPLIST_FILE = Siturem/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Siturem;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.beabot.siturem;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		69E659A6F6E36C44F8E42B79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.benoitabot.siturem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+			};
+			name = Debug;
+		};
+		CDB18AA10458E77BF8B6C650 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Siturem/Siturem.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 3Q33594A3N;
+				INFOPLIST_FILE = Siturem/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Siturem;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.beabot.siturem;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		389D6C2CBF66499B4FE219F0 /* Build configuration list for PBXProject "Siturem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69E659A6F6E36C44F8E42B79 /* Debug */,
+				06A39630EB8511BE944013E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3EAD0ED4DFAEF03B1CCAF9F0 /* Build configuration list for PBXNativeTarget "Siturem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDB18AA10458E77BF8B6C650 /* Debug */,
+				31C293EDD3B01F66CC71DA77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F1603258FB5A76EDD41DA8BD /* Project object */;
+}
