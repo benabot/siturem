@@ -12,7 +12,7 @@
 
 ### ~~Étape 3 — SessionView refonte~~ ✅
 
-Compteur numérique supprimé. `BlobView` centré verticalement (`.frame(maxHeight: .infinity)`). Barre de progression (5pt, opacité 0.80) + contrôles groupés en bas. Label de phase discret en haut. Progression globale `totalElapsed / totalDuration`.
+Compteur numérique supprimé. `BlobView` centré verticalement (`.frame(maxHeight: .infinity)`). Barre de progression (5pt, opacité 0.80) + contrôles groupés en bas (padding 72pt via nombre d'or). Label de phase discret en haut. Progression globale `totalElapsed / totalDuration`. Mise en page basée sur φ ≈ 1.618.
 
 ### ~~Étape 4 — Refonte SettingsView (préférences système)~~ ✅
 
@@ -21,6 +21,17 @@ Section "SÉANCE PAR DÉFAUT" retirée. `SettingsView` conservée avec : Santé 
 ### ~~Étape 5 — Build & vérification~~ ✅
 
 `xcodegen generate` + BUILD SUCCEEDED (iPhone 16 simulator, iOS 18.6).
+
+### ~~Ajout système Layout (nombre d'or)~~ ✅
+
+`LayoutMetrics.swift` créé avec constantes basées sur φ ≈ 1.618 :
+- Base : 40 pt
+- Small : 40 / φ ≈ 24.7 pt
+- Large : 40 × φ ≈ 64.7 pt
+- X-Large : 40 × φ² ≈ 104.7 pt
+- Controls bottom padding : 72 pt (plus bas pour plus d'air)
+
+`SessionView` refactorisée pour utiliser `LayoutMetrics.phaseTopOffset`, `progressToControlsSpacing`, `controlsBottomPadding`.
 
 ---
 

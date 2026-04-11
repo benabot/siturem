@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - Session View
 // Écran affiché pendant une séance en cours.
+// Mise en page basée sur le nombre d'or (φ ≈ 1.618).
 
 struct SessionView: View {
 
@@ -36,7 +37,7 @@ struct SessionView: View {
         VStack(spacing: 0) {
             // Label de phase — ancré en haut
             phaseLabel
-                .padding(.top, 56)
+                .padding(.top, LayoutMetrics.phaseTopOffset)
                 .frame(maxWidth: .infinity)
 
             // Blob — occupe tout l'espace restant, centré dans sa zone
@@ -44,12 +45,12 @@ struct SessionView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             // Zone basse : progression + contrôles groupés
-            VStack(spacing: 24) {
+            VStack(spacing: LayoutMetrics.progressToControlsSpacing) {
                 progressBar
                 controls
             }
-            .padding(.horizontal, 40)
-            .padding(.bottom, 52)
+            .padding(.horizontal, LayoutMetrics.hPadding)
+            .padding(.bottom, LayoutMetrics.controlsBottomPadding)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Theme.background)

@@ -13,7 +13,7 @@ Siturem — Méditation structurée
 Base fonctionnelle — UI et logique métier complètes. Audio et intégration HealthKit restent à implémenter pour compléter la V1.
 
 **Refonte visuelle et UX terminée.**
-Palette anthracite + accent bleu ardoise, blob animé irrégulièrement (5 états indépendants, durées incommensurables) centré verticalement en séance, barre de progression (5pt) + contrôles groupés en bas, SettingsView recentrée sur les préférences système.
+Palette anthracite + accent bleu ardoise, blob animé irrégulièrement (5 états indépendants, durées incommensurables) centré verticalement en séance, barre de progression (5pt) + contrôles groupés en bas (72pt padding via nombre d'or), SettingsView recentrée sur les préférences système. Système `LayoutMetrics` (φ ≈ 1.618) pour assurer cohérence visuelle.
 
 ## Fonctionnel
 
