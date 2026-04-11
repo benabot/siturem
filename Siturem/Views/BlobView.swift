@@ -2,70 +2,72 @@ import SwiftUI
 
 // MARK: - Blob View
 // Forme organique animée affichée durant la séance.
-// Remplace le compteur numérique. Respire selon la phase en cours.
+// Chaque couche a une durée d'animation propre (valeurs incommensurables)
+// pour créer un mouvement irrégulier et organique.
 
 struct BlobView: View {
 
     let phase: SessionPhase
 
-    @State private var animationKey = UUID()
-    @State private var breathing = false
+    // 5 états indépendants — chacun animé à sa propre vitesse
+    @State private var s1 = false // scale couche extérieure
+    @State private var s2 = false // scale couche intermédiaire
+    @State private var s3 = false // scale noyau
+    @State private var o1 = false // offset axe 1
+    @State private var o2 = false // offset axe 2
 
-    // Durée d'un cycle de respiration selon la phase
-    private var duration: Double {
+    private var base: Double {
         switch phase {
-        case .intro:      return 5.0   // lent
-        case .meditation: return 7.5   // très lent, quasi-immobile
-        case .closing:    return 3.5   // légèrement plus ample
-        }
-    }
-
-    // Amplitude des déplacements selon la phase
-    private var spread: CGFloat {
-        switch phase {
-        case .intro:      return 12
-        case .meditation: return 6
-        case .closing:    return 18
+        case .intro:      return 4.5
+        case .meditation: return 6.8
+        case .closing:    return 3.2
         }
     }
 
     var body: some View {
         ZStack {
-            // Couche extérieure — halo diffus
+            // Halo externe — lent, large
             Ellipse()
-                .fill(Theme.accent.opacity(0.10))
-                .frame(width: 220, height: 200)
-                .scaleEffect(breathing ? 1.07 : 0.94)
-                .offset(x: breathing ? spread : -spread * 0.6,
-                        y: breathing ? -spread * 0.7 : spread * 0.5)
-                .blur(radius: 30)
+                .fill(Theme.accent.opacity(0.09))
+                .frame(width: 280, height: 255)
+                .scaleEffect(s1 ? 1.14 : 0.87)
+                .offset(x: o1 ? 16 : -10, y: o1 ? -13 : 9)
+                .blur(radius: 38)
 
-            // Couche intermédiaire
+            // Couche intermédiaire — rythme différent
             Ellipse()
                 .fill(Theme.accent.opacity(0.16))
-                .frame(width: 170, height: 185)
-                .scaleEffect(breathing ? 0.95 : 1.06)
-                .offset(x: breathing ? -spread * 0.9 : spread * 0.5,
-                        y: breathing ? spread * 0.8 : -spread * 0.4)
-                .blur(radius: 20)
+                .frame(width: 210, height: 225)
+                .scaleEffect(s2 ? 0.89 : 1.11)
+                .offset(x: o2 ? -18 : 11, y: o2 ? 15 : -10)
+                .blur(radius: 24)
 
-            // Noyau central
+            // Noyau — plus visible, rythme propre
             Circle()
-                .fill(Theme.accent.opacity(0.26))
-                .frame(width: 130, height: 130)
-                .scaleEffect(breathing ? 1.05 : 0.97)
-                .offset(x: breathing ? spread * 0.4 : -spread * 0.3,
-                        y: breathing ? -spread * 0.5 : spread * 0.6)
-                .blur(radius: 12)
+                .fill(Theme.accent.opacity(0.28))
+                .frame(width: 160, height: 160)
+                .scaleEffect(s3 ? 1.09 : 0.93)
+                .offset(x: s1 ? 7 : -5, y: o2 ? -9 : 10)
+                .blur(radius: 15)
         }
-        .id(animationKey) // recrée la vue (et relance onAppear) au changement de phase
-        .onAppear {
-            withAnimation(.easeInOut(duration: duration).repeatForever(autoreverses: true)) {
-                breathing = true
-            }
-        }
-        .onChange(of: phase) { _, _ in
-            animationKey = UUID()
+        .onAppear(perform: startAnimations)
+        .onChange(of: phase) { _, _ in restartAnimations() }
+    }
+
+    private func startAnimations() {
+        // Durées incommensurables = mouvement jamais périodique = irrégularité organique
+        withAnimation(.easeInOut(duration: base * 1.00).repeatForever(autoreverses: true)) { s1 = true }
+        withAnimation(.easeInOut(duration: base * 1.37).repeatForever(autoreverses: true)) { s2 = true }
+        withAnimation(.easeInOut(duration: base * 0.79).repeatForever(autoreverses: true)) { s3 = true }
+        withAnimation(.easeInOut(duration: base * 1.19).repeatForever(autoreverses: true)) { o1 = true }
+        withAnimation(.easeInOut(duration: base * 0.91).repeatForever(autoreverses: true)) { o2 = true }
+    }
+
+    private func restartAnimations() {
+        s1 = false; s2 = false; s3 = false; o1 = false; o2 = false
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(50))
+            startAnimations()
         }
     }
 }

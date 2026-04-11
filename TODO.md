@@ -8,11 +8,11 @@
 
 ### ~~Étape 2 — BlobView (composant autonome)~~ ✅
 
-`Siturem/Views/BlobView.swift` créé. 3 ellipses superposées, animation `repeatForever easeInOut`, durée modulée par phase (intro 5 s, méditation 7,5 s, closing 3,5 s). Redémarre proprement au changement de phase via `.id(animationKey)`.
+`Siturem/Views/BlobView.swift` créé. 3 ellipses + 5 états indépendants (scale×3 + offset×2), chacun animé à durée incommensurable (×1.00, ×1.37, ×0.79, ×1.19, ×0.91) pour mouvement organique irrégulier jamais périodique. Redémarre au changement de phase.
 
 ### ~~Étape 3 — SessionView refonte~~ ✅
 
-Compteur numérique supprimé. `BlobView` au centre. Barre de progression globale fine (3pt) en bas, calculée sur `totalElapsed / totalDuration`. Label de phase discret en haut. Contrôles inchangés.
+Compteur numérique supprimé. `BlobView` centré verticalement (`.frame(maxHeight: .infinity)`). Barre de progression (5pt, opacité 0.80) + contrôles groupés en bas. Label de phase discret en haut. Progression globale `totalElapsed / totalDuration`.
 
 ### ~~Étape 4 — Refonte SettingsView (préférences système)~~ ✅
 

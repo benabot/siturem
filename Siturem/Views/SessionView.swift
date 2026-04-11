@@ -34,21 +34,22 @@ struct SessionView: View {
 
     private var sessionRunningView: some View {
         VStack(spacing: 0) {
+            // Label de phase — ancré en haut
             phaseLabel
                 .padding(.top, 56)
-                .padding(.bottom, 8)
+                .frame(maxWidth: .infinity)
 
-            Spacer()
-
+            // Blob — occupe tout l'espace restant, centré dans sa zone
             BlobView(phase: engine.currentPhase)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            Spacer()
-
-            progressBar
-                .padding(.bottom, 32)
-
-            controls
-                .padding(.bottom, 48)
+            // Zone basse : progression + contrôles groupés
+            VStack(spacing: 24) {
+                progressBar
+                controls
+            }
+            .padding(.horizontal, 40)
+            .padding(.bottom, 52)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Theme.background)
@@ -70,22 +71,21 @@ struct SessionView: View {
             .tracking(2)
     }
 
-    // MARK: - Progression globale (séance entière)
+    // MARK: - Progression globale
 
     private var progressBar: some View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
                 Capsule()
                     .fill(Theme.surface)
-                    .frame(height: 3)
+                    .frame(height: 5)
                 Capsule()
-                    .fill(Theme.accent.opacity(0.75))
-                    .frame(width: max(0, geo.size.width * globalProgress), height: 3)
+                    .fill(Theme.accent.opacity(0.80))
+                    .frame(width: max(0, geo.size.width * globalProgress), height: 5)
                     .animation(.linear(duration: 1), value: globalProgress)
             }
         }
-        .frame(height: 3)
-        .padding(.horizontal, 40)
+        .frame(height: 5)
     }
 
     private var globalProgress: Double {
