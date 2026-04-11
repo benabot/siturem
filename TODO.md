@@ -46,6 +46,11 @@ Section "SÉANCE PAR DÉFAUT" retirée. `SettingsView` conservée avec : Santé 
 `SplashView` : logo vertical taille 56, aligné à gauche, tagline animée.
 `HomeView` : grand titre remplacé par `SituremLogo(layout: .horizontal, markSize: 18)` en `.principal` toolbar.
 
+### ~~Retrait Rappels + Splash agrandie~~ ✅
+
+`HomeView` : option "Rappels" retirée (fonctionnalité non encore implémentée). 3 options restantes : Accompagnement, Gong, Ambiance.
+`SplashView` : tagline passée en `.subheadline`, animations allongées (0.8 s, délai 1.1 s).
+
 ### ~~HomeView : sélecteur de durée 6–60 min + padding φ~~ ✅
 
 `HomeView` : chips fixes remplacées par un bloc durée avec valeur grande (ultraLight monospaced) + wheel picker compact (6–60 min, pas de 1 min) persisté dans `prefs.totalDuration`. Padding uniformisé via `LayoutMetrics` (horizontal 40 pt, rangées options 24.7 pt).

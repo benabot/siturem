@@ -24,7 +24,7 @@ Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre d
 | SessionConfiguration / SessionModels / SessionRecord | ✅ Complet |
 | PreferencesStore (UserDefaults) | ✅ Complet |
 | StatsStore (persistance + streaks) | ✅ Complet |
-| HomeView (sélection durée/modes) | ✅ Sélecteur durée 6–60 min (wheel picker), logo en nav bar, padding φ |
+| HomeView (sélection durée/modes) | ✅ Sélecteur 6–60 min, 3 options (Rappels retiré), logo nav bar, padding φ |
 | SessionView (séance en cours) | ✅ Complet |
 | SessionSummaryView (bilan) | ✅ Complet |
 | StatsView (statistiques) | ✅ Complet |
