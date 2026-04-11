@@ -37,6 +37,14 @@ Section "SÉANCE PAR DÉFAUT" retirée. `SettingsView` conservée avec : Santé 
 - Barre de progression épaissie à 6pt
 - Tous les espacements appliquent φ (phaseTopOffset, progressToControlsSpacing, hPadding)
 
+### ~~Splash renforcée + SettingsView Principes~~ ✅
+
+`SplashView` : fond anthracite (Theme), animation séquencée (titre 0.7 s → baseline après 0.9 s), durée totale 3.4 s (était 2.1 s). Baseline : "Le cadre discret de votre pratique."
+
+`SettingsView` : section PRINCIPES ajoutée — 4 entrées : Trois phases fixes, Pour qui, Philosophie, Durée minimale.
+
+`HomeView` : padding bas du bouton "Commencer" porté à LayoutMetrics.sm (24.7 pt, φ).
+
 ---
 
 ## Critique (V1 bloquée)

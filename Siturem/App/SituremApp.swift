@@ -15,8 +15,8 @@ struct SituremApp: App {
                 }
             }
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
-                    withAnimation(.easeOut(duration: 0.5)) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.8) {
+                    withAnimation(.easeOut(duration: 0.6)) {
                         showSplash = false
                     }
                 }

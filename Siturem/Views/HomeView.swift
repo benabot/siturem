@@ -32,7 +32,7 @@ struct HomeView: View {
                 startButton
                     .padding(.horizontal, 20)
                     .padding(.top, 12)
-                    .padding(.bottom, 8)
+                    .padding(.bottom, LayoutMetrics.sm)
                     .background(Theme.background)
             }
             .navigationTitle("Siturem")

@@ -13,6 +13,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                principlesSection
                 healthSection
                 // interfaceSection  // couleur d'accent — à venir
                 // voiceSection      // voix et langue — à venir
@@ -25,6 +26,45 @@ struct SettingsView: View {
             .toolbarBackground(Theme.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
+    }
+
+    // MARK: - Principes
+
+    private var principlesSection: some View {
+        Section {
+            principleRow(
+                title: "Trois phases fixes",
+                detail: "Introduction (2 min 30) — Méditation (durée choisie) — Retour (45 s). La structure ne change pas d'une séance à l'autre."
+            )
+            principleRow(
+                title: "Pour qui",
+                detail: "Pratiquants qui savent déjà méditer et veulent un cadre stable, reproductible, sans distraction."
+            )
+            principleRow(
+                title: "Philosophie",
+                detail: "Siturem tient le cadre et s'efface. Pas de narration, pas de score, pas de gamification. L'app réduit la friction et disparaît."
+            )
+            principleRow(
+                title: "Durée minimale",
+                detail: "6 minutes (intro + méditation courte + retour). Durée par défaut : 10 minutes."
+            )
+        } header: {
+            sectionHeader("PRINCIPES")
+        }
+        .listRowBackground(Theme.surface)
+    }
+
+    private func principleRow(title: String, detail: String) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text(title)
+                .font(.system(.subheadline))
+                .foregroundStyle(Theme.textPrimary)
+            Text(detail)
+                .font(.system(.caption))
+                .foregroundStyle(Theme.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.vertical, 2)
     }
 
     // MARK: - Santé
