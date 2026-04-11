@@ -113,17 +113,9 @@ struct HomeView: View {
                     .pickerStyle(.menu)
                     .tint(Theme.textSecondary)
                 }
-                optionRow("Ambiance") {
+                optionRow("Ambiance", isLast: true) {
                     Picker("", selection: $prefs.ambient) {
                         ForEach(AmbientSound.allCases) { s in Text(s.rawValue).tag(s) }
-                    }
-                    .labelsHidden()
-                    .pickerStyle(.menu)
-                    .tint(Theme.textSecondary)
-                }
-                optionRow("Rappels", isLast: true) {
-                    Picker("", selection: $prefs.reminder) {
-                        ForEach(ReminderInterval.allCases) { r in Text(r.rawValue).tag(r) }
                     }
                     .labelsHidden()
                     .pickerStyle(.menu)

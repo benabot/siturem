@@ -16,22 +16,22 @@ struct SplashView: View {
                 SituremLogo(layout: .vertical, markSize: 80)
                     .opacity(logoOpacity)
 
-                Spacer().frame(height: 32)
+                Spacer().frame(height: 40)
 
                 Text("Le cadre discret de votre pratique.")
-                    .font(.system(.caption2))
-                    .foregroundStyle(Theme.accent.opacity(0.65))
-                    .tracking(0.5)
+                    .font(.system(.subheadline))
+                    .foregroundStyle(Theme.accent.opacity(0.70))
+                    .tracking(0.3)
                     .opacity(baselineOpacity)
             }
             .padding(.horizontal, LayoutMetrics.hPadding)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .onAppear {
-            withAnimation(.easeOut(duration: 0.7)) {
+            withAnimation(.easeOut(duration: 0.8)) {
                 logoOpacity = 1.0
             }
-            withAnimation(.easeOut(duration: 0.7).delay(0.9)) {
+            withAnimation(.easeOut(duration: 0.8).delay(1.1)) {
                 baselineOpacity = 1.0
             }
         }
