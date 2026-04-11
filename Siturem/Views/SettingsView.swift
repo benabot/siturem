@@ -1,7 +1,8 @@
 import SwiftUI
 
 // MARK: - Settings View
-// Préférences par défaut et options secondaires.
+// Préférences système : HealthKit, interface, accessibilité, informations.
+// La configuration de séance (accompagnement, gong, ambiance, rappels) est dans HomeView.
 
 struct SettingsView: View {
 
@@ -12,44 +13,26 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                defaultsSection
                 healthSection
+                // interfaceSection  // couleur d'accent — à venir
+                // voiceSection      // voix et langue — à venir
                 aboutSection
             }
             .scrollContentBackground(.hidden)
-            .background(Color.black)
+            .background(Theme.background)
             .navigationTitle("Réglages")
             .navigationBarTitleDisplayMode(.large)
-            .toolbarBackground(Color.black, for: .navigationBar)
+            .toolbarBackground(Theme.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
     }
 
-    // MARK: - Sections
-
-    private var defaultsSection: some View {
-        Section {
-            Picker("Accompagnement", selection: $prefs.accompaniment) {
-                ForEach(AccompanimentMode.allCases) { m in Text(m.rawValue).tag(m) }
-            }
-            Picker("Gong", selection: $prefs.gong) {
-                ForEach(GongMode.allCases) { g in Text(g.rawValue).tag(g) }
-            }
-            Picker("Ambiance", selection: $prefs.ambient) {
-                ForEach(AmbientSound.allCases) { s in Text(s.rawValue).tag(s) }
-            }
-            Picker("Rappels", selection: $prefs.reminder) {
-                ForEach(ReminderInterval.allCases) { r in Text(r.rawValue).tag(r) }
-            }
-        } header: {
-            sectionHeader("SÉANCE PAR DÉFAUT")
-        }
-        .listRowBackground(Color(white: 0.08))
-    }
+    // MARK: - Santé
 
     private var healthSection: some View {
         Section {
             Toggle("Synchroniser avec Santé", isOn: $prefs.healthKitEnabled)
+                .tint(Theme.accent)
             if prefs.healthKitEnabled {
                 Button("Autoriser l'accès") {
                     Task {
@@ -57,33 +40,37 @@ struct SettingsView: View {
                         hkStatus = "Autorisation demandée"
                     }
                 }
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Theme.textSecondary)
                 if !hkStatus.isEmpty {
                     Text(hkStatus)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                 }
             }
         } header: {
             sectionHeader("SANTÉ")
         } footer: {
             Text("Enregistre les minutes de pleine conscience dans l'app Santé d'Apple.")
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(Theme.textSecondary)
         }
-        .listRowBackground(Color(white: 0.08))
+        .listRowBackground(Theme.surface)
     }
+
+    // MARK: - À propos
 
     private var aboutSection: some View {
         Section {
             HStack {
                 Text("Version")
+                    .foregroundStyle(Theme.textPrimary)
                 Spacer()
-                Text("1.0.0").foregroundStyle(.secondary)
+                Text("1.0.0")
+                    .foregroundStyle(Theme.textSecondary)
             }
         } header: {
             sectionHeader("À PROPOS")
         }
-        .listRowBackground(Color(white: 0.08))
+        .listRowBackground(Theme.surface)
     }
 
     // MARK: - Helpers
@@ -91,7 +78,7 @@ struct SettingsView: View {
     private func sectionHeader(_ text: String) -> some View {
         Text(text)
             .font(.system(.caption2, design: .monospaced))
-            .foregroundStyle(.tertiary)
+            .foregroundStyle(Theme.textSecondary)
             .tracking(2)
     }
 }

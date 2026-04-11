@@ -15,11 +15,11 @@ struct SessionSummaryView: View {
             VStack(spacing: 12) {
                 Text("Séance terminée")
                     .font(.system(.title2, weight: .light))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Theme.textPrimary)
 
                 Text(formatDuration(duration))
                     .font(.system(size: 56, weight: .thin, design: .monospaced))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Theme.textPrimary)
             }
 
             Spacer()
@@ -28,11 +28,11 @@ struct SessionSummaryView: View {
                 onDone()
             }
             .buttonStyle(.bordered)
-            .tint(.primary)
+            .tint(Theme.accent)
             .padding(.bottom, 32)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black)
+        .background(Theme.background)
     }
 
     private func formatDuration(_ seconds: Int) -> String {

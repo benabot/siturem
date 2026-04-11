@@ -12,8 +12,8 @@ Siturem — Méditation structurée
 ## État actuel
 Base fonctionnelle — UI et logique métier complètes. Audio et intégration HealthKit restent à implémenter pour compléter la V1.
 
-**Chantier en cours : refonte visuelle et UX.**
-L'interface actuelle est fonctionnelle mais austère (noir pur, compteur numérique, pas de couleur). Objectif : rendre l'app vivante et chaleureuse tout en restant minimaliste et fidèle au branding (cf. BrandingGuideline §11-12).
+**Refonte visuelle et UX terminée.**
+Palette anthracite + accent bleu ardoise, blob animé en séance, barre de progression globale, SettingsView recentrée sur les préférences système.
 
 ## Fonctionnel
 
@@ -28,7 +28,7 @@ L'interface actuelle est fonctionnelle mais austère (noir pur, compteur numéri
 | SessionView (séance en cours) | ✅ Complet |
 | SessionSummaryView (bilan) | ✅ Complet |
 | StatsView (statistiques) | ✅ Complet |
-| SettingsView (réglages + HealthKit toggle) | 🔄 À refondre — retirer la duplication session, garder HealthKit + prefs système |
+| SettingsView (préférences système) | ✅ Refondue — section séance retirée, HealthKit + À propos conservés |
 | HealthKitService (service shell) | ⚠️ Partiel — non intégré au flux |
 | AudioService | ⚠️ Partiel — arborescence audio créée, assets à fournir |
 
@@ -68,4 +68,4 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - **Refonte SettingsView** : séparation claire entre configuration de séance (HomeView) et préférences système (SettingsView). SettingsView conservée mais recentrée sur : HealthKit, couleur d'accent de l'interface, voix/langue (futur), version. Les pickers accompagnement/gong/ambiance/rappels sont retirés de SettingsView (ils sont déjà dans HomeView)
 
 ## Prochain focus
-Refonte visuelle et UX (palette, blob, progression, fusion réglages). Voir TODO.md pour le détail des étapes.
+Implémenter l'AudioService — gong aux transitions de phase en premier (impact visible immédiat), puis ambiance sonore en boucle. Les fichiers audio sont attendus dans `Siturem/Audio/` (Gongs/, Ambiance/, VoiceGuidance/).

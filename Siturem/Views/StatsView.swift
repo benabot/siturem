@@ -25,16 +25,22 @@ struct StatsView: View {
                     statRow("Meilleur streak", value: "\(stats.bestStreak) j")
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Theme.background)
+            .listRowBackground(Theme.surface)
             .navigationTitle("Suivi")
+            .toolbarBackground(Theme.background, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
         }
     }
 
     private func statRow(_ label: String, value: String) -> some View {
         HStack {
             Text(label)
+                .foregroundStyle(Theme.textPrimary)
             Spacer()
             Text(value)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Theme.textSecondary)
                 .font(.system(.body, design: .monospaced))
         }
     }

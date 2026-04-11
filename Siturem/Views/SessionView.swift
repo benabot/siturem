@@ -9,7 +9,6 @@ struct SessionView: View {
     let stats: StatsStore
     let onEnd: () -> Void
 
-    @State private var sessionStartDate = Date()
     @State private var showEndConfirmation = false
     @State private var showSummary = false
 
@@ -26,7 +25,6 @@ struct SessionView: View {
         }
         .preferredColorScheme(.dark)
         .onAppear {
-            sessionStartDate = Date()
             engine.onSessionEnd = handleEnd
             engine.start()
         }
@@ -35,16 +33,25 @@ struct SessionView: View {
     // MARK: - Running
 
     private var sessionRunningView: some View {
-        VStack(spacing: 48) {
-            Spacer()
+        VStack(spacing: 0) {
             phaseLabel
-            timerDisplay
+                .padding(.top, 56)
+                .padding(.bottom, 8)
+
             Spacer()
+
+            BlobView(phase: engine.currentPhase)
+
+            Spacer()
+
+            progressBar
+                .padding(.bottom, 32)
+
             controls
+                .padding(.bottom, 48)
         }
-        .padding(32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black)
+        .background(Theme.background)
         .alert("Arrêter la séance ?", isPresented: $showEndConfirmation) {
             Button("Arrêter", role: .destructive) {
                 engine.stop()
@@ -54,32 +61,49 @@ struct SessionView: View {
         }
     }
 
+    // MARK: - Phase label
+
     private var phaseLabel: some View {
         Text(engine.currentPhase.label.uppercased())
             .font(.system(.caption, design: .monospaced))
-            .foregroundStyle(.secondary)
+            .foregroundStyle(Theme.textSecondary)
             .tracking(2)
     }
 
-    private var timerDisplay: some View {
-        VStack(spacing: 8) {
-            Text(formatTime(engine.phaseRemaining))
-                .font(.system(size: 72, weight: .thin, design: .monospaced))
-                .foregroundStyle(.primary)
-            Text(formatTime(engine.totalRemaining) + " total")
-                .font(.system(.caption, design: .monospaced))
-                .foregroundStyle(.tertiary)
+    // MARK: - Progression globale (séance entière)
+
+    private var progressBar: some View {
+        GeometryReader { geo in
+            ZStack(alignment: .leading) {
+                Capsule()
+                    .fill(Theme.surface)
+                    .frame(height: 3)
+                Capsule()
+                    .fill(Theme.accent.opacity(0.75))
+                    .frame(width: max(0, geo.size.width * globalProgress), height: 3)
+                    .animation(.linear(duration: 1), value: globalProgress)
+            }
         }
+        .frame(height: 3)
+        .padding(.horizontal, 40)
     }
 
+    private var globalProgress: Double {
+        let total = engine.config.totalDuration
+        guard total > 0 else { return 0 }
+        return min(1.0, Double(engine.totalElapsed) / Double(total))
+    }
+
+    // MARK: - Contrôles
+
     private var controls: some View {
-        HStack(spacing: 40) {
+        HStack(spacing: 56) {
             Button {
                 showEndConfirmation = true
             } label: {
                 Image(systemName: "xmark")
                     .font(.title2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.textSecondary)
             }
 
             Button {
@@ -88,14 +112,14 @@ struct SessionView: View {
             } label: {
                 Image(systemName: engine.state == .running ? "pause" : "play.fill")
                     .font(.system(size: 44, weight: .thin))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Theme.textPrimary)
             }
 
             Color.clear.frame(width: 28)
         }
     }
 
-    // MARK: - End
+    // MARK: - Fin de séance
 
     private func handleEnd() {
         let record = SessionRecord(
@@ -106,11 +130,5 @@ struct SessionView: View {
         )
         stats.save(record)
         withAnimation { showSummary = true }
-    }
-
-    private func formatTime(_ seconds: Int) -> String {
-        let m = seconds / 60
-        let s = seconds % 60
-        return String(format: "%d:%02d", m, s)
     }
 }

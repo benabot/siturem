@@ -27,17 +27,17 @@ struct HomeView: View {
                 .padding(.top, 8)
                 .padding(.bottom, 20)
             }
-            .background(Color.black)
+            .background(Theme.background)
             .safeAreaInset(edge: .bottom) {
                 startButton
                     .padding(.horizontal, 20)
                     .padding(.top, 12)
                     .padding(.bottom, 8)
-                    .background(Color.black)
+                    .background(Theme.background)
             }
             .navigationTitle("Siturem")
             .navigationBarTitleDisplayMode(.large)
-            .toolbarBackground(Color.black, for: .navigationBar)
+            .toolbarBackground(Theme.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .alert("Durée insuffisante", isPresented: $showDurationError) {
                 Button("OK", role: .cancel) {}
@@ -64,7 +64,7 @@ struct HomeView: View {
                 HStack {
                     Text("\(customMinutes) min")
                         .font(.system(.body, design: .monospaced))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(Theme.textPrimary)
                     Spacer()
                     Stepper("", value: $customMinutes, in: 6...120)
                         .labelsHidden()
@@ -83,8 +83,8 @@ struct HomeView: View {
         .font(.system(.subheadline, design: .monospaced))
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
-        .background(selected ? Color.primary : Color(white: 0.1))
-        .foregroundStyle(selected ? Color.black : Color.primary)
+        .background(selected ? Theme.accent : Theme.surface)
+        .foregroundStyle(selected ? Theme.background : Theme.textPrimary)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .animation(.easeInOut(duration: 0.15), value: selected)
     }
@@ -94,8 +94,8 @@ struct HomeView: View {
             .font(.system(.subheadline, design: .monospaced))
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
-            .background(useCustom ? Color.primary : Color(white: 0.1))
-            .foregroundStyle(useCustom ? Color.black : Color.primary)
+            .background(useCustom ? Theme.accent : Theme.surface)
+            .foregroundStyle(useCustom ? Theme.background : Theme.textPrimary)
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .animation(.easeInOut(duration: 0.15), value: useCustom)
     }
@@ -112,7 +112,7 @@ struct HomeView: View {
                     }
                     .labelsHidden()
                     .pickerStyle(.menu)
-                    .tint(.secondary)
+                    .tint(Theme.textSecondary)
                 }
                 optionRow("Gong") {
                     Picker("", selection: $prefs.gong) {
@@ -120,7 +120,7 @@ struct HomeView: View {
                     }
                     .labelsHidden()
                     .pickerStyle(.menu)
-                    .tint(.secondary)
+                    .tint(Theme.textSecondary)
                 }
                 optionRow("Ambiance") {
                     Picker("", selection: $prefs.ambient) {
@@ -128,7 +128,7 @@ struct HomeView: View {
                     }
                     .labelsHidden()
                     .pickerStyle(.menu)
-                    .tint(.secondary)
+                    .tint(Theme.textSecondary)
                 }
                 optionRow("Rappels", isLast: true) {
                     Picker("", selection: $prefs.reminder) {
@@ -136,7 +136,7 @@ struct HomeView: View {
                     }
                     .labelsHidden()
                     .pickerStyle(.menu)
-                    .tint(.secondary)
+                    .tint(Theme.textSecondary)
                 }
             }
             .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -148,16 +148,16 @@ struct HomeView: View {
         HStack {
             Text(label)
                 .font(.system(.subheadline))
-                .foregroundStyle(.primary)
+                .foregroundStyle(Theme.textPrimary)
             Spacer()
             content()
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
-        .background(Color(white: 0.08))
+        .background(Theme.surface)
         .overlay(alignment: .bottom) {
             if !isLast {
-                Color(white: 0.12).frame(height: 0.5)
+                Theme.surfaceHigh.frame(height: 0.5)
             }
         }
     }
@@ -183,8 +183,8 @@ struct HomeView: View {
                 .padding(.vertical, 18)
         }
         .buttonStyle(.borderedProminent)
-        .tint(.primary)
-        .foregroundStyle(Color.black)
+        .tint(Theme.accent)
+        .foregroundStyle(Theme.background)
     }
 
     // MARK: - Helpers
@@ -192,7 +192,7 @@ struct HomeView: View {
     private func sectionLabel(_ text: String) -> some View {
         Text(text)
             .font(.system(.caption2, design: .monospaced))
-            .foregroundStyle(.tertiary)
+            .foregroundStyle(Theme.textSecondary)
             .tracking(2)
     }
 }
