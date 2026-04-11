@@ -8,29 +8,26 @@ struct HomeView: View {
     @Bindable var prefs: PreferencesStore
     let onStart: (SessionConfiguration) -> Void
 
-    @State private var customMinutes: Int = 10
-    @State private var useCustom: Bool = false
+    @State private var selectedMinutes: Int = 10
     @State private var showDurationError: Bool = false
 
-    private var selectedDuration: Int {
-        useCustom ? customMinutes * 60 : prefs.totalDuration
-    }
+    private var selectedDuration: Int { selectedMinutes * 60 }
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 36) {
+                VStack(alignment: .leading, spacing: LayoutMetrics.md) {
                     durationSection
                     optionsSection
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 8)
-                .padding(.bottom, 20)
+                .padding(.horizontal, LayoutMetrics.hPadding)
+                .padding(.top, LayoutMetrics.sm)
+                .padding(.bottom, LayoutMetrics.md)
             }
             .background(Theme.background)
             .safeAreaInset(edge: .bottom) {
                 startButton
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, LayoutMetrics.hPadding)
                     .padding(.top, 12)
                     .padding(.bottom, LayoutMetrics.sm)
                     .background(Theme.background)
@@ -44,6 +41,13 @@ struct HomeView: View {
             } message: {
                 Text("Durée minimale : 6 minutes.")
             }
+            .onAppear {
+                let minutes = prefs.totalDuration / 60
+                selectedMinutes = max(6, min(60, minutes))
+            }
+            .onChange(of: selectedMinutes) { _, v in
+                prefs.totalDuration = v * 60
+            }
         }
     }
 
@@ -52,52 +56,35 @@ struct HomeView: View {
     private var durationSection: some View {
         VStack(alignment: .leading, spacing: 14) {
             sectionLabel("DURÉE")
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(SessionDuration.allCases) { preset in
-                        durationChip(preset)
+
+            HStack(spacing: LayoutMetrics.md) {
+                // Valeur sélectionnée mise en avant
+                Text("\(selectedMinutes)")
+                    .font(.system(size: 52, weight: .ultraLight, design: .monospaced))
+                    .foregroundStyle(Theme.textPrimary)
+                    + Text(" min")
+                    .font(.system(size: 20, weight: .light, design: .monospaced))
+                    .foregroundStyle(Theme.textSecondary)
+
+                Spacer()
+
+                // Wheel picker compact
+                Picker("Durée", selection: $selectedMinutes) {
+                    ForEach(6...60, id: \.self) { m in
+                        Text("\(m) min")
+                            .font(.system(.body, design: .monospaced))
+                            .tag(m)
                     }
-                    customDurationChip
                 }
+                .pickerStyle(.wheel)
+                .frame(width: 110, height: 110)
+                .clipped()
             }
-            if useCustom {
-                HStack {
-                    Text("\(customMinutes) min")
-                        .font(.system(.body, design: .monospaced))
-                        .foregroundStyle(Theme.textPrimary)
-                    Spacer()
-                    Stepper("", value: $customMinutes, in: 6...120)
-                        .labelsHidden()
-                }
-                .padding(.top, 4)
-            }
+            .padding(.horizontal, LayoutMetrics.sm)
+            .padding(.vertical, LayoutMetrics.sm)
+            .background(Theme.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
         }
-    }
-
-    private func durationChip(_ preset: SessionDuration) -> some View {
-        let selected = !useCustom && prefs.totalDuration == preset.totalSeconds
-        return Button(preset.label) {
-            useCustom = false
-            prefs.totalDuration = preset.totalSeconds
-        }
-        .font(.system(.subheadline, design: .monospaced))
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background(selected ? Theme.accent : Theme.surface)
-        .foregroundStyle(selected ? Theme.background : Theme.textPrimary)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .animation(.easeInOut(duration: 0.15), value: selected)
-    }
-
-    private var customDurationChip: some View {
-        Button("Perso") { useCustom = true }
-            .font(.system(.subheadline, design: .monospaced))
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
-            .background(useCustom ? Theme.accent : Theme.surface)
-            .foregroundStyle(useCustom ? Theme.background : Theme.textPrimary)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .animation(.easeInOut(duration: 0.15), value: useCustom)
     }
 
     // MARK: - Options
@@ -152,8 +139,8 @@ struct HomeView: View {
             Spacer()
             content()
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 14)
+        .padding(.horizontal, LayoutMetrics.sm)
+        .padding(.vertical, LayoutMetrics.sm)
         .background(Theme.surface)
         .overlay(alignment: .bottom) {
             if !isLast {
