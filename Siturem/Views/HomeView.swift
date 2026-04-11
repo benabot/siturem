@@ -35,7 +35,7 @@ struct HomeView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    SituremLogo(layout: .horizontal, markSize: 18)
+                    SituremLogo(layout: .horizontal, markSize: 24)
                 }
             }
             .toolbarBackground(Theme.background, for: .navigationBar)

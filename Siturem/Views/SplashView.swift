@@ -13,7 +13,7 @@ struct SplashView: View {
             Theme.background.ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: 0) {
-                SituremLogo(layout: .vertical, markSize: 56)
+                SituremLogo(layout: .vertical, markSize: 80)
                     .opacity(logoOpacity)
 
                 Spacer().frame(height: 32)
