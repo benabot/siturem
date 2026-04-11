@@ -63,6 +63,15 @@ Section "SÉANCE PAR DÉFAUT" retirée. `SettingsView` conservée avec : Santé 
 
 `HomeView` : padding bas du bouton "Commencer" porté à LayoutMetrics.sm (24.7 pt, φ).
 
+### ~~Onboarding 4 pages (premier lancement)~~ ✅
+
+`Siturem/Views/Onboarding/OnboardingView.swift` créé. 4 pages swipeables (TabView `.page`) :
+- Page 1 — Identité : "SITUREM" + "Méditation structurée", animation 3.2 s (synchronisée avec splash)
+- Page 2 — Promesse : titre + 3 étapes numérotées avec tiret accent, révélation décalée
+- Page 3 — Structure : titre + 3 barres de phase proportionnelles (GeometryReader) + labels
+- Page 4 — Commencer : titre + sous-titre + bouton "COMMENCER"
+Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingCompleted")` dans `ContentView` — affiché une seule fois.
+
 ---
 
 ## Critique (V1 bloquée)

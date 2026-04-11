@@ -5,6 +5,7 @@ import SwiftUI
 
 struct ContentView: View {
 
+    @AppStorage("siturem.onboardingCompleted") private var onboardingCompleted = false
     @State private var prefs = PreferencesStore()
     @State private var stats = StatsStore()
     @State private var engine: SessionEngine? = nil
@@ -14,7 +15,13 @@ struct ContentView: View {
 
     var body: some View {
         Group {
-            if let engine {
+            if !onboardingCompleted {
+                OnboardingView {
+                    withAnimation(.easeOut(duration: 0.5)) {
+                        onboardingCompleted = true
+                    }
+                }
+            } else if let engine {
                 SessionView(engine: engine, stats: stats) {
                     self.engine = nil
                 }
