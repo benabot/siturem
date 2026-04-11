@@ -3,6 +3,7 @@ import SwiftUI
 // MARK: - Session View
 // Écran affiché pendant une séance en cours.
 // Mise en page basée sur le nombre d'or (φ ≈ 1.618).
+// Barre + contrôles ancrés via safeAreaInset — blob centre l'espace restant.
 
 struct SessionView: View {
 
@@ -40,20 +41,23 @@ struct SessionView: View {
                 .padding(.top, LayoutMetrics.phaseTopOffset)
                 .frame(maxWidth: .infinity)
 
-            // Blob — occupe tout l'espace restant, centré dans sa zone
+            // Blob — centre l'espace restant au-dessus du safeAreaInset
             BlobView(phase: engine.currentPhase)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            // Zone basse : progression + contrôles groupés
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Theme.background)
+        // Barre + contrôles ancrés au bas de l'écran, juste au-dessus du home indicator
+        .safeAreaInset(edge: .bottom) {
             VStack(spacing: LayoutMetrics.progressToControlsSpacing) {
                 progressBar
                 controls
             }
             .padding(.horizontal, LayoutMetrics.hPadding)
-            .padding(.bottom, LayoutMetrics.controlsBottomPadding)
+            .padding(.top, LayoutMetrics.sm)
+            .padding(.bottom, LayoutMetrics.safeAreaBottomPadding)
+            .background(Theme.background)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Theme.background)
         .alert("Arrêter la séance ?", isPresented: $showEndConfirmation) {
             Button("Arrêter", role: .destructive) {
                 engine.stop()
@@ -79,14 +83,14 @@ struct SessionView: View {
             ZStack(alignment: .leading) {
                 Capsule()
                     .fill(Theme.surface)
-                    .frame(height: 5)
+                    .frame(height: 6)
                 Capsule()
                     .fill(Theme.accent.opacity(0.80))
-                    .frame(width: max(0, geo.size.width * globalProgress), height: 5)
+                    .frame(width: max(0, geo.size.width * globalProgress), height: 6)
                     .animation(.linear(duration: 1), value: globalProgress)
             }
         }
-        .frame(height: 5)
+        .frame(height: 6)
     }
 
     private var globalProgress: Double {

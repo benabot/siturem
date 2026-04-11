@@ -29,9 +29,13 @@ Section "SÉANCE PAR DÉFAUT" retirée. `SettingsView` conservée avec : Santé 
 - Small : 40 / φ ≈ 24.7 pt
 - Large : 40 × φ ≈ 64.7 pt
 - X-Large : 40 × φ² ≈ 104.7 pt
-- Controls bottom padding : 72 pt (plus bas pour plus d'air)
+- Safe area bottom : 24.7 pt
 
-`SessionView` refactorisée pour utiliser `LayoutMetrics.phaseTopOffset`, `progressToControlsSpacing`, `controlsBottomPadding`.
+`SessionView` refactorisée :
+- `.safeAreaInset(edge: .bottom)` pour ancrer barre + contrôles physiquement au-dessus du home indicator
+- Blob remplit l'espace restant, centré verticalement
+- Barre de progression épaissie à 6pt
+- Tous les espacements appliquent φ (phaseTopOffset, progressToControlsSpacing, hPadding)
 
 ---
 

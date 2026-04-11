@@ -38,6 +38,6 @@ enum LayoutMetrics {
     /// Spacing progression → boutons
     static let progressToControlsSpacing: CGFloat = 24
 
-    /// Padding bottom des contrôles (safe area consideration)
-    static let controlsBottomPadding: CGFloat = 72
+    /// Padding au-dessus du home indicator (safeAreaInset)
+    static let safeAreaBottomPadding: CGFloat = sm   // 24.7 pt
 }
