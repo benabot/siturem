@@ -32,8 +32,12 @@ struct HomeView: View {
                     .padding(.bottom, LayoutMetrics.sm)
                     .background(Theme.background)
             }
-            .navigationTitle("Siturem")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    SituremLogo(layout: .horizontal, markSize: 18)
+                }
+            }
             .toolbarBackground(Theme.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .alert("Durée insuffisante", isPresented: $showDurationError) {

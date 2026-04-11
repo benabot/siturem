@@ -13,7 +13,7 @@ Siturem — Méditation structurée
 Base fonctionnelle — UI et logique métier complètes. Audio et intégration HealthKit restent à implémenter pour compléter la V1.
 
 **Refonte visuelle et UX terminée.**
-Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre de progression (6pt) + contrôles ancrés via `.safeAreaInset`, SettingsView recentrée avec section PRINCIPES, splash animée et renforcée. Système `LayoutMetrics` (φ ≈ 1.618) pour la cohérence des espacements.
+Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre de progression (6pt) + contrôles ancrés via `.safeAreaInset`, SettingsView recentrée avec section PRINCIPES, splash animée et renforcée. Système `LayoutMetrics` (φ ≈ 1.618). Logo géométrique (`SituremMark` / `SituremLogo`) décliné sur splash et HomeView.
 
 ## Fonctionnel
 
@@ -24,7 +24,7 @@ Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre d
 | SessionConfiguration / SessionModels / SessionRecord | ✅ Complet |
 | PreferencesStore (UserDefaults) | ✅ Complet |
 | StatsStore (persistance + streaks) | ✅ Complet |
-| HomeView (sélection durée/modes) | ✅ Sélecteur durée 6–60 min (wheel picker), padding φ |
+| HomeView (sélection durée/modes) | ✅ Sélecteur durée 6–60 min (wheel picker), logo en nav bar, padding φ |
 | SessionView (séance en cours) | ✅ Complet |
 | SessionSummaryView (bilan) | ✅ Complet |
 | StatsView (statistiques) | ✅ Complet |

@@ -5,39 +5,31 @@ import SwiftUI
 
 struct SplashView: View {
 
-    @State private var contentOpacity = 0.0
+    @State private var logoOpacity = 0.0
     @State private var baselineOpacity = 0.0
 
     var body: some View {
         ZStack {
             Theme.background.ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                VStack(spacing: 12) {
-                    Text("SITUREM")
-                        .font(.system(size: 32, weight: .ultraLight))
-                        .tracking(10)
-                        .foregroundStyle(Theme.textPrimary)
+            VStack(alignment: .leading, spacing: 0) {
+                SituremLogo(layout: .vertical, markSize: 56)
+                    .opacity(logoOpacity)
 
-                    Text("Méditation structurée")
-                        .font(.system(.caption, design: .monospaced))
-                        .foregroundStyle(Theme.textSecondary)
-                        .tracking(2)
-                }
-                .opacity(contentOpacity)
-
-                Spacer().frame(height: 36)
+                Spacer().frame(height: 32)
 
                 Text("Le cadre discret de votre pratique.")
                     .font(.system(.caption2))
-                    .foregroundStyle(Theme.accent.opacity(0.7))
+                    .foregroundStyle(Theme.accent.opacity(0.65))
                     .tracking(0.5)
                     .opacity(baselineOpacity)
             }
+            .padding(.horizontal, LayoutMetrics.hPadding)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .onAppear {
             withAnimation(.easeOut(duration: 0.7)) {
-                contentOpacity = 1.0
+                logoOpacity = 1.0
             }
             withAnimation(.easeOut(duration: 0.7).delay(0.9)) {
                 baselineOpacity = 1.0

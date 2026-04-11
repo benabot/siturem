@@ -37,6 +37,15 @@ Section "SÉANCE PAR DÉFAUT" retirée. `SettingsView` conservée avec : Santé 
 - Barre de progression épaissie à 6pt
 - Tous les espacements appliquent φ (phaseTopOffset, progressToControlsSpacing, hPadding)
 
+### ~~Logo Siturem (SituremMark + SituremLogo)~~ ✅
+
+`SituremMark.swift` créé : 3 capsules horizontales gauche-alignées, largeurs proportionnelles aux phases (intro 55%, méditation 100%, closing 30%), opacités 70/100/45%. Scalable, 2 déclinaisons via `SituremLogo(layout:)` :
+- `.vertical` (splash) : mark + wordmark + sous-titre
+- `.horizontal` (nav bar) : mark + wordmark côte à côte
+
+`SplashView` : logo vertical taille 56, aligné à gauche, tagline animée.
+`HomeView` : grand titre remplacé par `SituremLogo(layout: .horizontal, markSize: 18)` en `.principal` toolbar.
+
 ### ~~HomeView : sélecteur de durée 6–60 min + padding φ~~ ✅
 
 `HomeView` : chips fixes remplacées par un bloc durée avec valeur grande (ultraLight monospaced) + wheel picker compact (6–60 min, pas de 1 min) persisté dans `prefs.totalDuration`. Padding uniformisé via `LayoutMetrics` (horizontal 40 pt, rangées options 24.7 pt).
