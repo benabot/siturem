@@ -11,6 +11,7 @@ struct SessionView: View {
     let stats: StatsStore
     let onEnd: () -> Void
 
+    @State private var audioService: AudioService?
     @State private var showEndConfirmation = false
     @State private var showSummary = false
 
@@ -27,8 +28,36 @@ struct SessionView: View {
         }
         .preferredColorScheme(.dark)
         .onAppear {
-            engine.onSessionEnd = handleEnd
+            let audio = AudioService(config: engine.config)
+            audioService = audio
+
+            engine.onSessionEnd = {
+                audio.handleSessionEnd(configuration: engine.config)
+                handleEnd()
+            }
+
+            audio.startSessionAudio(configuration: engine.config)
             engine.start()
+        }
+        .onChange(of: engine.elapsed) { oldValue, newValue in
+            audioService?.handleTick(
+                phase: engine.currentPhase,
+                previousElapsedInPhase: TimeInterval(oldValue),
+                currentElapsedInPhase: TimeInterval(newValue),
+                configuration: engine.config
+            )
+        }
+        .onChange(of: engine.currentPhase) { oldValue, newValue in
+            audioService?.handlePhaseChange(
+                from: oldValue,
+                to: newValue,
+                configuration: engine.config
+            )
+        }
+        .onDisappear {
+            audioService?.stopAll()
+            audioService = nil
+            engine.onSessionEnd = nil
         }
     }
 
@@ -60,6 +89,7 @@ struct SessionView: View {
         }
         .alert("Arrêter la séance ?", isPresented: $showEndConfirmation) {
             Button("Arrêter", role: .destructive) {
+                audioService?.stopAll()
                 engine.stop()
                 onEnd()
             }
@@ -112,8 +142,13 @@ struct SessionView: View {
             }
 
             Button {
-                if engine.state == .running { engine.pause() }
-                else { engine.start() }
+                if engine.state == .running {
+                    engine.pause()
+                    audioService?.pauseAll()
+                } else if engine.state == .paused {
+                    audioService?.resumeAll()
+                    engine.start()
+                }
             } label: {
                 Image(systemName: engine.state == .running ? "pause" : "play.fill")
                     .font(.system(size: 44, weight: .thin))

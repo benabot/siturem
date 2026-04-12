@@ -94,16 +94,18 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 ## Critique (V1 bloquée)
 
 - [x] Arborescence audio : créer `Audio/{Gongs,Ambiance,VoiceGuidance/{Intro,Reminders,Outro}}`
-- [ ] Déposer les fichiers audio (.caf) dans `Audio/` et les ajouter au target Xcode
-- [ ] AudioService : gong aux transitions de phase (GongMode → début, fin, inter-phases)
-- [ ] AudioService : ambiance sonore en boucle (AmbientSound)
-- [ ] Rappels périodiques phase méditation (ReminderInterval → SessionEngine)
+- [x] Déclarer `Gongs`, `Ambiance` et `VoiceGuidance` explicitement dans `project.yml`
+- [x] Déposer les fichiers audio (.caf/.m4a) disponibles dans `Audio/` et les ajouter au target Xcode
+- [x] AudioService : gong unique en bornes de séance (`gong.caf` après `intro_01_bonjour`, puis à la fin réelle)
+- [x] AudioService : ambiance sonore en boucle (AmbientSound)
+- [x] AudioService : intro/outro vocaux minutés avec déclenchement par franchissement de seuil
+- [x] Rappels périodiques phase méditation (`ReminderInterval` géré côté `AudioService`, hors `SessionEngine`)
 - [ ] Intégrer HealthKit au flux de fin de séance (`SessionView.handleEnd` → `HealthKitService.save`)
 - [ ] Activer entitlement HealthKit dans `Siturem/Siturem.entitlements`
 
 ## Important
 
-- [ ] Mode "Guidé léger" : guidance audio pour phases intro et closing
+- [x] Mode "Guidé léger" : guidance audio pour phases intro et closing
 - [ ] Haptics légers aux transitions de phase
 - [ ] Test end-to-end des flux utilisateur (simulateur Xcode)
 
@@ -111,3 +113,13 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 
 - [ ] Vérification accessibilité VoiceOver
 - [x] Icône app finale (AppIcon dans Assets.xcassets)
+
+## Dernière livraison
+
+- [x] `AudioService.swift` réécrit : un player voix, un player gong, un player ambiance ; intro/outro vocaux minutés ; gong unique de début/fin ; reminder central ; fallback silencieux si assets absents
+- [x] `AudioAsset.swift` créé : résolution centralisée des assets (`gong.caf`, loops ambiance, cues intro/outro, reminder)
+- [x] `SessionView.swift` branchée sur `startSessionAudio`, `handleTick`, `handlePhaseChange`, `handleSessionEnd`, `pauseAll`, `resumeAll`, `stopAll`
+- [x] `project.yml` mis à jour pour intégrer les dossiers audio explicitement
+- [x] `VoiceGuidance/.gitkeep` ajouté pour garder le dossier visible dans Xcode avant les fichiers audio réels
+- [x] `xcodegen generate`
+- [x] Build simulateur validé (`xcodebuild ... -destination 'id=9C12A4F4-26F1-45EA-B40A-E54537DE73B1' build`)

@@ -25,10 +25,10 @@ Siturem/
 ├── App/          Point d'entrée (@main)
 ├── Models/       Types de données (enums, structs)
 ├── Views/        Vues SwiftUI
-├── Services/     Logique métier (SessionEngine, StatsStore, PreferencesStore, HealthKitService)
+├── Services/     Logique métier (SessionEngine, AudioService, StatsStore, PreferencesStore, HealthKitService)
 ├── Audio/        Assets audio
-│   ├── Gongs/          gong-start, gong-transition, gong-end (.caf)
-│   ├── Ambiance/       rain, river, forest, white-noise (.caf ou .m4a)
+│   ├── Gongs/          gong.caf
+│   ├── Ambiance/       rain-loop, river-loop, forest-loop, white-noise-loop (.m4a ou .caf)
 │   └── VoiceGuidance/  Consignes vocales minutées
 │       ├── Intro/      Segments phase intro (2m30)
 │       ├── Reminders/  Rappels discrets phase centrale

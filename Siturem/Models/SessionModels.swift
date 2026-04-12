@@ -34,10 +34,13 @@ enum AccompanimentMode: String, CaseIterable, Identifiable {
 
 enum GongMode: String, CaseIterable, Identifiable {
     case off = "Off"
-    case startEnd = "Début / Fin"
-    case all = "Début / Transitions / Fin"
+    case sessionBounds = "Début / Fin"
 
     var id: String { rawValue }
+
+    var playsSessionBoundaryGongs: Bool {
+        self == .sessionBounds
+    }
 }
 
 // MARK: - Ambient Sound

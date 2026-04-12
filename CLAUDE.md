@@ -31,13 +31,14 @@ SwiftUI + `@Observable` (iOS 17+, Swift 5.10). Pas de dépendances externes.
 ### Assets audio
 
 Les fichiers audio sont dans `Siturem/Audio/`, organisés par catégorie :
-- **`Gongs/`** — gong-start, gong-transition, gong-end (`.caf`)
-- **`Ambiance/`** — rain, river, forest, white-noise (`.caf` ou `.m4a`)
+- **`Gongs/`** — `gong.caf`
+- **`Ambiance/`** — `rain-loop`, `river-loop`, `forest-loop`, `white-noise-loop` (`.m4a` ou `.caf`)
 - **`VoiceGuidance/Intro/`** — segments minutés de la phase intro (2m30), un fichier par consigne
 - **`VoiceGuidance/Reminders/`** — rappels discrets pour la phase centrale
 - **`VoiceGuidance/Outro/`** — segments minutés du retour (45s)
 
 Format recommandé : `.caf` (Core Audio Format, lecture native AVAudioPlayer). Ambiances longues possibles en `.m4a` pour réduire la taille du bundle.
+Les dossiers audio sont déclarés explicitement dans `project.yml`; `VoiceGuidance/.gitkeep` peut servir à garder le dossier visible dans Xcode avant que les fichiers audio réels n'arrivent.
 
 ### Modèles clés
 

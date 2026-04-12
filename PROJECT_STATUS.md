@@ -10,7 +10,7 @@ Siturem — Méditation structurée
 `~/Sites/siturem/Siturem`
 
 ## État actuel
-Base fonctionnelle — UI et logique métier complètes. Audio et intégration HealthKit restent à implémenter pour compléter la V1.
+Base fonctionnelle — UI et logique métier complètes. Audio V1 est maintenant implémenté de façon localisée côté service; les assets audio réels sont intégrés au target via `project.yml` et `VoiceGuidance` dispose d'un placeholder pour rester visible dans Xcode. Intégration HealthKit reste à finaliser pour compléter la V1.
 
 **Refonte visuelle et UX terminée.**
 Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre de progression (6pt) + contrôles ancrés via `.safeAreaInset`, SettingsView recentrée avec section PRINCIPES, splash animée et renforcée. Système `LayoutMetrics` (φ ≈ 1.618). Logo géométrique (`SituremMark` / `SituremLogo`) décliné sur splash et HomeView.
@@ -32,14 +32,13 @@ Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre d
 | OnboardingView (4 pages, premier lancement) | ✅ Textes refondus — 4 phrases sobres, délai synchronisé avec nouvelle durée splash |
 | AppIcon | ✅ Intégrée — 5 tailles PNG via `scripts/generate-icons.swift`, `Assets.xcassets` correctement référencé |
 | HealthKitService (service shell) | ⚠️ Partiel — non intégré au flux |
-| AudioService | ⚠️ Partiel — arborescence audio créée, assets à fournir |
+| AudioService | ✅ Implémenté — gong unique de début/fin, intro/outro vocaux minutés, reminder phase centrale, ambiance en boucle, pause/reprise, fin de séance, fallback silencieux si assets absents |
 
 ## Points ouverts
 
-- **Audio** : arborescence `Audio/` en place (Gongs/, Ambiance/, VoiceGuidance/{Intro,Reminders,Outro}) — assets `.caf` à déposer, AudioService à implémenter
+- **Assets audio** : arborescence `Audio/` en place, `Gongs` / `Ambiance` / `VoiceGuidance` déclarés explicitement dans `project.yml`, `VoiceGuidance/.gitkeep` présent pour la visibilité Xcode ; fichiers audio réels déposés pour `Gongs` et `Ambiance`
 - **HealthKit** : service présent mais non appelé à la fin de séance ; entitlements vides
 - **Tests** : aucun test unitaire ou UI en place
-- **Icône app** : AppIcon manquante dans Assets.xcassets
 
 ## Références locales
 - `docs/BrandingGuideline.md` — identité visuelle, ton, territoire
@@ -68,6 +67,7 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - Phases de séance fixes : intro 150 s + méditation variable + closing 45 s
 - **Refonte visuelle** : palette anthracite + accent bleu ardoise (pas de noir pur), blob animé en séance à la place du compteur, barre de progression globale (pas par phase)
 - **Refonte SettingsView** : séparation claire entre configuration de séance (HomeView) et préférences système (SettingsView). SettingsView conservée mais recentrée sur : HealthKit, couleur d'accent de l'interface, voix/langue (futur), version. Les pickers accompagnement/gong/ambiance/rappels sont retirés de SettingsView (ils sont déjà dans HomeView)
+- **Audio XcodeGen** : les dossiers audio sont déclarés explicitement dans `project.yml` pour garantir leur présence dans le projet généré et dans le bundle
 
 ## Prochain focus
-Implémenter l'AudioService — gong aux transitions de phase en premier (impact visible immédiat), puis ambiance sonore en boucle. Les fichiers audio sont attendus dans `Siturem/Audio/` (Gongs/, Ambiance/, VoiceGuidance/).
+Déposer et valider les assets audio réels attendus dans `Siturem/Audio/`, puis intégrer `HealthKitService` au flux de fin de séance.

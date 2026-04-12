@@ -31,7 +31,7 @@ final class PreferencesStore {
         let d = UserDefaults.standard
         totalDuration = d.object(forKey: "pref.totalDuration") as? Int ?? 600
         accompaniment = AccompanimentMode(rawValue: d.string(forKey: "pref.accompaniment") ?? "") ?? .structured
-        gong = GongMode(rawValue: d.string(forKey: "pref.gong") ?? "") ?? .startEnd
+        gong = PreferencesStore.resolveGongMode(from: d.string(forKey: "pref.gong")) ?? .sessionBounds
         ambient = AmbientSound(rawValue: d.string(forKey: "pref.ambient") ?? "") ?? .off
         reminder = ReminderInterval(rawValue: d.string(forKey: "pref.reminder") ?? "") ?? .off
         healthKitEnabled = d.bool(forKey: "pref.healthKit")
@@ -45,5 +45,20 @@ final class PreferencesStore {
             ambient: ambient,
             reminder: reminder
         )
+    }
+
+    private static func resolveGongMode(from rawValue: String?) -> GongMode? {
+        guard let rawValue else { return nil }
+
+        if let mode = GongMode(rawValue: rawValue) {
+            return mode
+        }
+
+        switch rawValue {
+        case "Début / Transitions / Fin":
+            return .sessionBounds
+        default:
+            return nil
+        }
     }
 }

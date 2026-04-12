@@ -26,7 +26,7 @@ struct SessionConfiguration {
         SessionConfiguration(
             totalDuration: 600, // 10 min
             accompaniment: .structured,
-            gong: .startEnd,
+            gong: .sessionBounds,
             ambient: .off,
             reminder: .off
         )
