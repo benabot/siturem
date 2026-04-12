@@ -65,6 +65,10 @@ Section "SÉANCE PAR DÉFAUT" retirée. `SettingsView` conservée avec : Santé 
 
 ### ~~Onboarding 4 pages (premier lancement)~~ ✅
 
+### ~~Transition splash → HomeView (fondu enchaîné)~~ ✅
+
+`SituremApp` : remplacement du `if showSplash { .transition(.opacity) }` par deux `opacity` explicites animées en parallèle (`splashOpacity` 1→0, `contentOpacity` 0→1). Fondu enchaîné propre, sans saut de frame. `.allowsHitTesting` désactivé sur la splash une fois invisible.
+
 ### ~~Icône app (AppIcon)~~ ✅
 
 `scripts/generate-icons.swift` : script CoreGraphics standalone générant 5 tailles PNG (120/152/167/180/1024 px). Motif SituremMark centré sur fond anthracite `#181820`, capsules bleu ardoise `#6E7FA3`. `Contents.json` mis à jour par Xcode avec les tailles standard iOS.
