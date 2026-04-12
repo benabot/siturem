@@ -14,6 +14,7 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 principlesSection
+                sessionSection
                 healthSection
                 // interfaceSection  // couleur d'accent — à venir
                 // voiceSection      // voix et langue — à venir
@@ -65,6 +66,31 @@ struct SettingsView: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.vertical, 2)
+    }
+
+    // MARK: - Séance
+
+    private var sessionSection: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Interventions")
+                    .font(.system(.subheadline))
+                    .foregroundStyle(Theme.textPrimary)
+                Picker("", selection: $prefs.reminder) {
+                    ForEach(ReminderInterval.allCases) { interval in
+                        Text(interval.settingsLabel).tag(interval)
+                    }
+                }
+                .pickerStyle(.segmented)
+            }
+            .padding(.vertical, 4)
+        } header: {
+            sectionHeader("SÉANCE")
+        } footer: {
+            Text("Fréquence des interventions pendant la phase de méditation.")
+                .foregroundStyle(Theme.textSecondary)
+        }
+        .listRowBackground(Theme.surface)
     }
 
     // MARK: - Santé

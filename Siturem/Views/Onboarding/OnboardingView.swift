@@ -16,9 +16,9 @@ struct OnboardingView: View {
             Theme.background.ignoresSafeArea()
 
             TabView(selection: $currentPage) {
-                identityPage.tag(0)
-                promisePage.tag(1)
-                structurePage.tag(2)
+                page(index: 0).tag(0)
+                page(index: 1).tag(1)
+                page(index: 2).tag(2)
                 startPage.tag(3)
             }
             .tabViewStyle(.page(indexDisplayMode: .always))
@@ -43,8 +43,8 @@ struct OnboardingView: View {
         }
         .preferredColorScheme(.dark)
         .onAppear {
-            // Délai synchronisé avec la fin du splash (2.8 s + 0.4 s pause)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
+            // Délai synchronisé avec la fin du splash (4.5 s affichage + 0.8 s fade)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                 pageAppeared[0] = true
             }
         }
@@ -57,127 +57,32 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Page 1 — Identité
+    // MARK: - Pages 1–3 (texte seul)
 
-    private var identityPage: some View {
-        VStack(spacing: 14) {
-            Spacer()
+    private static let lines: [String] = [
+        "Siturem est une app de méditation minimaliste conçue pour des pratiquants déjà autonomes.",
+        "Elle ne cherche pas à enseigner la méditation, à divertir, ni à surcharger l'expérience.",
+        "Elle fournit un cadre stable, discret et reproductible pour lancer rapidement une séance structurée."
+    ]
 
-            Text("SITUREM")
-                .font(.system(size: 42, weight: .ultraLight))
-                .tracking(12)
-                .foregroundStyle(Theme.textPrimary)
-                .opacity(pageAppeared[0] ? 1 : 0)
-                .animation(.easeOut(duration: 0.8), value: pageAppeared[0])
-
-            Text("Méditation structurée")
-                .font(.system(.body, design: .monospaced))
-                .foregroundStyle(Theme.textSecondary)
-                .tracking(1.5)
-                .opacity(pageAppeared[0] ? 1 : 0)
-                .animation(.easeOut(duration: 0.8).delay(0.3), value: pageAppeared[0])
-
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-
-    // MARK: - Page 2 — Promesse
-
-    private var promisePage: some View {
+    private func page(index: Int) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Spacer()
 
-            Text("Un cadre simple\npour votre pratique")
-                .font(.system(size: 26, weight: .light))
+            Text(Self.lines[index])
+                .font(.system(size: 22, weight: .light))
                 .foregroundStyle(Theme.textPrimary)
-                .lineSpacing(4)
-                .opacity(pageAppeared[1] ? 1 : 0)
-                .animation(.easeOut(duration: 0.6), value: pageAppeared[1])
-
-            Spacer().frame(height: LayoutMetrics.md)
-
-            VStack(alignment: .leading, spacing: LayoutMetrics.sm) {
-                stepRow("1", "Choisissez une durée", delay: 0.15)
-                stepRow("2", "Lancez la séance", delay: 0.30)
-                stepRow("3", "L'app s'efface", delay: 0.45)
-            }
+                .lineSpacing(6)
+                .fixedSize(horizontal: false, vertical: true)
+                .opacity(pageAppeared[index] ? 1 : 0)
+                .offset(y: pageAppeared[index] ? 0 : 12)
+                .animation(.easeOut(duration: 0.7), value: pageAppeared[index])
 
             Spacer()
             Spacer()
         }
         .padding(.horizontal, LayoutMetrics.hPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-
-    private func stepRow(_ number: String, _ text: String, delay: Double) -> some View {
-        HStack(spacing: 16) {
-            Text(number)
-                .font(.system(.caption, design: .monospaced))
-                .foregroundStyle(Theme.accent)
-                .frame(width: 16, alignment: .trailing)
-            Capsule()
-                .fill(Theme.accent.opacity(0.3))
-                .frame(width: 20, height: 1)
-            Text(text)
-                .font(.system(.body, weight: .light))
-                .foregroundStyle(Theme.textPrimary)
-        }
-        .opacity(pageAppeared[1] ? 1 : 0)
-        .offset(y: pageAppeared[1] ? 0 : 10)
-        .animation(.easeOut(duration: 0.5).delay(delay), value: pageAppeared[1])
-    }
-
-    // MARK: - Page 3 — Structure
-
-    private var structurePage: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Spacer()
-
-            Text("Trois phases, toujours")
-                .font(.system(size: 26, weight: .light))
-                .foregroundStyle(Theme.textPrimary)
-                .opacity(pageAppeared[2] ? 1 : 0)
-                .animation(.easeOut(duration: 0.6), value: pageAppeared[2])
-
-            Spacer().frame(height: LayoutMetrics.md)
-
-            VStack(alignment: .leading, spacing: LayoutMetrics.sm) {
-                phaseBlock(ratio: 0.55, accentOpacity: 0.70, name: "Introduction", duration: "2 min 30", delay: 0.15)
-                phaseBlock(ratio: 1.0, accentOpacity: 1.0, name: "Méditation", duration: "durée variable", delay: 0.30)
-                phaseBlock(ratio: 0.30, accentOpacity: 0.45, name: "Retour", duration: "45 s", delay: 0.45)
-            }
-
-            Spacer()
-            Spacer()
-        }
-        .padding(.horizontal, LayoutMetrics.hPadding)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-
-    private func phaseBlock(ratio: CGFloat, accentOpacity: Double, name: String, duration: String, delay: Double) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            GeometryReader { geo in
-                Capsule()
-                    .fill(Theme.accent.opacity(accentOpacity))
-                    .frame(width: geo.size.width * ratio, height: 4)
-            }
-            .frame(height: 4)
-
-            HStack(spacing: 8) {
-                Text(name)
-                    .font(.system(.subheadline))
-                    .foregroundStyle(Theme.textPrimary)
-                Text("·")
-                    .foregroundStyle(Theme.textSecondary)
-                Text(duration)
-                    .font(.system(.caption, design: .monospaced))
-                    .foregroundStyle(Theme.textSecondary)
-            }
-        }
-        .opacity(pageAppeared[2] ? 1 : 0)
-        .offset(y: pageAppeared[2] ? 0 : 10)
-        .animation(.easeOut(duration: 0.5).delay(delay), value: pageAppeared[2])
     }
 
     // MARK: - Page 4 — Commencer
@@ -186,20 +91,14 @@ struct OnboardingView: View {
         VStack(alignment: .leading, spacing: 0) {
             Spacer()
 
-            Text("Prêt à commencer")
-                .font(.system(size: 26, weight: .light))
+            Text("Une séance prête à l'emploi, sobre, stable et structurée.")
+                .font(.system(size: 22, weight: .light))
                 .foregroundStyle(Theme.textPrimary)
+                .lineSpacing(6)
+                .fixedSize(horizontal: false, vertical: true)
                 .opacity(pageAppeared[3] ? 1 : 0)
-                .animation(.easeOut(duration: 0.6), value: pageAppeared[3])
-
-            Spacer().frame(height: 14)
-
-            Text("Vos réglages sont conservés\nd'une séance à l'autre.")
-                .font(.system(.subheadline))
-                .foregroundStyle(Theme.textSecondary)
-                .lineSpacing(3)
-                .opacity(pageAppeared[3] ? 1 : 0)
-                .animation(.easeOut(duration: 0.6).delay(0.2), value: pageAppeared[3])
+                .offset(y: pageAppeared[3] ? 0 : 12)
+                .animation(.easeOut(duration: 0.7), value: pageAppeared[3])
 
             Spacer()
 

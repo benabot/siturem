@@ -68,6 +68,15 @@ enum ReminderInterval: String, CaseIterable, Identifiable {
         case .every5min: 300
         }
     }
+
+    /// Label sobre pour SettingsView
+    var settingsLabel: String {
+        switch self {
+        case .off: "Aucune"
+        case .every3min: "Occasionnelles"
+        case .every5min: "Fréquentes"
+        }
+    }
 }
 
 // MARK: - Session Phase

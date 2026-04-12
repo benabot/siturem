@@ -28,8 +28,8 @@ Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre d
 | SessionView (séance en cours) | ✅ Complet |
 | SessionSummaryView (bilan) | ✅ Complet |
 | StatsView (statistiques) | ✅ Complet |
-| SettingsView (préférences système) | ✅ Refondue — section PRINCIPES ajoutée, HealthKit + À propos conservés |
-| OnboardingView (4 pages, premier lancement) | ✅ Complet |
+| SettingsView (préférences système) | ✅ Refondue — sections PRINCIPES + SÉANCE (ReminderInterval), HealthKit + À propos |
+| OnboardingView (4 pages, premier lancement) | ✅ Textes refondus — 4 phrases sobres, délai synchronisé avec nouvelle durée splash |
 | HealthKitService (service shell) | ⚠️ Partiel — non intégré au flux |
 | AudioService | ⚠️ Partiel — arborescence audio créée, assets à fournir |
 

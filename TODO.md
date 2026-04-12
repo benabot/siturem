@@ -65,6 +65,14 @@ Section "SÉANCE PAR DÉFAUT" retirée. `SettingsView` conservée avec : Santé 
 
 ### ~~Onboarding 4 pages (premier lancement)~~ ✅
 
+### ~~Splash, Onboarding, Réglages — refonte textes et timing~~ ✅
+
+`SplashView` : markSize 80→96, baseline `.body` weight `.light`, opacité 0.85, animations allongées (0.9 s, délai 1.2 s). Durée totale splash : 4.5 s + fade 0.8 s.
+`SituremApp` : `asyncAfter` 2.8 s → 4.5 s, fade 0.6 s → 0.8 s.
+`OnboardingView` : textes des 4 pages remplacés par le contenu sobre et direct prévu produit. Délai synchronisé sur 5.0 s. Pages 1–3 : phrases épurées, sans titre. Page 4 : dernière phrase + bouton COMMENCER.
+`SettingsView` : section SÉANCE ajoutée avec `Picker` segmenté pour `ReminderInterval` (Aucune / Occasionnelles / Fréquentes).
+`SessionModels` : `ReminderInterval.settingsLabel` ajouté pour les labels sobres en réglages.
+
 `Siturem/Views/Onboarding/OnboardingView.swift` créé. 4 pages swipeables (TabView `.page`) :
 - Page 1 — Identité : "SITUREM" + "Méditation structurée", animation 3.2 s (synchronisée avec splash)
 - Page 2 — Promesse : titre + 3 étapes numérotées avec tiret accent, révélation décalée

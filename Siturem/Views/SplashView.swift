@@ -13,14 +13,14 @@ struct SplashView: View {
             Theme.background.ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: 0) {
-                SituremLogo(layout: .vertical, markSize: 80)
+                SituremLogo(layout: .vertical, markSize: 96)
                     .opacity(logoOpacity)
 
-                Spacer().frame(height: 40)
+                Spacer().frame(height: LayoutMetrics.sm)
 
                 Text("Le cadre discret de votre pratique.")
-                    .font(.system(.subheadline))
-                    .foregroundStyle(Theme.accent.opacity(0.70))
+                    .font(.system(.body, weight: .light))
+                    .foregroundStyle(Theme.accent.opacity(0.85))
                     .tracking(0.3)
                     .opacity(baselineOpacity)
             }
@@ -28,10 +28,10 @@ struct SplashView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .onAppear {
-            withAnimation(.easeOut(duration: 0.8)) {
+            withAnimation(.easeOut(duration: 0.9)) {
                 logoOpacity = 1.0
             }
-            withAnimation(.easeOut(duration: 0.8).delay(1.1)) {
+            withAnimation(.easeOut(duration: 0.9).delay(1.2)) {
                 baselineOpacity = 1.0
             }
         }
