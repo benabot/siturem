@@ -19,5 +19,26 @@ Tests are not configured yet. When you add them, place unit tests in a `SituremT
 ## Commit & Pull Request Guidelines
 This clone has no commit history yet, so there is no established project-specific commit convention. Use short, imperative commit subjects and keep pull requests focused on a single change. Include a clear summary, mention any `xcodegen generate` step you ran, and add screenshots for visible UI changes.
 
+## Project-Specific Guardrails
+- Keep `SessionEngine` focused on session timing and session state only. Do not add audio playback logic to it.
+- Prefer minimal, localized diffs over broad refactors.
+- Do not modify stable SwiftUI views unless the requested task directly requires it.
+- Treat `project.yml` as the source of truth for the Xcode project; do not hand-edit generated project files.
+- When changing shared behavior, architecture, or implementation status, update `PROJECT_STATUS.md` and `TODO.md`.
+
+## Source of Truth Priority
+When documents differ, use this order:
+1. `docs/cahierCharges-v1.md` for product behavior
+2. `docs/BrandingGuideline.md` for tone and terminology
+3. `docs/meditation-market-priorities.md` for language, market, and localization priorities
+4. `PROJECT_STATUS.md` and `TODO.md` for shared implementation status and next steps
+5. `README.md` for general repository context
+
+## Localization
+- Do not introduce new user-facing hardcoded strings without considering localization.
+- Keep code ready for future multilingual expansion, especially for audio guidance assets.
+- Do not couple asset filenames to displayed UI labels.
+- For localization decisions, defer to `docs/meditation-market-priorities.md`.
+
 ## Source of Truth
 For product behavior, prefer `README.md`, `docs/cahierCharges-v1.md`, and `docs/BrandingGuideline.md` over assumptions. Update `PROJECT_STATUS.md` or `TODO.md` when you change shared project decisions or follow-up work.
