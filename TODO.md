@@ -65,6 +65,11 @@ Section "SÉANCE PAR DÉFAUT" retirée. `SettingsView` conservée avec : Santé 
 
 ### ~~Onboarding 4 pages (premier lancement)~~ ✅
 
+### ~~Icône app (AppIcon)~~ ✅
+
+`scripts/generate-icons.swift` : script CoreGraphics standalone générant 5 tailles PNG (120/152/167/180/1024 px). Motif SituremMark centré sur fond anthracite `#181820`, capsules bleu ardoise `#6E7FA3`. `Contents.json` mis à jour par Xcode avec les tailles standard iOS.
+`project.yml` : correction — suppression du pattern `excludes/resources` cassé ; `Assets.xcassets` maintenant auto-détecté par xcodegen lors du scan `Siturem/`.
+
 ### ~~Splash, Onboarding, Réglages — refonte textes et timing~~ ✅
 
 `SplashView` : markSize 80→96, baseline `.body` weight `.light`, opacité 0.85, animations allongées (0.9 s, délai 1.2 s). Durée totale splash : 4.5 s + fade 0.8 s.
@@ -101,4 +106,4 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 ## Souhaitable
 
 - [ ] Vérification accessibilité VoiceOver
-- [ ] Icône app finale (AppIcon dans Assets.xcassets)
+- [x] Icône app finale (AppIcon dans Assets.xcassets)

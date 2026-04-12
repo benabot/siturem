@@ -30,6 +30,7 @@ Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre d
 | StatsView (statistiques) | ✅ Complet |
 | SettingsView (préférences système) | ✅ Refondue — sections PRINCIPES + SÉANCE (ReminderInterval), HealthKit + À propos |
 | OnboardingView (4 pages, premier lancement) | ✅ Textes refondus — 4 phrases sobres, délai synchronisé avec nouvelle durée splash |
+| AppIcon | ✅ Intégrée — 5 tailles PNG via `scripts/generate-icons.swift`, `Assets.xcassets` correctement référencé |
 | HealthKitService (service shell) | ⚠️ Partiel — non intégré au flux |
 | AudioService | ⚠️ Partiel — arborescence audio créée, assets à fournir |
 

@@ -21,10 +21,6 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: Siturem
-        excludes:
-          - "Resources/Assets.xcassets/**"
-    resources:
-      - path: Siturem/Resources/Assets.xcassets
     entitlements:
       path: Siturem/Siturem.entitlements
     info:
