@@ -14,6 +14,11 @@
 
 Compteur numérique supprimé. `BlobView` centré verticalement (`.frame(maxHeight: .infinity)`). Barre de progression (5pt, opacité 0.80) + contrôles groupés en bas (padding 72pt via nombre d'or). Label de phase discret en haut. Progression globale `totalElapsed / totalDuration`. Mise en page basée sur φ ≈ 1.618.
 
+### ~~Étape 3b — Ajustements visuels fins~~ ✅
+
+`SessionView` : barre de progression abaissée et recentrée horizontalement avec largeur plafonnée, contrôles conservés à leur position validée visuellement.
+`BlobView` : halo rendu sur un canevas plus large avec padding interne pour éviter l'effet de bloc carré et garder le blob lisible dans son espace.
+
 ### ~~Étape 4 — Refonte SettingsView (préférences système)~~ ✅
 
 Section "SÉANCE PAR DÉFAUT" retirée. `SettingsView` conservée avec : Santé (HealthKit), À propos (version). Placeholders commentés pour interface/voix/langue à venir.
@@ -121,5 +126,7 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 - [x] `SessionView.swift` branchée sur `startSessionAudio`, `handleTick`, `handlePhaseChange`, `handleSessionEnd`, `pauseAll`, `resumeAll`, `stopAll`
 - [x] `project.yml` mis à jour pour intégrer les dossiers audio explicitement
 - [x] `VoiceGuidance/.gitkeep` ajouté pour garder le dossier visible dans Xcode avant les fichiers audio réels
+- [x] `project.yml` et le projet généré alignés sur le bundle identifier `com.beabot.siturem`
+- [x] `SessionView` et `BlobView` ajustés visuellement pour le layout final
 - [x] `xcodegen generate`
 - [x] Build simulateur validé (`xcodebuild ... -destination 'id=9C12A4F4-26F1-45EA-B40A-E54537DE73B1' build`)

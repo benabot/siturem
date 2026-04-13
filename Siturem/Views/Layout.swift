@@ -35,8 +35,32 @@ enum LayoutMetrics {
     /// Spacing blob → progression
     static let blobToProgressSpacing: CGFloat = 65
 
+    /// Padding interne du blob pour que le halo ne touche jamais le bord visuel
+    static let blobPadding: CGFloat = md * 0.9
+
+    /// Taille de canevas dédiée au blob pour éviter une rasterisation trop serrée du halo
+    static let blobCanvasSize: CGFloat = xl * 3.4
+
     /// Spacing progression → boutons
-    static let progressToControlsSpacing: CGFloat = 24
+    static let progressToControlsSpacing: CGFloat = sm
+
+    /// Décalage visuel de la barre de progression vers le bas
+    static let progressBarYOffset: CGFloat = lg * 1.02
+
+    /// Largeur relative de la barre de progression
+    static let progressBarWidthFactor: CGFloat = 0.82
+
+    /// Largeur maximale de la barre de progression
+    static let progressBarMaxWidth: CGFloat = 320
+
+    /// Padding supérieur de la pile barre + contrôles dans la séance
+    static let sessionBottomStackTopPadding: CGFloat = 6
+
+    /// Padding inférieur de la pile barre + contrôles dans la séance
+    static let sessionBottomStackBottomPadding: CGFloat = 2
+
+    /// Décalage vertical léger pour recentrer le blob dans l'espace disponible
+    static let blobVerticalOffset: CGFloat = sm * 0.8
 
     /// Padding au-dessus du home indicator (safeAreaInset)
     static let safeAreaBottomPadding: CGFloat = sm   // 24.7 pt

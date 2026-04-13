@@ -72,6 +72,8 @@ struct SessionView: View {
 
             // Blob — centre l'espace restant au-dessus du safeAreaInset
             BlobView(phase: engine.currentPhase)
+                .padding(.top, LayoutMetrics.blobVerticalOffset)
+                .padding(.horizontal, LayoutMetrics.blobPadding)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -83,8 +85,8 @@ struct SessionView: View {
                 controls
             }
             .padding(.horizontal, LayoutMetrics.hPadding)
-            .padding(.top, LayoutMetrics.sm)
-            .padding(.bottom, LayoutMetrics.safeAreaBottomPadding)
+            .padding(.top, LayoutMetrics.sessionBottomStackTopPadding)
+            .padding(.bottom, LayoutMetrics.sessionBottomStackBottomPadding)
             .background(Theme.background)
         }
         .alert("Arrêter la séance ?", isPresented: $showEndConfirmation) {
@@ -110,17 +112,27 @@ struct SessionView: View {
 
     private var progressBar: some View {
         GeometryReader { geo in
-            ZStack(alignment: .leading) {
-                Capsule()
-                    .fill(Theme.surface)
-                    .frame(height: 6)
-                Capsule()
-                    .fill(Theme.accent.opacity(0.80))
-                    .frame(width: max(0, geo.size.width * globalProgress), height: 6)
-                    .animation(.linear(duration: 1), value: globalProgress)
+            let barWidth = min(geo.size.width * LayoutMetrics.progressBarWidthFactor, LayoutMetrics.progressBarMaxWidth)
+
+            HStack {
+                Spacer(minLength: 0)
+
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(Theme.surface)
+                        .frame(width: barWidth, height: 6)
+                    Capsule()
+                        .fill(Theme.accent.opacity(0.80))
+                        .frame(width: max(0, barWidth * globalProgress), height: 6)
+                        .animation(.linear(duration: 1), value: globalProgress)
+                }
+                .frame(width: barWidth, height: 6)
+
+                Spacer(minLength: 0)
             }
         }
         .frame(height: 6)
+        .offset(y: LayoutMetrics.progressBarYOffset)
     }
 
     private var globalProgress: Double {
@@ -132,7 +144,7 @@ struct SessionView: View {
     // MARK: - Contrôles
 
     private var controls: some View {
-        HStack(spacing: 56) {
+        HStack(spacing: LayoutMetrics.lg * 0.88) {
             Button {
                 showEndConfirmation = true
             } label: {

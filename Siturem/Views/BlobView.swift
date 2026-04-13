@@ -24,6 +24,15 @@ struct BlobView: View {
         }
     }
 
+    /// Agrandit légèrement le blob pour éviter l'effet de bloc trop contenu.
+    private var visualScale: CGFloat {
+        switch phase {
+        case .intro: return 1.18
+        case .meditation: return 1.26
+        case .closing: return 1.12
+        }
+    }
+
     var body: some View {
         ZStack {
             // Halo externe — lent, large
@@ -50,6 +59,11 @@ struct BlobView: View {
                 .offset(x: s1 ? 7 : -5, y: o2 ? -9 : 10)
                 .blur(radius: 15)
         }
+        .frame(width: LayoutMetrics.blobCanvasSize, height: LayoutMetrics.blobCanvasSize)
+        .scaleEffect(visualScale)
+        .compositingGroup()
+        .padding(LayoutMetrics.blobPadding)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear(perform: startAnimations)
         .onChange(of: phase) { _, _ in restartAnimations() }
     }

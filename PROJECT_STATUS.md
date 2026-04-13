@@ -15,6 +15,9 @@ Base fonctionnelle — UI et logique métier complètes. Audio V1 est maintenant
 **Refonte visuelle et UX terminée.**
 Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre de progression (6pt) + contrôles ancrés via `.safeAreaInset`, SettingsView recentrée avec section PRINCIPES, splash animée et renforcée. Système `LayoutMetrics` (φ ≈ 1.618). Logo géométrique (`SituremMark` / `SituremLogo`) décliné sur splash et HomeView.
 
+**Identité projet mise à jour.**
+Le bundle identifier Xcode est désormais `com.beabot.siturem` dans `project.yml` et dans le projet généré. Les entitlements et `Info.plist` continuent d'hériter de `$(PRODUCT_BUNDLE_IDENTIFIER)`.
+
 ## Fonctionnel
 
 | Composant | État |
@@ -66,8 +69,10 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - Persistance : UserDefaults + JSON (local uniquement pour V1)
 - Phases de séance fixes : intro 150 s + méditation variable + closing 45 s
 - **Refonte visuelle** : palette anthracite + accent bleu ardoise (pas de noir pur), blob animé en séance à la place du compteur, barre de progression globale (pas par phase)
+- **Ajustements récents du layout** : barre de progression centrée avec largeur plafonnée, positionnée plus bas ; blob redimensionné avec canevas et padding internes pour éviter l'effet de bloc carré
 - **Refonte SettingsView** : séparation claire entre configuration de séance (HomeView) et préférences système (SettingsView). SettingsView conservée mais recentrée sur : HealthKit, couleur d'accent de l'interface, voix/langue (futur), version. Les pickers accompagnement/gong/ambiance/rappels sont retirés de SettingsView (ils sont déjà dans HomeView)
 - **Audio XcodeGen** : les dossiers audio sont déclarés explicitement dans `project.yml` pour garantir leur présence dans le projet généré et dans le bundle
+- **Bundle identifier** : migration vers `com.beabot.siturem`
 
 ## Prochain focus
 Déposer et valider les assets audio réels attendus dans `Siturem/Audio/`, puis intégrer `HealthKitService` au flux de fin de séance.
