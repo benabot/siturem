@@ -1,25 +1,23 @@
 import Foundation
 
-enum AudioAssetGroup {
-    case gongs
-    case ambiance
-    case voiceIntro
-    case voiceReminders
-    case voiceOutro
+enum AudioLocale: String, CaseIterable, Codable {
+    case fr
+    case en
+    case es
+    case de
 
-    var subdirectory: String {
-        switch self {
-        case .gongs:
-            "Audio/Gongs"
-        case .ambiance:
-            "Audio/Ambiance"
-        case .voiceIntro:
-            "Audio/VoiceGuidance/Intro"
-        case .voiceReminders:
-            "Audio/VoiceGuidance/Reminders"
-        case .voiceOutro:
-            "Audio/VoiceGuidance/Outro"
-        }
+    static let fallback: AudioLocale = .fr
+}
+
+enum AudioAssetGroup: String {
+    case gongs = "Gongs"
+    case ambiance = "Ambiance"
+    case intro = "VoiceGuidance/Intro"
+    case reminders = "VoiceGuidance/Reminders"
+    case outro = "VoiceGuidance/Outro"
+
+    func resourceSubdirectory(for locale: AudioLocale) -> String {
+        "Audio/\(locale.rawValue)/\(rawValue)"
     }
 }
 
@@ -37,11 +35,11 @@ enum AudioAsset {
         case .ambient:
             .ambiance
         case .intro:
-            .voiceIntro
+            .intro
         case .reminder:
-            .voiceReminders
+            .reminders
         case .outro:
-            .voiceOutro
+            .outro
         }
     }
 
@@ -99,51 +97,103 @@ enum OutroGuidanceClip: String {
     case openEyes = "outro_05_ouverture_yeux"
 }
 
-struct GuidanceCue {
-    let second: TimeInterval
+enum GuidanceSequencePlacement {
+    case sequential
+    case anchoredToPhaseEnd(leadTime: TimeInterval)
+}
+
+struct OrderedGuidanceStep {
     let asset: AudioAsset
+    let expectedDuration: TimeInterval
+    let postDelay: TimeInterval
+    let placement: GuidanceSequencePlacement
+}
+
+extension OrderedGuidanceStep {
+    static func sequential(
+        _ asset: AudioAsset,
+        expectedDuration: TimeInterval,
+        postDelay: TimeInterval
+    ) -> OrderedGuidanceStep {
+        OrderedGuidanceStep(
+            asset: asset,
+            expectedDuration: expectedDuration,
+            postDelay: postDelay,
+            placement: .sequential
+        )
+    }
+
+    static func anchoredToPhaseEnd(
+        _ asset: AudioAsset,
+        expectedDuration: TimeInterval,
+        leadTime: TimeInterval,
+        postDelay: TimeInterval = 0
+    ) -> OrderedGuidanceStep {
+        OrderedGuidanceStep(
+            asset: asset,
+            expectedDuration: expectedDuration,
+            postDelay: postDelay,
+            placement: .anchoredToPhaseEnd(leadTime: leadTime)
+        )
+    }
 }
 
 enum VoiceGuidanceLibrary {
-    static let introCues: [GuidanceCue] = [
-        GuidanceCue(second: 0, asset: .intro(.bonjour)),
-        GuidanceCue(second: 3, asset: .intro(.posture)),
-        GuidanceCue(second: 5, asset: .intro(.fourBreaths)),
-        GuidanceCue(second: 11, asset: .intro(.closeEyes)),
-        GuidanceCue(second: 13, asset: .intro(.contactPoints)),
-        GuidanceCue(second: 40, asset: .intro(.environment)),
-        GuidanceCue(second: 90, asset: .intro(.bodyScan)),
-        GuidanceCue(second: 145, asset: .intro(.breathFocus))
+    static let introSteps: [OrderedGuidanceStep] = [
+        .sequential(.intro(.bonjour), expectedDuration: 3, postDelay: 1.5),
+        .sequential(.gong, expectedDuration: 6.07, postDelay: 1.5),
+        .sequential(.intro(.posture), expectedDuration: 4, postDelay: 3.5),
+        .sequential(.intro(.fourBreaths), expectedDuration: 7, postDelay: 10),
+        .sequential(.intro(.closeEyes), expectedDuration: 9, postDelay: 10),
+        .sequential(.intro(.contactPoints), expectedDuration: 7, postDelay: 20),
+        .sequential(.intro(.environment), expectedDuration: 11, postDelay: 25),
+        .anchoredToPhaseEnd(.intro(.breathFocus), expectedDuration: 5, leadTime: 5)
     ]
 
-    static let outroCues: [GuidanceCue] = [
-        GuidanceCue(second: 0, asset: .outro(.releaseBreathFocus)),
-        GuidanceCue(second: 15, asset: .outro(.contactPoints)),
-        GuidanceCue(second: 27, asset: .outro(.environment)),
-        GuidanceCue(second: 38, asset: .outro(.openEyes))
+    static let outroSteps: [OrderedGuidanceStep] = [
+        .sequential(.outro(.releaseBreathFocus), expectedDuration: 5.73, postDelay: 1.0),
+        .sequential(.outro(.contactPoints), expectedDuration: 5.55, postDelay: 1.0),
+        .sequential(.outro(.environment), expectedDuration: 6.1, postDelay: 1.0),
+        .sequential(.outro(.openEyes), expectedDuration: 5.53, postDelay: 0)
     ]
 }
 
 struct AudioAssetResolver {
     let bundle: Bundle
 
-    func url(for asset: AudioAsset) -> URL? {
+    func url(for asset: AudioAsset, locale: AudioLocale) -> URL? {
         guard !asset.baseName.isEmpty else { return nil }
 
-        for fileExtension in asset.supportedExtensions {
-            if let url = bundle.url(
-                forResource: asset.baseName,
-                withExtension: fileExtension,
-                subdirectory: asset.group.subdirectory
-            ) {
-                return url
-            }
+        return url(
+            for: asset.baseName,
+            locale: locale,
+            group: asset.group,
+            supportedExtensions: asset.supportedExtensions
+        )
+    }
 
-            if let url = bundle.url(forResource: asset.baseName, withExtension: fileExtension) {
-                return url
+    func url(
+        for fileName: String,
+        locale: AudioLocale,
+        group: AudioAssetGroup,
+        supportedExtensions: [String]
+    ) -> URL? {
+        for candidateLocale in candidateLocales(for: locale) {
+            for fileExtension in supportedExtensions {
+                if let url = bundle.url(
+                    forResource: fileName,
+                    withExtension: fileExtension,
+                    subdirectory: group.resourceSubdirectory(for: candidateLocale)
+                ) {
+                    return url
+                }
             }
         }
 
         return nil
+    }
+
+    private func candidateLocales(for locale: AudioLocale) -> [AudioLocale] {
+        locale == .fallback ? [.fallback] : [locale, .fallback]
     }
 }

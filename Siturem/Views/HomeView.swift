@@ -154,7 +154,8 @@ struct HomeView: View {
                 accompaniment: prefs.accompaniment,
                 gong: prefs.gong,
                 ambient: prefs.ambient,
-                reminder: prefs.reminder
+                reminder: prefs.reminder,
+                audioLocale: prefs.audioLocale
             )
             guard config.isValid else { showDurationError = true; return }
             onStart(config)

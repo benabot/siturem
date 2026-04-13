@@ -73,7 +73,7 @@ struct SettingsView: View {
     private var sessionSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 10) {
-                Text("Interventions")
+                Text("Rappels pendant la méditation")
                     .font(.system(.subheadline))
                     .foregroundStyle(Theme.textPrimary)
                 Picker("", selection: $prefs.reminder) {
@@ -87,7 +87,7 @@ struct SettingsView: View {
         } header: {
             sectionHeader("SÉANCE")
         } footer: {
-            Text("Fréquence des interventions pendant la phase de méditation.")
+            Text("Définit la fréquence des rappels vocaux pendant la phase de méditation en mode guidé.")
                 .foregroundStyle(Theme.textSecondary)
         }
         .listRowBackground(Theme.surface)

@@ -8,6 +8,7 @@ struct SessionConfiguration {
     var gong: GongMode
     var ambient: AmbientSound
     var reminder: ReminderInterval
+    var audioLocale: AudioLocale
 
     // Phases fixes (cahier des charges §5)
     static let introDuration: Int = 150    // 2 min 30
@@ -25,10 +26,11 @@ struct SessionConfiguration {
     static var `default`: SessionConfiguration {
         SessionConfiguration(
             totalDuration: 600, // 10 min
-            accompaniment: .structured,
+            accompaniment: .guided,
             gong: .sessionBounds,
             ambient: .off,
-            reminder: .off
+            reminder: .off,
+            audioLocale: .fallback
         )
     }
 }

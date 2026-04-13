@@ -24,8 +24,7 @@ enum SessionDuration: Int, CaseIterable, Identifiable {
 
 enum AccompanimentMode: String, CaseIterable, Identifiable {
     case silent = "Silencieux"
-    case structured = "Structuré"
-    case lightGuided = "Guidé léger"
+    case guided = "Guidé"
 
     var id: String { rawValue }
 }

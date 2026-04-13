@@ -98,19 +98,23 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 
 ## Critique (V1 bloquée)
 
-- [x] Arborescence audio : créer `Audio/{Gongs,Ambiance,VoiceGuidance/{Intro,Reminders,Outro}}`
-- [x] Déclarer `Gongs`, `Ambiance` et `VoiceGuidance` explicitement dans `project.yml`
-- [x] Déposer les fichiers audio (.caf/.m4a) disponibles dans `Audio/` et les ajouter au target Xcode
+- [x] Migrer l'arborescence audio vers `Audio/{fr,en,es,de}/{Gongs,Ambiance,VoiceGuidance/{Intro,Reminders,Outro}}`
+- [x] Déclarer `Siturem/Audio` explicitement dans `project.yml` pour embarquer la hiérarchie localisée
+- [x] Centraliser la résolution des assets audio par `AudioLocale` avec fallback `fr`
+- [x] Déposer les fichiers audio (.caf/.m4a) disponibles dans `Audio/fr/` et les ajouter au target Xcode
 - [x] AudioService : gong unique en bornes de séance (`gong.caf` après `intro_01_bonjour`, puis à la fin réelle)
 - [x] AudioService : ambiance sonore en boucle (AmbientSound)
 - [x] AudioService : intro/outro vocaux minutés avec déclenchement par franchissement de seuil
+- [x] AudioService : séquençage vocal ordonné (clips dans l'ordre, gaps configurés, `intro_08_concentration_souffle` ancré 5 s avant la fin de l'intro)
 - [x] Rappels périodiques phase méditation (`ReminderInterval` géré côté `AudioService`, hors `SessionEngine`)
+- [ ] Déposer les assets vocaux `fr` dans `Audio/fr/VoiceGuidance/{Intro,Reminders,Outro}`
+- [ ] Déposer les assets localisés `en`, `es`, `de` selon la matrice UI/audio
 - [ ] Intégrer HealthKit au flux de fin de séance (`SessionView.handleEnd` → `HealthKitService.save`)
 - [ ] Activer entitlement HealthKit dans `Siturem/Siturem.entitlements`
 
 ## Important
 
-- [x] Mode "Guidé léger" : guidance audio pour phases intro et closing
+- [x] Accompagnement simplifié : `Guidé` / `Silencieux`, avec guidance audio active en mode guidé
 - [ ] Haptics légers aux transitions de phase
 - [ ] Test end-to-end des flux utilisateur (simulateur Xcode)
 
@@ -122,11 +126,11 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 ## Dernière livraison
 
 - [x] `AudioService.swift` réécrit : un player voix, un player gong, un player ambiance ; intro/outro vocaux minutés ; gong unique de début/fin ; reminder central ; fallback silencieux si assets absents
-- [x] `AudioAsset.swift` créé : résolution centralisée des assets (`gong.caf`, loops ambiance, cues intro/outro, reminder)
+- [x] `AudioAsset.swift` étendu : résolution centralisée par `AudioLocale` et `AudioAssetGroup`, fallback `fr`, IDs techniques inchangés
 - [x] `SessionView.swift` branchée sur `startSessionAudio`, `handleTick`, `handlePhaseChange`, `handleSessionEnd`, `pauseAll`, `resumeAll`, `stopAll`
-- [x] `project.yml` mis à jour pour intégrer les dossiers audio explicitement
-- [x] `VoiceGuidance/.gitkeep` ajouté pour garder le dossier visible dans Xcode avant les fichiers audio réels
+- [x] `project.yml` mis à jour pour intégrer `Siturem/Audio` comme folder resource et préserver `Audio/<locale>/...` dans le bundle
+- [x] Arborescence `Siturem/Audio/` réorganisée en `fr`, `en`, `es`, `de` avec placeholders sur les dossiers non alimentés
 - [x] `project.yml` et le projet généré alignés sur le bundle identifier `com.beabot.siturem`
 - [x] `SessionView` et `BlobView` ajustés visuellement pour le layout final
 - [x] `xcodegen generate`
-- [x] Build simulateur validé (`xcodebuild ... -destination 'id=9C12A4F4-26F1-45EA-B40A-E54537DE73B1' build`)
+- [x] Build simulateur revalidé (`xcodebuild ... -destination 'id=9C12A4F4-26F1-45EA-B40A-E54537DE73B1' build`)

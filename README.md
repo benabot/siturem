@@ -27,12 +27,16 @@ Siturem/
 ├── Views/        Vues SwiftUI
 ├── Services/     Logique métier (SessionEngine, AudioService, StatsStore, PreferencesStore, HealthKitService)
 ├── Audio/        Assets audio
-│   ├── Gongs/          gong.caf
-│   ├── Ambiance/       rain-loop, river-loop, forest-loop, white-noise-loop (.m4a ou .caf)
-│   └── VoiceGuidance/  Consignes vocales minutées
-│       ├── Intro/      Segments phase intro (2m30)
-│       ├── Reminders/  Rappels discrets phase centrale
-│       └── Outro/      Segments phase retour (45s)
+│   ├── fr/             Locale audio par défaut
+│   │   ├── Gongs/          gong.caf
+│   │   ├── Ambiance/       rain-loop, river-loop, forest-loop, white-noise-loop (.m4a ou .caf)
+│   │   └── VoiceGuidance/  Consignes vocales séquencées
+│   │       ├── Intro/      Séquence ordonnée de l'intro, gong après Bonjour, dernier clip ancré 5 s avant la fin
+│   │       ├── Reminders/  Rappels discrets phase centrale
+│   │       └── Outro/      Séquence ordonnée du retour, puis silence jusqu'à la fin réelle
+│   ├── en/             Structure prête pour les assets localisés
+│   ├── es/             Structure prête pour les assets localisés
+│   └── de/             Structure prête pour les assets localisés
 └── Resources/    Assets.xcassets
 ```
 

@@ -21,10 +21,11 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: Siturem
-    resources:
-      - path: Siturem/Audio/Gongs
-      - path: Siturem/Audio/Ambiance
-      - path: Siturem/Audio/VoiceGuidance
+        excludes:
+          - Audio/**
+      - path: Siturem/Audio
+        type: folder
+        buildPhase: resources
     entitlements:
       path: Siturem/Siturem.entitlements
     info:

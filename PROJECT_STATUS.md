@@ -10,7 +10,7 @@ Siturem — Méditation structurée
 `~/Sites/siturem/Siturem`
 
 ## État actuel
-Base fonctionnelle — UI et logique métier complètes. Audio V1 est maintenant implémenté de façon localisée côté service; les assets audio réels sont intégrés au target via `project.yml` et `VoiceGuidance` dispose d'un placeholder pour rester visible dans Xcode. Intégration HealthKit reste à finaliser pour compléter la V1.
+Base fonctionnelle — UI et logique métier complètes. Audio V1 est implémenté côté service avec résolution centralisée par `AudioLocale`, fallback français, et arborescence `Audio/<locale>/...` prête pour `fr`, `en`, `es`, `de`. Seule la locale `fr` est partiellement alimentée à ce stade. Le séquençage vocal est désormais ordonné, avec gaps configurés et un ancrage de fin de phase pour `intro_08_concentration_souffle`. Intégration HealthKit reste à finaliser pour compléter la V1.
 
 **Refonte visuelle et UX terminée.**
 Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre de progression (6pt) + contrôles ancrés via `.safeAreaInset`, SettingsView recentrée avec section PRINCIPES, splash animée et renforcée. Système `LayoutMetrics` (φ ≈ 1.618). Logo géométrique (`SituremMark` / `SituremLogo`) décliné sur splash et HomeView.
@@ -27,7 +27,7 @@ Le bundle identifier Xcode est désormais `com.beabot.siturem` dans `project.yml
 | SessionConfiguration / SessionModels / SessionRecord | ✅ Complet |
 | PreferencesStore (UserDefaults) | ✅ Complet |
 | StatsStore (persistance + streaks) | ✅ Complet |
-| HomeView (sélection durée/modes) | ✅ Sélecteur 6–60 min, 3 options (Rappels retiré), logo nav bar, padding φ |
+| HomeView (sélection durée/modes) | ✅ Sélecteur 6–60 min, 3 options, accompagnement simplifié à `Guidé` / `Silencieux`, logo nav bar, padding φ |
 | SessionView (séance en cours) | ✅ Complet |
 | SessionSummaryView (bilan) | ✅ Complet |
 | StatsView (statistiques) | ✅ Complet |
@@ -35,11 +35,11 @@ Le bundle identifier Xcode est désormais `com.beabot.siturem` dans `project.yml
 | OnboardingView (4 pages, premier lancement) | ✅ Textes refondus — 4 phrases sobres, délai synchronisé avec nouvelle durée splash |
 | AppIcon | ✅ Intégrée — 5 tailles PNG via `scripts/generate-icons.swift`, `Assets.xcassets` correctement référencé |
 | HealthKitService (service shell) | ⚠️ Partiel — non intégré au flux |
-| AudioService | ✅ Implémenté — gong unique de début/fin, intro/outro vocaux minutés, reminder phase centrale, ambiance en boucle, pause/reprise, fin de séance, fallback silencieux si assets absents |
+| AudioService | ✅ Implémenté — gong unique de début/fin, intro/outro vocaux séquencés dans l'ordre avec gaps configurés, reminder phase centrale, ambiance en boucle, pause/reprise, fin de séance, résolution localisée avec fallback `fr`, silence si assets absents |
 
 ## Points ouverts
 
-- **Assets audio** : arborescence `Audio/` en place, `Gongs` / `Ambiance` / `VoiceGuidance` déclarés explicitement dans `project.yml`, `VoiceGuidance/.gitkeep` présent pour la visibilité Xcode ; fichiers audio réels déposés pour `Gongs` et `Ambiance`
+- **Assets audio** : arborescence `Audio/{fr,en,es,de}/...` en place, `Siturem/Audio` déclaré explicitement dans `project.yml`, fallback vers `fr` centralisé ; `fr/Gongs` et `fr/Ambiance` contiennent les assets réels, `VoiceGuidance` et les autres locales restent à alimenter
 - **HealthKit** : service présent mais non appelé à la fin de séance ; entitlements vides
 - **Tests** : aucun test unitaire ou UI en place
 
@@ -71,8 +71,12 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - **Refonte visuelle** : palette anthracite + accent bleu ardoise (pas de noir pur), blob animé en séance à la place du compteur, barre de progression globale (pas par phase)
 - **Ajustements récents du layout** : barre de progression centrée avec largeur plafonnée, positionnée plus bas ; blob redimensionné avec canevas et padding internes pour éviter l'effet de bloc carré
 - **Refonte SettingsView** : séparation claire entre configuration de séance (HomeView) et préférences système (SettingsView). SettingsView conservée mais recentrée sur : HealthKit, couleur d'accent de l'interface, voix/langue (futur), version. Les pickers accompagnement/gong/ambiance/rappels sont retirés de SettingsView (ils sont déjà dans HomeView)
-- **Audio XcodeGen** : les dossiers audio sont déclarés explicitement dans `project.yml` pour garantir leur présence dans le projet généré et dans le bundle
+- **Accompagnement simplifié** : deux modes seulement, `Guidé` et `Silencieux`. Le mode guidé couvre les consignes intro/outro et les interventions de méditation, dont la fréquence est réglée dans SettingsView.
+- **Audio XcodeGen** : `Siturem/Audio` est déclaré explicitement dans `project.yml` pour garantir la présence de la hiérarchie par langue dans le projet généré et dans le bundle
+- **Locale audio** : point unique de résolution dans `PreferencesStore` avec défaut `.fr`, prêt pour un futur réglage utilisateur
+- **Fallback audio** : si un asset manque dans la locale demandée, résolution vers `fr`, puis silence si absent partout
+- **Séquençage voix** : intro/outro reposent sur une séquence ordonnée, des gaps configurés et des durées attendues ou mesurées. `intro_08_concentration_souffle` est ancré 5 s avant la fin de l'intro, et le gong initial reste inséré après `intro_01_bonjour`.
 - **Bundle identifier** : migration vers `com.beabot.siturem`
 
 ## Prochain focus
-Déposer et valider les assets audio réels attendus dans `Siturem/Audio/`, puis intégrer `HealthKitService` au flux de fin de séance.
+Déposer et valider les assets vocaux `fr`, puis alimenter `en` / `es` / `de` selon la matrice de disponibilité audio. Intégrer ensuite `HealthKitService` au flux de fin de séance.

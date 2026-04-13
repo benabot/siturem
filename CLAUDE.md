@@ -30,15 +30,19 @@ SwiftUI + `@Observable` (iOS 17+, Swift 5.10). Pas de dépendances externes.
 
 ### Assets audio
 
-Les fichiers audio sont dans `Siturem/Audio/`, organisés par catégorie :
-- **`Gongs/`** — `gong.caf`
-- **`Ambiance/`** — `rain-loop`, `river-loop`, `forest-loop`, `white-noise-loop` (`.m4a` ou `.caf`)
-- **`VoiceGuidance/Intro/`** — segments minutés de la phase intro (2m30), un fichier par consigne
-- **`VoiceGuidance/Reminders/`** — rappels discrets pour la phase centrale
-- **`VoiceGuidance/Outro/`** — segments minutés du retour (45s)
+Les fichiers audio sont dans `Siturem/Audio/`, organisés par locale puis par catégorie :
+- **`fr/`** — première locale alimentée
+- **`en/`**, **`es/`**, **`de/`** — structure prête pour l'extension
+- sous-dossiers par locale :
+  - **`Gongs/`** — `gong.caf`
+  - **`Ambiance/`** — `rain-loop`, `river-loop`, `forest-loop`, `white-noise-loop` (`.m4a` ou `.caf`)
+  - **`VoiceGuidance/Intro/`** — séquence ordonnée de l'intro, clips joués dans l'ordre avec gaps configurés; le dernier clip est ancré 5 s avant la fin de phase
+  - **`VoiceGuidance/Reminders/`** — rappels discrets pour la phase centrale
+  - **`VoiceGuidance/Outro/`** — séquence ordonnée du retour, puis silence jusqu'à la fin réelle de la séance
 
 Format recommandé : `.caf` (Core Audio Format, lecture native AVAudioPlayer). Ambiances longues possibles en `.m4a` pour réduire la taille du bundle.
-Les dossiers audio sont déclarés explicitement dans `project.yml`; `VoiceGuidance/.gitkeep` peut servir à garder le dossier visible dans Xcode avant que les fichiers audio réels n'arrivent.
+La résolution audio est centralisée par `AudioLocale` avec fallback vers `fr` si la locale demandée n'est pas encore alimentée. `project.yml` déclare `Siturem/Audio` explicitement pour préserver cette hiérarchie dans le bundle. Des `.gitkeep` gardent visibles les dossiers de locales encore vides.
+Le séquençage vocal ne repose plus sur des timestamps fixes : `AudioService` calcule une timeline ordonnée à partir de l'ordre des clips, des gaps configurés et des durées attendues ou mesurées.
 
 ### Modèles clés
 

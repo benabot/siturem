@@ -35,6 +35,16 @@ final class AudioService: AudioServicing {
         static let ambientDuckPadding: TimeInterval = 0.2
     }
 
+    private struct PendingGuidanceEvent {
+        let phase: SessionPhase
+        let asset: AudioAsset
+        let fireOffset: TimeInterval
+        var fireDate: Date?
+        var remainingDelay: TimeInterval?
+        var workItem: DispatchWorkItem?
+        var hasPlayed: Bool = false
+    }
+
     private static let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "Siturem",
         category: "AudioService"
@@ -55,11 +65,8 @@ final class AudioService: AudioServicing {
     private var gongWasPlayingBeforePause = false
     private var ambientWasPlayingBeforePause = false
 
-    private var playedCueSeconds: Set<TimeInterval> = []
-
-    private var startGongWorkItem: DispatchWorkItem?
-    private var startGongFireDate: Date?
-    private var remainingStartGongDelay: TimeInterval?
+    private var pendingGuidanceEvents: [PendingGuidanceEvent] = []
+    private var assetDurationCache: [String: TimeInterval] = [:]
 
     private var ambientRestoreWorkItem: DispatchWorkItem?
     private var deferredCleanupWorkItem: DispatchWorkItem?
@@ -76,12 +83,12 @@ final class AudioService: AudioServicing {
         currentPhase = .intro
         isSessionActive = true
         isPaused = false
-        playedCueSeconds.removeAll()
+        assetDurationCache.removeAll()
         voiceWasPlayingBeforePause = false
         gongWasPlayingBeforePause = false
         ambientWasPlayingBeforePause = false
 
-        cancelPendingStartGong(resetDelay: true)
+        cancelGuidanceSchedule()
         cancelAmbientRestore()
         cancelDeferredCleanup()
 
@@ -97,7 +104,7 @@ final class AudioService: AudioServicing {
         gongWasPlayingBeforePause = false
         ambientWasPlayingBeforePause = false
 
-        cancelPendingStartGong(resetDelay: true)
+        cancelGuidanceSchedule()
         cancelAmbientRestore()
         cancelDeferredCleanup()
 
@@ -118,7 +125,7 @@ final class AudioService: AudioServicing {
         voicePlayer?.pause()
         gongPlayer?.pause()
         ambientPlayer?.pause()
-        pausePendingStartGong()
+        pauseGuidanceSchedule()
         cancelAmbientRestore()
     }
 
@@ -143,7 +150,7 @@ final class AudioService: AudioServicing {
         voiceWasPlayingBeforePause = false
         gongWasPlayingBeforePause = false
         ambientWasPlayingBeforePause = false
-        resumePendingStartGongIfNeeded()
+        resumeGuidanceSchedule()
     }
 
     func handleTick(
@@ -158,21 +165,8 @@ final class AudioService: AudioServicing {
 
         self.configuration = configuration
 
-        switch phase {
-        case .intro:
-            triggerVoiceCuesIfNeeded(
-                cues: VoiceGuidanceLibrary.introCues,
-                previousElapsed: previousElapsedInPhase,
-                currentElapsed: currentElapsedInPhase
-            )
-        case .meditation:
+        if phase == .meditation {
             triggerReminderIfNeeded(
-                previousElapsed: previousElapsedInPhase,
-                currentElapsed: currentElapsedInPhase
-            )
-        case .closing:
-            triggerVoiceCuesIfNeeded(
-                cues: VoiceGuidanceLibrary.outroCues,
                 previousElapsed: previousElapsedInPhase,
                 currentElapsed: currentElapsedInPhase
             )
@@ -188,11 +182,7 @@ final class AudioService: AudioServicing {
 
         self.configuration = configuration
         currentPhase = newPhase
-        playedCueSeconds.removeAll()
-
-        if oldPhase == .intro {
-            cancelPendingStartGong(resetDelay: true)
-        }
+        cancelGuidanceSchedule()
 
         switch newPhase {
         case .intro:
@@ -214,7 +204,7 @@ final class AudioService: AudioServicing {
         gongWasPlayingBeforePause = false
         ambientWasPlayingBeforePause = false
 
-        cancelPendingStartGong(resetDelay: true)
+        cancelGuidanceSchedule()
         cancelAmbientRestore()
         stopPlayer(&voicePlayer)
 
@@ -228,51 +218,36 @@ final class AudioService: AudioServicing {
     // MARK: - Phase entry
 
     private func handleIntroStart() {
-        guard configuration.accompaniment == .lightGuided else {
-            playStartGongNowIfNeeded()
+        guard configuration.accompaniment == .guided else {
+            _ = playGuidanceAsset(.gong)
             return
         }
 
-        guard let greetingDuration = playVoiceCue(at: VoiceGuidanceLibrary.introCues[0]) else {
-            playStartGongNowIfNeeded()
-            return
-        }
-
-        scheduleStartGong(after: greetingDuration)
+        startGuidanceSequence(
+            phase: .intro,
+            steps: VoiceGuidanceLibrary.introSteps
+        )
     }
 
     private func handleClosingStart() {
-        guard configuration.accompaniment == .lightGuided else {
+        guard configuration.accompaniment == .guided else {
             stopPlayer(&voicePlayer)
             return
         }
 
-        _ = playVoiceCue(at: VoiceGuidanceLibrary.outroCues[0])
+        startGuidanceSequence(
+            phase: .closing,
+            steps: VoiceGuidanceLibrary.outroSteps
+        )
     }
 
     // MARK: - Tick handling
-
-    private func triggerVoiceCuesIfNeeded(
-        cues: [GuidanceCue],
-        previousElapsed: TimeInterval,
-        currentElapsed: TimeInterval
-    ) {
-        guard configuration.accompaniment == .lightGuided else { return }
-
-        for cue in cues where cue.second > 0 {
-            guard playedCueSeconds.contains(cue.second) == false else { continue }
-            guard previousElapsed < cue.second, currentElapsed >= cue.second else { continue }
-
-            playedCueSeconds.insert(cue.second)
-            _ = playVoiceCue(at: cue)
-        }
-    }
 
     private func triggerReminderIfNeeded(
         previousElapsed: TimeInterval,
         currentElapsed: TimeInterval
     ) {
-        guard configuration.accompaniment == .lightGuided else { return }
+        guard configuration.accompaniment == .guided else { return }
         guard let interval = configuration.reminder.seconds else { return }
 
         let previousBucket = Int(previousElapsed / TimeInterval(interval))
@@ -286,22 +261,42 @@ final class AudioService: AudioServicing {
     // MARK: - Voice / reminder
 
     @discardableResult
-    private func playVoiceCue(at cue: GuidanceCue) -> TimeInterval? {
-        guard let url = resolver.url(for: cue.asset) else {
-            Self.logger.debug("Missing voice asset for cue at \(cue.second, format: .fixed(precision: 0))s")
-            return nil
-        }
+    private func playGuidanceAsset(_ asset: AudioAsset) -> TimeInterval? {
+        switch asset {
+        case .gong:
+            guard configuration.gong.playsSessionBoundaryGongs else { return nil }
+            guard let url = resolver.url(for: asset, locale: configuration.audioLocale) else {
+                Self.logger.debug("Missing gong asset")
+                return nil
+            }
 
-        return playPlayer(
-            kind: .voice,
-            url: url,
-            volume: Constants.voiceVolume,
-            ducksAmbient: true
-        )
+            return playPlayer(
+                kind: .gong,
+                url: url,
+                volume: Constants.gongVolume,
+                ducksAmbient: true
+            )
+
+        case .ambient(_):
+            return nil
+
+        case .intro(_), .reminder, .outro(_):
+            guard let url = resolver.url(for: asset, locale: configuration.audioLocale) else {
+                Self.logger.debug("Missing guidance asset for \(asset.baseName, privacy: .public)")
+                return nil
+            }
+
+            return playPlayer(
+                kind: .voice,
+                url: url,
+                volume: Constants.voiceVolume,
+                ducksAmbient: true
+            )
+        }
     }
 
     private func playReminderIfPossible() {
-        guard let url = resolver.url(for: .reminder) else {
+        guard let url = resolver.url(for: .reminder, locale: configuration.audioLocale) else {
             Self.logger.debug("Missing reminder asset")
             return
         }
@@ -314,66 +309,163 @@ final class AudioService: AudioServicing {
         )
     }
 
-    // MARK: - Gong
+    // MARK: - Guidance sequencing
 
-    private func playStartGongNowIfNeeded() {
-        guard configuration.gong.playsSessionBoundaryGongs else { return }
-        _ = playPlayer(kind: .gong, url: resolver.url(for: .gong), volume: Constants.gongVolume, ducksAmbient: true)
+    private func startGuidanceSequence(phase: SessionPhase, steps: [OrderedGuidanceStep]) {
+        guard configuration.accompaniment == .guided else { return }
+        guard let leadingStep = steps.first else { return }
+
+        cancelGuidanceSchedule()
+
+        let leadingDuration = effectivePlaybackDuration(for: leadingStep)
+        _ = playGuidanceAsset(leadingStep.asset)
+
+        let remainingSteps = Array(steps.dropFirst())
+        pendingGuidanceEvents = buildGuidanceEvents(
+            for: remainingSteps,
+            phase: phase,
+            startingCursor: leadingDuration + leadingStep.postDelay
+        )
+
+        schedulePendingGuidanceEvents()
     }
 
-    private func playFinalGongIfNeeded() {
-        guard configuration.gong.playsSessionBoundaryGongs else { return }
-        _ = playPlayer(kind: .gong, url: resolver.url(for: .gong), volume: Constants.gongVolume, ducksAmbient: true)
-    }
+    private func buildGuidanceEvents(
+        for steps: [OrderedGuidanceStep],
+        phase: SessionPhase,
+        startingCursor: TimeInterval
+    ) -> [PendingGuidanceEvent] {
+        var events: [PendingGuidanceEvent] = []
+        var cursor = startingCursor
 
-    private func scheduleStartGong(after delay: TimeInterval) {
-        guard configuration.gong.playsSessionBoundaryGongs else { return }
+        for step in steps {
+            let effectiveDuration = effectivePlaybackDuration(for: step)
+            let fireOffset: TimeInterval
 
-        cancelPendingStartGong(resetDelay: false)
+            switch step.placement {
+            case .sequential:
+                fireOffset = cursor
+            case .anchoredToPhaseEnd(let leadTime):
+                let phaseDuration = phaseDuration(for: phase)
+                let anchorOffset = max(0, phaseDuration - leadTime)
+                fireOffset = max(cursor, anchorOffset)
+            }
 
-        let clampedDelay = max(0, delay)
-        remainingStartGongDelay = clampedDelay
-        startGongFireDate = Date().addingTimeInterval(clampedDelay)
+            events.append(
+                PendingGuidanceEvent(
+                    phase: phase,
+                    asset: step.asset,
+                    fireOffset: fireOffset
+                )
+            )
 
-        let workItem = DispatchWorkItem { [weak self] in
-            self?.remainingStartGongDelay = nil
-            self?.startGongFireDate = nil
-            self?.playStartGongNowIfNeeded()
+            cursor = fireOffset + effectiveDuration + step.postDelay
         }
 
-        startGongWorkItem = workItem
+        return events
+    }
+
+    private func schedulePendingGuidanceEvents() {
+        guard isSessionActive, !isPaused else { return }
+
+        for index in pendingGuidanceEvents.indices {
+            schedulePendingGuidanceEvent(at: index, delay: pendingGuidanceEvents[index].fireOffset)
+        }
+    }
+
+    private func schedulePendingGuidanceEvent(at index: Int, delay: TimeInterval) {
+        guard pendingGuidanceEvents.indices.contains(index) else { return }
+        guard pendingGuidanceEvents[index].hasPlayed == false else { return }
+
+        let clampedDelay = max(0, delay)
+        let phase = pendingGuidanceEvents[index].phase
+        let asset = pendingGuidanceEvents[index].asset
+        let fireDate = Date().addingTimeInterval(clampedDelay)
+
+        pendingGuidanceEvents[index].fireDate = fireDate
+        pendingGuidanceEvents[index].remainingDelay = clampedDelay
+
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.fireGuidanceEvent(phase: phase, asset: asset)
+        }
+
+        pendingGuidanceEvents[index].workItem = workItem
         DispatchQueue.main.asyncAfter(deadline: .now() + clampedDelay, execute: workItem)
     }
 
-    private func pausePendingStartGong() {
-        guard let fireDate = startGongFireDate else { return }
+    private func fireGuidanceEvent(phase: SessionPhase, asset: AudioAsset) {
+        guard isSessionActive, !isPaused, currentPhase == phase else { return }
 
-        remainingStartGongDelay = max(0.1, fireDate.timeIntervalSinceNow)
-        startGongWorkItem?.cancel()
-        startGongWorkItem = nil
-        startGongFireDate = nil
+        _ = playGuidanceAsset(asset)
+        markGuidanceEventPlayed(phase: phase, asset: asset)
     }
 
-    private func resumePendingStartGongIfNeeded() {
-        guard currentPhase == .intro, let remainingStartGongDelay else { return }
-        scheduleStartGong(after: remainingStartGongDelay)
-    }
-
-    private func cancelPendingStartGong(resetDelay: Bool) {
-        startGongWorkItem?.cancel()
-        startGongWorkItem = nil
-        startGongFireDate = nil
-
-        if resetDelay {
-            remainingStartGongDelay = nil
+    private func markGuidanceEventPlayed(phase: SessionPhase, asset: AudioAsset) {
+        guard let index = pendingGuidanceEvents.firstIndex(where: {
+            $0.phase == phase && $0.asset.baseName == asset.baseName
+        }) else {
+            return
         }
+
+        pendingGuidanceEvents[index].hasPlayed = true
+        pendingGuidanceEvents[index].workItem = nil
+        pendingGuidanceEvents[index].fireDate = nil
+        pendingGuidanceEvents[index].remainingDelay = nil
+    }
+
+    private func pauseGuidanceSchedule() {
+        for index in pendingGuidanceEvents.indices where pendingGuidanceEvents[index].hasPlayed == false {
+            guard let fireDate = pendingGuidanceEvents[index].fireDate else { continue }
+
+            pendingGuidanceEvents[index].remainingDelay = max(0, fireDate.timeIntervalSinceNow)
+            pendingGuidanceEvents[index].workItem?.cancel()
+            pendingGuidanceEvents[index].workItem = nil
+            pendingGuidanceEvents[index].fireDate = nil
+        }
+    }
+
+    private func resumeGuidanceSchedule() {
+        guard isSessionActive, !isPaused else { return }
+
+        for index in pendingGuidanceEvents.indices where pendingGuidanceEvents[index].hasPlayed == false {
+            let delay = pendingGuidanceEvents[index].remainingDelay ?? pendingGuidanceEvents[index].fireOffset
+            schedulePendingGuidanceEvent(at: index, delay: delay)
+        }
+    }
+
+    private func cancelGuidanceSchedule() {
+        for index in pendingGuidanceEvents.indices {
+            pendingGuidanceEvents[index].workItem?.cancel()
+            pendingGuidanceEvents[index].workItem = nil
+        }
+
+        pendingGuidanceEvents.removeAll()
+    }
+
+    private func playFinalGongIfNeeded() {
+        _ = playGuidanceAsset(.gong)
+    }
+
+    private func phaseDuration(for phase: SessionPhase) -> TimeInterval {
+        switch phase {
+        case .intro:
+            return TimeInterval(SessionConfiguration.introDuration)
+        case .meditation:
+            return 0
+        case .closing:
+            return TimeInterval(SessionConfiguration.closingDuration)
+        }
+    }
+
+    private func effectivePlaybackDuration(for step: OrderedGuidanceStep) -> TimeInterval {
+        max(step.expectedDuration, estimatedPlaybackDuration(for: step.asset))
     }
 
     // MARK: - Ambiance
 
     private func startAmbientIfNeeded() {
         guard configuration.ambient != .off else { return }
-        guard let url = resolver.url(for: .ambient(configuration.ambient)) else {
+        guard let url = resolver.url(for: .ambient(configuration.ambient), locale: configuration.audioLocale) else {
             Self.logger.debug("Missing ambient asset")
             return
         }
@@ -524,5 +616,21 @@ final class AudioService: AudioServicing {
     private func cancelDeferredCleanup() {
         deferredCleanupWorkItem?.cancel()
         deferredCleanupWorkItem = nil
+    }
+
+    private func estimatedPlaybackDuration(for asset: AudioAsset) -> TimeInterval {
+        let cacheKey = "\(configuration.audioLocale.rawValue):\(asset.group.rawValue):\(asset.baseName)"
+
+        if let cachedDuration = assetDurationCache[cacheKey] {
+            return cachedDuration
+        }
+
+        guard let url = resolver.url(for: asset, locale: configuration.audioLocale) else {
+            return 0
+        }
+
+        let duration = (try? AVAudioPlayer(contentsOf: url))?.duration ?? 0
+        assetDurationCache[cacheKey] = duration
+        return duration
     }
 }
