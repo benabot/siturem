@@ -1,5 +1,34 @@
 # TODO
 
+## Localisation UI V1 ✅
+
+Phase dédiée à la localisation de l'interface uniquement. La langue audio reste hors scope pour ce ticket et conserve sa matrice propre.
+
+### Étape 1 — Cartographie i18n
+
+- [x] Externaliser toutes les chaînes utilisateur visibles dans les vues SwiftUI et les textes exposés par les enums utilisés par l'UI.
+- [x] Normaliser les clés / ressources de traduction par écran et par domaine.
+- [x] Vérifier les chaînes dans l'onboarding, le splash, l'accueil, la séance, le bilan, les statistiques, les réglages et les messages d'erreur.
+
+### Étape 2 — Langue UI
+
+- [x] Ajouter un réglage persistant de langue d'interface dans `PreferencesStore`.
+- [x] Appliquer la langue UI au niveau racine de l'app SwiftUI.
+- [x] Ajouter le sélecteur de langue UI dans `SettingsView` avec les choix Français, English (US), Español et Deutsch.
+
+### Étape 3 — Ressources localisées
+
+- [x] Ajouter les ressources de traduction fr, en-US, es et de pour l'interface.
+- [x] Ajouter les chaînes de permissions système nécessaires pour HealthKit.
+- [x] Vérifier que les labels d'interface restent séparés des noms de fichiers audio et de la future langue audio.
+
+### Étape 4 — Validation
+
+- [x] Régénérer le projet si nécessaire avec `xcodegen generate`.
+- [x] Recompiler l'app et corriger toute régression de signature ou de localisation.
+- [x] Mettre à jour `PROJECT_STATUS.md` et les autres notes partagées une fois l'état final stabilisé.
+- [x] Corriger la règle de premier lancement : aucun défaut UI interne forcé, priorité `override utilisateur > système supporté > anglais`.
+
 ## Refonte visuelle et UX (en cours)
 
 ### ~~Étape 1 — Palette & thème~~ ✅

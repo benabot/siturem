@@ -8,16 +8,15 @@ struct SettingsView: View {
 
     @Bindable var prefs: PreferencesStore
     @State private var healthKit = HealthKitService()
-    @State private var hkStatus: String = ""
+    @State private var hkStatus: LocalizedStringResource? = nil
 
     var body: some View {
         NavigationStack {
             Form {
                 principlesSection
+                languageSection
                 sessionSection
                 healthSection
-                // interfaceSection  // couleur d'accent — à venir
-                // voiceSection      // voix et langue — à venir
                 aboutSection
             }
             .scrollContentBackground(.hidden)
@@ -55,7 +54,33 @@ struct SettingsView: View {
         .listRowBackground(Theme.surface)
     }
 
-    private func principleRow(title: String, detail: String) -> some View {
+    private var languageSection: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Langue de l'interface")
+                    .font(.system(.subheadline))
+                    .foregroundStyle(Theme.textPrimary)
+
+                Picker("", selection: uiLanguageSelection) {
+                    ForEach(AppLanguageSelection.allCases) { selection in
+                        Text(selection.displayName).tag(selection)
+                    }
+                }
+                .labelsHidden()
+                .pickerStyle(.menu)
+                .tint(Theme.textSecondary)
+            }
+            .padding(.vertical, 4)
+        } header: {
+            sectionHeader("LANGUE")
+        } footer: {
+            Text("Par défaut, l'interface suit la langue du système si elle est prise en charge, sinon l'anglais. La langue de l'interface reste distincte de la langue audio.")
+                .foregroundStyle(Theme.textSecondary)
+        }
+        .listRowBackground(Theme.surface)
+    }
+
+    private func principleRow(title: LocalizedStringResource, detail: LocalizedStringResource) -> some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(title)
                 .font(.system(.subheadline))
@@ -107,7 +132,7 @@ struct SettingsView: View {
                     }
                 }
                 .foregroundStyle(Theme.textSecondary)
-                if !hkStatus.isEmpty {
+                if let hkStatus {
                     Text(hkStatus)
                         .font(.caption)
                         .foregroundStyle(Theme.textSecondary)
@@ -141,10 +166,17 @@ struct SettingsView: View {
 
     // MARK: - Helpers
 
-    private func sectionHeader(_ text: String) -> some View {
+    private func sectionHeader(_ text: LocalizedStringResource) -> some View {
         Text(text)
             .font(.system(.caption2, design: .monospaced))
             .foregroundStyle(Theme.textSecondary)
             .tracking(2)
+    }
+
+    private var uiLanguageSelection: Binding<AppLanguageSelection> {
+        Binding(
+            get: { prefs.uiLanguageSelection },
+            set: { prefs.uiLanguageSelection = $0 }
+        )
     }
 }

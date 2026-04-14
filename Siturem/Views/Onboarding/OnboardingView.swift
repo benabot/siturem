@@ -59,7 +59,7 @@ struct OnboardingView: View {
 
     // MARK: - Pages 1–3 (texte seul)
 
-    private static let lines: [String] = [
+    private static let lines: [LocalizedStringResource] = [
         "Siturem est une app de méditation minimaliste conçue pour des pratiquants déjà autonomes.",
         "Elle ne cherche pas à enseigner la méditation, à divertir, ni à surcharger l'expérience.",
         "Elle fournit un cadre stable, discret et reproductible pour lancer rapidement une séance structurée."

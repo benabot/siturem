@@ -27,6 +27,15 @@ enum AccompanimentMode: String, CaseIterable, Identifiable {
     case guided = "Guidé"
 
     var id: String { rawValue }
+
+    var displayLabel: LocalizedStringResource {
+        switch self {
+        case .silent:
+            "Silencieux"
+        case .guided:
+            "Guidé"
+        }
+    }
 }
 
 // MARK: - Gong Mode
@@ -40,6 +49,15 @@ enum GongMode: String, CaseIterable, Identifiable {
     var playsSessionBoundaryGongs: Bool {
         self == .sessionBounds
     }
+
+    var displayLabel: LocalizedStringResource {
+        switch self {
+        case .off:
+            "Off"
+        case .sessionBounds:
+            "Début / Fin"
+        }
+    }
 }
 
 // MARK: - Ambient Sound
@@ -52,6 +70,21 @@ enum AmbientSound: String, CaseIterable, Identifiable {
     case whiteNoise = "Bruit blanc"
 
     var id: String { rawValue }
+
+    var displayLabel: LocalizedStringResource {
+        switch self {
+        case .off:
+            "Off"
+        case .rain:
+            "Pluie"
+        case .river:
+            "Rivière"
+        case .forest:
+            "Forêt"
+        case .whiteNoise:
+            "Bruit blanc"
+        }
+    }
 }
 
 // MARK: - Reminder Interval
@@ -72,7 +105,7 @@ enum ReminderInterval: String, CaseIterable, Identifiable {
     }
 
     /// Label sobre pour SettingsView
-    var settingsLabel: String {
+    var settingsLabel: LocalizedStringResource {
         switch self {
         case .off: "Aucune"
         case .every3min: "Occasionnelles"
@@ -88,7 +121,7 @@ enum SessionPhase {
     case meditation
     case closing
 
-    var label: String {
+    var displayLabel: LocalizedStringResource {
         switch self {
         case .intro: "Introduction"
         case .meditation: "Méditation"

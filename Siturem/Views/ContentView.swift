@@ -5,8 +5,8 @@ import SwiftUI
 
 struct ContentView: View {
 
+    @Bindable var prefs: PreferencesStore
     @AppStorage("siturem.onboardingCompleted") private var onboardingCompleted = false
-    @State private var prefs = PreferencesStore()
     @State private var stats = StatsStore()
     @State private var engine: SessionEngine? = nil
     @State private var selectedTab: Tab = .home
@@ -51,5 +51,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(prefs: PreferencesStore())
 }

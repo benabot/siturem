@@ -99,7 +99,7 @@ struct HomeView: View {
             VStack(spacing: 1) {
                 optionRow("Accompagnement") {
                     Picker("", selection: $prefs.accompaniment) {
-                        ForEach(AccompanimentMode.allCases) { m in Text(m.rawValue).tag(m) }
+                        ForEach(AccompanimentMode.allCases) { m in Text(m.displayLabel).tag(m) }
                     }
                     .labelsHidden()
                     .pickerStyle(.menu)
@@ -107,7 +107,7 @@ struct HomeView: View {
                 }
                 optionRow("Gong") {
                     Picker("", selection: $prefs.gong) {
-                        ForEach(GongMode.allCases) { g in Text(g.rawValue).tag(g) }
+                        ForEach(GongMode.allCases) { g in Text(g.displayLabel).tag(g) }
                     }
                     .labelsHidden()
                     .pickerStyle(.menu)
@@ -115,7 +115,7 @@ struct HomeView: View {
                 }
                 optionRow("Ambiance", isLast: true) {
                     Picker("", selection: $prefs.ambient) {
-                        ForEach(AmbientSound.allCases) { s in Text(s.rawValue).tag(s) }
+                        ForEach(AmbientSound.allCases) { s in Text(s.displayLabel).tag(s) }
                     }
                     .labelsHidden()
                     .pickerStyle(.menu)
@@ -127,7 +127,7 @@ struct HomeView: View {
     }
 
     @ViewBuilder
-    private func optionRow<Content: View>(_ label: String, isLast: Bool = false, @ViewBuilder content: () -> Content) -> some View {
+    private func optionRow<Content: View>(_ label: LocalizedStringResource, isLast: Bool = false, @ViewBuilder content: () -> Content) -> some View {
         HStack {
             Text(label)
                 .font(.system(.subheadline))
@@ -173,7 +173,7 @@ struct HomeView: View {
 
     // MARK: - Helpers
 
-    private func sectionLabel(_ text: String) -> some View {
+    private func sectionLabel(_ text: LocalizedStringResource) -> some View {
         Text(text)
             .font(.system(.caption2, design: .monospaced))
             .foregroundStyle(Theme.textSecondary)

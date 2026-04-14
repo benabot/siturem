@@ -102,9 +102,10 @@ struct SessionView: View {
     // MARK: - Phase label
 
     private var phaseLabel: some View {
-        Text(engine.currentPhase.label.uppercased())
+        Text(engine.currentPhase.displayLabel)
             .font(.system(.caption, design: .monospaced))
             .foregroundStyle(Theme.textSecondary)
+            .textCase(.uppercase)
             .tracking(2)
     }
 

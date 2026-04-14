@@ -25,6 +25,15 @@ final class PreferencesStore {
     var reminder: ReminderInterval {
         didSet { defaults.set(reminder.rawValue, forKey: "pref.reminder") }
     }
+    var uiLanguageOverride: AppLanguage? {
+        didSet {
+            if let uiLanguageOverride {
+                defaults.set(uiLanguageOverride.rawValue, forKey: "pref.uiLanguage")
+            } else {
+                defaults.removeObject(forKey: "pref.uiLanguage")
+            }
+        }
+    }
     var audioLocale: AudioLocale {
         didSet { defaults.set(audioLocale.rawValue, forKey: "pref.audioLocale") }
     }
@@ -39,8 +48,18 @@ final class PreferencesStore {
         gong = PreferencesStore.resolveGongMode(from: d.string(forKey: "pref.gong")) ?? .sessionBounds
         ambient = AmbientSound(rawValue: d.string(forKey: "pref.ambient") ?? "") ?? .off
         reminder = ReminderInterval(rawValue: d.string(forKey: "pref.reminder") ?? "") ?? .off
+        uiLanguageOverride = PreferencesStore.resolveUILanguageOverride(from: d.string(forKey: "pref.uiLanguage"))
         audioLocale = PreferencesStore.resolveAudioLocale(from: d.string(forKey: "pref.audioLocale"))
         healthKitEnabled = d.bool(forKey: "pref.healthKit")
+    }
+
+    var uiLanguage: AppLanguage {
+        uiLanguageOverride ?? AppLanguage.resolveSystemLanguage()
+    }
+
+    var uiLanguageSelection: AppLanguageSelection {
+        get { AppLanguageSelection(languageOverride: uiLanguageOverride) }
+        set { uiLanguageOverride = newValue.languageOverride }
     }
 
     var sessionConfiguration: SessionConfiguration {
@@ -90,5 +109,10 @@ final class PreferencesStore {
         }
 
         return locale
+    }
+
+    private static func resolveUILanguageOverride(from rawValue: String?) -> AppLanguage? {
+        guard let rawValue else { return nil }
+        return AppLanguage(rawValue: rawValue)
     }
 }

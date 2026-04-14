@@ -12,6 +12,7 @@
 		1339C7A61124E01F9154198E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BFCEB44F63999C06D14C70 /* ContentView.swift */; };
 		169FE448669AEAFC0222A29D /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C944A304B37663A684E3F7 /* SessionView.swift */; };
 		1C47D51CA7C79CE12D2CCFF1 /* Audio in Resources */ = {isa = PBXBuildFile; fileRef = 22DA8D4EA530E63E0E66833C /* Audio */; };
+		1E57FEC1360258E86F9B33C6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D380362D3FADDF1F9940A399 /* InfoPlist.strings */; };
 		2B53099344F21E0FE41608FB /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA5B666ED64CEA5108489A1 /* Layout.swift */; };
 		3C5E517F4A8501256FC41053 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD17506D98D5BA71819A8095 /* Theme.swift */; };
 		56AE3AA1C6C08DB8773FFCBB /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE97D6F5A7D157A54A8AE13D /* SplashView.swift */; };
@@ -20,6 +21,7 @@
 		619F7F831CA5D8214B0F504C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9939668564E814F39210C13 /* HomeView.swift */; };
 		69146BFE1EC8ACE4B57C23A4 /* BlobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF0AECB1B17CB1457163AC /* BlobView.swift */; };
 		72C7A1E5F2B455F92ED96014 /* SessionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9967C956042C857BB59F3BBD /* SessionEngine.swift */; };
+		7465DD0998FAB7975AA4F3F1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 29471116FEEA5F0AD9788E54 /* Localizable.strings */; };
 		7652905424C8F7B80150BEF5 /* AudioAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCACA972E82F4E0425529687 /* AudioAsset.swift */; };
 		7F4EDDF40605E2B397A23F36 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D57D0584530035947C75A99 /* HealthKitService.swift */; };
 		8FB39094B5BE66B5D1C1ADF6 /* SessionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F06258190A3F0E83B149FF /* SessionConfiguration.swift */; };
@@ -27,6 +29,7 @@
 		9D372BE1FAA2FCD8124283A5 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468C8AF90EE3D110408B7EF3 /* OnboardingView.swift */; };
 		9E7B166D07FA08C5969472F4 /* SituremMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6855DF95EDC4E11BB7E2C9C /* SituremMark.swift */; };
 		A7FF9209B5122A01EA6790BA /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC0F3AF7E51263AF4540528 /* AudioService.swift */; };
+		A98B9F40A5F4D0D3FE86FA0A /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2EA1575DB71803D49C39A4 /* AppLanguage.swift */; };
 		BCECC060C80E2D431D1F7A8C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8561C2DD2BFEFF8D7F001EF1 /* SettingsView.swift */; };
 		D49DB4EDB95FA0A22118D0D2 /* StatsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D47B101F87528EE1751FB60 /* StatsStore.swift */; };
 		E5AC98210005C209479E041D /* PreferencesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F89194112BB337F148B388F /* PreferencesStore.swift */; };
@@ -34,14 +37,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1EAAA07D758804EFB52C7C1C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1ED8CF95E49373BEED26515E /* SituremApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SituremApp.swift; sourceTree = "<group>"; };
 		22DA8D4EA530E63E0E66833C /* Audio */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Audio; path = Siturem/Audio; sourceTree = SOURCE_ROOT; };
+		2BDA53EB7AE2F6C5EA11836D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3449E8C0448A757FD2525546 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		36E44319EAA9A5BBC0D061C3 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		468C8AF90EE3D110408B7EF3 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		4BA5B666ED64CEA5108489A1 /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		4D47B101F87528EE1751FB60 /* StatsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsStore.swift; sourceTree = "<group>"; };
 		56BBD2DBE381223DE6313ECE /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		5D1FBDC489F112B48A3B4139 /* Siturem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Siturem.entitlements; sourceTree = "<group>"; };
+		5E313C186F52E741CD28A585 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6D57D0584530035947C75A99 /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
+		753E77396446762DFC81418A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		841B8C9DC0789C59492CC63A /* SessionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecord.swift; sourceTree = "<group>"; };
 		8561C2DD2BFEFF8D7F001EF1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		870A2CBA71CDA3AE368BB740 /* SessionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionModels.swift; sourceTree = "<group>"; };
@@ -52,8 +61,11 @@
 		9967C956042C857BB59F3BBD /* SessionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEngine.swift; sourceTree = "<group>"; };
 		9EC0F3AF7E51263AF4540528 /* AudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioService.swift; sourceTree = "<group>"; };
 		9F89194112BB337F148B388F /* PreferencesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesStore.swift; sourceTree = "<group>"; };
+		A93EBE867D126786D7A7A0BF /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		AD17506D98D5BA71819A8095 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		AF82999FC15F430EB868F5ED /* SessionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryView.swift; sourceTree = "<group>"; };
+		BB2EA1575DB71803D49C39A4 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
+		DD81B265E7FF9791812808FF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DE97D6F5A7D157A54A8AE13D /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		E4F06258190A3F0E83B149FF /* SessionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionConfiguration.swift; sourceTree = "<group>"; };
 		E55FA1FC538054FA8770F442 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -79,10 +91,20 @@
 			path = Siturem;
 			sourceTree = "<group>";
 		};
+		189296B93CFC68E9437F4AAA /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				D380362D3FADDF1F9940A399 /* InfoPlist.strings */,
+				29471116FEEA5F0AD9788E54 /* Localizable.strings */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		1E9AD2868FD71433085159C7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				E55FA1FC538054FA8770F442 /* Assets.xcassets */,
+				189296B93CFC68E9437F4AAA /* Localization */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -146,6 +168,7 @@
 		F430851D72E49F6139C5C191 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				BB2EA1575DB71803D49C39A4 /* AppLanguage.swift */,
 				E4F06258190A3F0E83B149FF /* SessionConfiguration.swift */,
 				870A2CBA71CDA3AE368BB740 /* SessionModels.swift */,
 				841B8C9DC0789C59492CC63A /* SessionRecord.swift */,
@@ -201,7 +224,10 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				de,
 				en,
+				es,
+				fr,
 			);
 			mainGroup = 438F2C23C932E866BFD503E8;
 			minimizedProjectReferenceProxies = 1;
@@ -222,6 +248,8 @@
 			files = (
 				97AE6920A58FF280F3C54880 /* Assets.xcassets in Resources */,
 				1C47D51CA7C79CE12D2CCFF1 /* Audio in Resources */,
+				1E57FEC1360258E86F9B33C6 /* InfoPlist.strings in Resources */,
+				7465DD0998FAB7975AA4F3F1 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A98B9F40A5F4D0D3FE86FA0A /* AppLanguage.swift in Sources */,
 				7652905424C8F7B80150BEF5 /* AudioAsset.swift in Sources */,
 				A7FF9209B5122A01EA6790BA /* AudioService.swift in Sources */,
 				69146BFE1EC8ACE4B57C23A4 /* BlobView.swift in Sources */,
@@ -258,6 +287,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		29471116FEEA5F0AD9788E54 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1EAAA07D758804EFB52C7C1C /* de */,
+				DD81B265E7FF9791812808FF /* en */,
+				5E313C186F52E741CD28A585 /* es */,
+				A93EBE867D126786D7A7A0BF /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		D380362D3FADDF1F9940A399 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				753E77396446762DFC81418A /* de */,
+				2BDA53EB7AE2F6C5EA11836D /* en */,
+				3449E8C0448A757FD2525546 /* es */,
+				36E44319EAA9A5BBC0D061C3 /* fr */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		06A39630EB8511BE944013E4 /* Release */ = {
@@ -296,6 +350,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_LANGUAGE = fr;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -375,6 +430,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_LANGUAGE = fr;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;

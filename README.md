@@ -37,7 +37,7 @@ Siturem/
 │   ├── en/             Structure prête pour les assets localisés
 │   ├── es/             Structure prête pour les assets localisés
 │   └── de/             Structure prête pour les assets localisés
-└── Resources/    Assets.xcassets
+└── Resources/    Assets.xcassets + localisation UI (`Localization/*.lproj`)
 ```
 
 ## Documentation
@@ -45,3 +45,9 @@ Siturem/
 - `docs/cahierCharges-v1.md`  — Spécifications produit complètes
 - `TODO.md`                   — Tâches actionnables
 - `PROJECT_STATUS.md`         — État du projet, décisions, points ouverts
+
+## Localisation UI
+- Langues UI supportées : `fr`, `en-US`, `es`, `de`
+- Au premier lancement, l'interface suit la langue système si elle est supportée, sinon fallback `en-US`
+- Un choix explicite dans `Réglages > Langue` prend priorité jusqu'au retour sur `Système`
+- La langue UI reste distincte de la langue audio, qui conserve son fallback propre côté audio

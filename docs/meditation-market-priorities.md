@@ -150,6 +150,11 @@ Ce positionnement entraîne plusieurs conséquences :
 - versionner les scripts audio indépendamment des chaînes d'interface
 - prévoir qu'une langue puisse être disponible en UI avant d'être disponible en voix
 
+Note d'implémentation actuelle :
+- l'UI de Siturem est déjà livrée en fr / en-US / es / de
+- le switcher de langue UI est dans `SettingsView`
+- la langue audio reste séparée et hors scope de cette phase
+
 ### 3. Définir une matrice de disponibilité par langue
 Exemple recommandé :
 - **UI uniquement** : langues secondaires au démarrage
@@ -228,4 +233,3 @@ Pour Siturem, la seconde lecture est la bonne.
 
 - Calm Support — *Calm in Different Languages*  
   Confirme la disponibilité actuelle de dix langues majeures, dont japonais, coréen et mandarin chinois.
-

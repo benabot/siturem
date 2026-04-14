@@ -1,0 +1,90 @@
+/* Tabs and top-level navigation */
+"Pratique" = "Practice";
+"Suivi" = "Stats";
+"Réglages" = "Settings";
+
+/* Common actions and alerts */
+"Durée insuffisante" = "Duration too short";
+"OK" = "OK";
+"Durée minimale : 6 minutes." = "Minimum duration: 6 minutes.";
+"Arrêter la séance ?" = "Stop the session?";
+"Arrêter" = "Stop";
+"Continuer" = "Continue";
+
+/* Home */
+"DURÉE" = "DURATION";
+"Durée" = "Duration";
+"OPTIONS" = "OPTIONS";
+"Accompagnement" = "Guidance";
+"Gong" = "Gong";
+"Ambiance" = "Ambient sound";
+"COMMENCER" = "Start";
+
+/* Splash, onboarding, logo */
+"Le cadre discret de votre pratique." = "The discreet framework for your practice.";
+"SITUREM" = "SITUREM";
+"Méditation structurée" = "Structured meditation";
+"Siturem est une app de méditation minimaliste conçue pour des pratiquants déjà autonomes." = "Siturem is a minimalist meditation app designed for practitioners who already work on their own.";
+"Elle ne cherche pas à enseigner la méditation, à divertir, ni à surcharger l'expérience." = "It does not try to teach meditation, entertain, or add noise to the experience.";
+"Elle fournit un cadre stable, discret et reproductible pour lancer rapidement une séance structurée." = "It provides a stable, discreet, repeatable framework to start a structured session quickly.";
+"Une séance prête à l'emploi, sobre, stable et structurée." = "A ready-to-use session, restrained, stable, and structured.";
+"Séance terminée" = "Session complete";
+"Terminer" = "Done";
+
+/* Stats */
+"Temps total" = "Total time";
+"Séances" = "Sessions";
+"Période" = "Period";
+"7 derniers jours" = "Last 7 days";
+"30 derniers jours" = "Last 30 days";
+"Régularité" = "Consistency";
+"Streak actuel" = "Current streak";
+"Meilleur streak" = "Best streak";
+
+/* Settings */
+"PRINCIPES" = "PRINCIPLES";
+"Trois phases fixes" = "Three fixed phases";
+"Introduction (2 min 30) — Méditation (durée choisie) — Retour (45 s). La structure ne change pas d'une séance à l'autre." = "Introduction (2 min 30) — Meditation (chosen duration) — Return (45 s). The structure stays the same from one session to the next.";
+"Pour qui" = "Who it's for";
+"Pratiquants qui savent déjà méditer et veulent un cadre stable, reproductible, sans distraction." = "Practitioners who already know how to meditate and want a stable, repeatable, distraction-free framework.";
+"Philosophie" = "Philosophy";
+"Siturem tient le cadre et s'efface. Pas de narration, pas de score, pas de gamification. L'app réduit la friction et disparaît." = "Siturem holds the frame and steps aside. No narration, no score, no gamification. The app reduces friction and gets out of the way.";
+"Durée minimale" = "Minimum duration";
+"6 minutes (intro + méditation courte + retour). Durée par défaut : 10 minutes." = "6 minutes (intro + short meditation + return). Default duration: 10 minutes.";
+"LANGUE" = "LANGUAGE";
+"Langue de l'interface" = "Interface language";
+"La langue de l'interface est distincte de la langue audio." = "The interface language is separate from the audio language.";
+"Par défaut, l'interface suit la langue du système si elle est prise en charge, sinon l'anglais. La langue de l'interface reste distincte de la langue audio." = "By default, the interface follows the system language when it is supported, otherwise English. The interface language remains separate from the audio language.";
+"SÉANCE" = "SESSION";
+"Rappels pendant la méditation" = "Reminders during meditation";
+"Définit la fréquence des rappels vocaux pendant la phase de méditation en mode guidé." = "Sets how often voice reminders play during the meditation phase in guided mode.";
+"SANTÉ" = "HEALTH";
+"Synchroniser avec Santé" = "Sync with Health";
+"Autoriser l'accès" = "Allow access";
+"Autorisation demandée" = "Authorization requested";
+"Enregistre les minutes de pleine conscience dans l'app Santé d'Apple." = "Saves mindful minutes to Apple Health.";
+"Version" = "Version";
+"À PROPOS" = "ABOUT";
+
+/* Enum labels */
+"Off" = "Off";
+"Silencieux" = "Silent";
+"Guidé" = "Guided";
+"Début / Fin" = "Start / End";
+"Pluie" = "Rain";
+"Rivière" = "River";
+"Forêt" = "Forest";
+"Bruit blanc" = "White noise";
+"Aucune" = "None";
+"Occasionnelles" = "Occasional";
+"Fréquentes" = "Frequent";
+"Introduction" = "Introduction";
+"Méditation" = "Meditation";
+"Retour au calme" = "Return to calm";
+
+/* Language picker */
+"Système" = "System";
+"Français" = "French";
+"English (US)" = "English (US)";
+"Español" = "Spanish";
+"Deutsch" = "German";
