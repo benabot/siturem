@@ -3,10 +3,9 @@ import SwiftUI
 // MARK: - Siturem Mark
 // Signe géométrique de la marque : trois segments horizontaux gauche-alignés
 // représentant les trois phases d'une séance (intro · méditation · closing).
-// Largeurs proportionnelles aux durées relatives d'une séance de 10 min :
-//   intro   → 150 s / 600 s ≈ 55 % (visuel ajusté)
-//   méditation → 405 s / 600 s = 100 % (phase principale)
-//   closing → 45 s  / 600 s ≈ 30 % (visuel ajusté)
+// Largeurs visuelles inspirées des trois phases d'une séance de 10 min.
+// Les proportions sont volontairement ajustées pour la lisibilité du signe
+// et ne cherchent pas à représenter littéralement les durées réelles.
 
 struct SituremMark: View {
 

@@ -34,7 +34,7 @@ struct SettingsView: View {
         Section {
             principleRow(
                 title: "Trois phases fixes",
-                detail: "Introduction (2 min 30) — Méditation (durée choisie) — Retour (45 s). La structure ne change pas d'une séance à l'autre."
+                detail: "Introduction (2 min 30) — Méditation (durée choisie) — Retour (1 min 32). La structure ne change pas d'une séance à l'autre."
             )
             principleRow(
                 title: "Pour qui",

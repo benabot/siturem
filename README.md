@@ -33,7 +33,7 @@ Siturem/
 │   │   └── VoiceGuidance/  Consignes vocales séquencées
 │   │       ├── Intro/      Séquence ordonnée de l'intro, gong après Bonjour, dernier clip ancré 5 s avant la fin
 │   │       ├── Reminders/  Rappels discrets phase centrale
-│   │       └── Outro/      Séquence ordonnée du retour, puis silence jusqu'à la fin réelle
+│   │       └── Outro/      Séquence ordonnée du retour avec longues pauses et gong final inclus
 │   ├── en/             Structure prête pour les assets localisés
 │   ├── es/             Structure prête pour les assets localisés
 │   └── de/             Structure prête pour les assets localisés

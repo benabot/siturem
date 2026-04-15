@@ -12,7 +12,7 @@ struct SessionConfiguration {
 
     // Phases fixes (cahier des charges §5)
     static let introDuration: Int = 150    // 2 min 30
-    static let closingDuration: Int = 45   // 45 s
+    static let closingDuration: Int = 92   // 1 min 32
     static let minimumDuration: Int = 360  // 6 min
 
     var meditationDuration: Int {

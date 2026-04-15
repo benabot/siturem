@@ -122,21 +122,24 @@ Temps principal de pratique silencieuse.
 Durée phase méditation = durée totale - durée intro - durée retour
 
 Soit :
-Durée phase méditation = durée totale - 2 min 30 - 45 s
+Durée phase méditation = durée totale - 2 min 30 - 1 min 32
 
 ## 5.4 Phase 3 — Retour au calme
-**Durée fixe : 45 secondes**
+**Durée fixe : 1 min 32**
 
 ### Objectif
 Permettre une sortie progressive de la pratique, sans rupture brusque.
 
 ### Déroulé
-- 15 secondes où l’esprit est laissé libre
+- libération de la concentration sur le souffle
+- pause silencieuse de 17 secondes
 - prise de conscience des points de contact du corps
+- pause silencieuse de 15 secondes
 - prise de conscience de l’environnement
+- pause silencieuse de 19 secondes
 - ouverture progressive des yeux
-- rappel intérieur de l’intention pour la journée
-- question intérieure : la sensation de départ a-t-elle évolué ?
+- pause silencieuse de 3 secondes
+- gong final éventuel selon le réglage choisi
 
 ---
 
@@ -508,7 +511,7 @@ App iOS minimaliste de méditation structurée pour pratiquants expérimentés.
 ### Cœur de l’expérience
 - intro fixe : 2 min 30
 - méditation centrale variable
-- retour fixe : 45 s
+- retour fixe : 1 min 32
 
 ### Réglages
 - durée totale

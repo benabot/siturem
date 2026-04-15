@@ -188,7 +188,7 @@ final class AudioService: AudioServicing {
         case .intro:
             handleIntroStart()
         case .meditation:
-            stopPlayer(&voicePlayer)
+            break
         case .closing:
             handleClosingStart()
         }
@@ -208,11 +208,13 @@ final class AudioService: AudioServicing {
         cancelAmbientRestore()
         stopPlayer(&voicePlayer)
 
-        playFinalGongIfNeeded()
+        if configuration.accompaniment != .guided {
+            playFinalGongIfNeeded()
+        }
         stopAmbient(fadeOut: true)
 
-        let gongDuration = gongPlayer?.duration ?? 0
-        scheduleDeferredCleanup(after: max(Constants.ambientFadeOut, gongDuration) + 0.2)
+        let gongTailDuration = remainingPlaybackDuration(of: gongPlayer)
+        scheduleDeferredCleanup(after: max(Constants.ambientFadeOut, gongTailDuration) + 0.2)
     }
 
     // MARK: - Phase entry
@@ -577,6 +579,11 @@ final class AudioService: AudioServicing {
     private func stopPlayer(_ player: inout AVAudioPlayer?) {
         player?.stop()
         player = nil
+    }
+
+    private func remainingPlaybackDuration(of player: AVAudioPlayer?) -> TimeInterval {
+        guard let player, player.isPlaying else { return 0 }
+        return max(0, player.duration - player.currentTime)
     }
 
     // MARK: - Audio session

@@ -119,6 +119,9 @@ struct OrderedGuidanceStep {
     let expectedDuration: TimeInterval
     let postDelay: TimeInterval
     let placement: GuidanceSequencePlacement
+
+    var fileName: String { asset.baseName }
+    var group: AudioAssetGroup { asset.group }
 }
 
 extension OrderedGuidanceStep {
@@ -152,21 +155,23 @@ extension OrderedGuidanceStep {
 
 enum VoiceGuidanceLibrary {
     static let introSteps: [OrderedGuidanceStep] = [
-        .sequential(.intro(.bonjour), expectedDuration: 3, postDelay: 1.5),
-        .sequential(.gong, expectedDuration: 6.07, postDelay: 1.5),
-        .sequential(.intro(.posture), expectedDuration: 4, postDelay: 3.5),
-        .sequential(.intro(.fourBreaths), expectedDuration: 7, postDelay: 10),
-        .sequential(.intro(.closeEyes), expectedDuration: 9, postDelay: 10),
-        .sequential(.intro(.contactPoints), expectedDuration: 7, postDelay: 20),
-        .sequential(.intro(.environment), expectedDuration: 11, postDelay: 25),
-        .anchoredToPhaseEnd(.intro(.breathFocus), expectedDuration: 5, leadTime: 5)
+        .sequential(.intro(.bonjour), expectedDuration: 3.52, postDelay: 1.5),
+        .sequential(.gong, expectedDuration: 6.072, postDelay: 1.5),
+        .sequential(.intro(.posture), expectedDuration: 6.605, postDelay: 3.5),
+        .sequential(.intro(.fourBreaths), expectedDuration: 8.265, postDelay: 13.0),
+        .sequential(.intro(.closeEyes), expectedDuration: 9.655, postDelay: 4.0),
+        .sequential(.intro(.contactPoints), expectedDuration: 7.525, postDelay: 4.0),
+        .sequential(.intro(.environment), expectedDuration: 20.11, postDelay: 10.0),
+        .sequential(.intro(.bodyScan), expectedDuration: 44.825, postDelay: 0),
+        .anchoredToPhaseEnd(.intro(.breathFocus), expectedDuration: 5.745, leadTime: 5)
     ]
 
     static let outroSteps: [OrderedGuidanceStep] = [
-        .sequential(.outro(.releaseBreathFocus), expectedDuration: 5.73, postDelay: 1.0),
-        .sequential(.outro(.contactPoints), expectedDuration: 5.55, postDelay: 1.0),
-        .sequential(.outro(.environment), expectedDuration: 6.1, postDelay: 1.0),
-        .sequential(.outro(.openEyes), expectedDuration: 5.53, postDelay: 0)
+        .sequential(.outro(.releaseBreathFocus), expectedDuration: 7.615, postDelay: 17.0),
+        .sequential(.outro(.contactPoints), expectedDuration: 5.5, postDelay: 15.0),
+        .sequential(.outro(.environment), expectedDuration: 10.26, postDelay: 19.0),
+        .sequential(.outro(.openEyes), expectedDuration: 8.435, postDelay: 3.0),
+        .sequential(.gong, expectedDuration: 6.072, postDelay: 0)
     ]
 }
 

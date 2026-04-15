@@ -135,7 +135,7 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 - [x] AudioService : gong unique en bornes de séance (`gong.caf` après `intro_01_bonjour`, puis à la fin réelle)
 - [x] AudioService : ambiance sonore en boucle (AmbientSound)
 - [x] AudioService : intro/outro vocaux minutés avec déclenchement par franchissement de seuil
-- [x] AudioService : séquençage vocal ordonné (clips dans l'ordre, gaps configurés, `intro_08_concentration_souffle` ancré 5 s avant la fin de l'intro)
+- [x] AudioService : séquençage vocal ordonné (clips dans l'ordre, gaps configurés, `intro_07_scan_corporel` inclus, `intro_08_concentration_souffle` ancré 5 s avant la fin de l'intro)
 - [x] Rappels périodiques phase méditation (`ReminderInterval` géré côté `AudioService`, hors `SessionEngine`)
 - [ ] Déposer les assets vocaux `fr` dans `Audio/fr/VoiceGuidance/{Intro,Reminders,Outro}`
 - [ ] Déposer les assets localisés `en`, `es`, `de` selon la matrice UI/audio
@@ -155,8 +155,9 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 
 ## Dernière livraison
 
-- [x] `AudioService.swift` réécrit : un player voix, un player gong, un player ambiance ; intro/outro vocaux minutés ; gong unique de début/fin ; reminder central ; fallback silencieux si assets absents
+- [x] `AudioService.swift` corrigé : séquençage strict sans chevauchement, intro FR complète avec `intro_07_scan_corporel`, `intro_04_fermer_les_yeux` décalé de +3 s, closing guidé avec longues pauses et gong final inclus
 - [x] `AudioAsset.swift` étendu : résolution centralisée par `AudioLocale` et `AudioAssetGroup`, audio dérivé de la langue UI, fallback global `en`, IDs techniques inchangés
+- [x] `SessionConfiguration.swift` aligné sur une phase de closing fixe à `92 s` pour couvrir la séquence réelle de fin de séance
 - [x] `SessionView.swift` branchée sur `startSessionAudio`, `handleTick`, `handlePhaseChange`, `handleSessionEnd`, `pauseAll`, `resumeAll`, `stopAll`
 - [x] `project.yml` mis à jour pour intégrer `Siturem/Audio` comme folder resource et préserver `Audio/<locale>/...` dans le bundle
 - [x] Arborescence `Siturem/Audio/` réorganisée en `fr`, `en`, `es`, `de` avec placeholders sur les dossiers non alimentés
