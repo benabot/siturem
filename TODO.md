@@ -139,14 +139,15 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 - [x] Rappels périodiques phase méditation (`ReminderInterval` géré côté `AudioService`, hors `SessionEngine`)
 - [ ] Déposer les assets vocaux `fr` dans `Audio/fr/VoiceGuidance/{Intro,Reminders,Outro}`
 - [ ] Déposer les assets localisés `en`, `es`, `de` selon la matrice UI/audio
-- [ ] Intégrer HealthKit au flux de fin de séance (`SessionView.handleEnd` → `HealthKitService.save`)
-- [ ] Activer entitlement HealthKit dans `Siturem/Siturem.entitlements`
+- [x] Intégrer HealthKit au flux de fin de séance (`SessionView.handleEnd` → `HealthKitService.saveCompletedSession`)
+- [x] Activer entitlement HealthKit dans `Siturem/Siturem.entitlements`
 
 ## Important
 
 - [x] Accompagnement simplifié : `Guidé` / `Silencieux`, avec guidance audio active en mode guidé
 - [ ] Haptics légers aux transitions de phase
 - [ ] Test end-to-end des flux utilisateur (simulateur Xcode)
+- [ ] Ajouter une couverture de tests pour les états d'autorisation HealthKit si un target XCTest est créé
 
 ## Souhaitable
 

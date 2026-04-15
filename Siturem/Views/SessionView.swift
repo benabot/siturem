@@ -9,11 +9,15 @@ struct SessionView: View {
 
     @Bindable var engine: SessionEngine
     let stats: StatsStore
+    @Bindable var prefs: PreferencesStore
     let onEnd: () -> Void
+
+    private let healthKit = HealthKitService()
 
     @State private var audioService: AudioService?
     @State private var showEndConfirmation = false
     @State private var showSummary = false
+    @State private var sessionStartDate: Date?
 
     var body: some View {
         Group {
@@ -30,6 +34,9 @@ struct SessionView: View {
         .onAppear {
             let audio = AudioService(config: engine.config)
             audioService = audio
+            if sessionStartDate == nil {
+                sessionStartDate = Date()
+            }
 
             engine.onSessionEnd = {
                 audio.handleSessionEnd(configuration: engine.config)
@@ -175,7 +182,10 @@ struct SessionView: View {
     // MARK: - Fin de séance
 
     private func handleEnd() {
+        let endDate = Date()
+        let startDate = sessionStartDate ?? endDate.addingTimeInterval(-TimeInterval(engine.totalElapsed))
         let record = SessionRecord(
+            date: endDate,
             plannedDuration: engine.config.totalDuration,
             actualDuration: engine.totalElapsed,
             accompaniment: engine.config.accompaniment,
@@ -183,5 +193,14 @@ struct SessionView: View {
         )
         stats.save(record)
         withAnimation { showSummary = true }
+
+        let isSyncEnabled = prefs.healthKitEnabled
+        Task {
+            _ = await healthKit.saveCompletedSession(
+                startDate: startDate,
+                endDate: endDate,
+                isSyncEnabled: isSyncEnabled
+            )
+        }
     }
 }

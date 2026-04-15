@@ -51,3 +51,9 @@ Siturem/
 - Au premier lancement, l'interface suit la langue système si elle est supportée, sinon fallback `en-US`
 - Un choix explicite dans `Réglages > Langue` prend priorité jusqu'au retour sur `Système`
 - La langue UI reste distincte de la langue audio sur le plan architectural, mais l'audio suit désormais la langue UI effective quand des assets existent en `fr`, `en` ou `es`, sinon fallback global `en`
+
+## HealthKit V1
+- Synchronisation optionnelle activée côté app depuis `Réglages`
+- Demande d'autorisation contextualisée dans `SettingsView`, jamais au premier lancement
+- Écriture tentée silencieusement uniquement pour les séances terminées normalement
+- Refus, indisponibilité ou échec d'écriture ne bloquent ni la séance locale ni l'affichage du bilan

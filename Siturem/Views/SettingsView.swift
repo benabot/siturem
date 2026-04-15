@@ -7,8 +7,11 @@ import SwiftUI
 struct SettingsView: View {
 
     @Bindable var prefs: PreferencesStore
-    @State private var healthKit = HealthKitService()
-    @State private var hkStatus: LocalizedStringResource? = nil
+    @Environment(\.scenePhase) private var scenePhase
+
+    private let healthKit = HealthKitService()
+
+    @State private var healthAuthorizationStatus: HealthKitAuthorizationState = .unavailable
 
     var body: some View {
         NavigationStack {
@@ -25,6 +28,13 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbarBackground(Theme.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .onAppear {
+                refreshHealthAuthorizationStatus()
+            }
+            .onChange(of: scenePhase) { _, newValue in
+                guard newValue == .active else { return }
+                refreshHealthAuthorizationStatus()
+            }
         }
     }
 
@@ -124,24 +134,40 @@ struct SettingsView: View {
         Section {
             Toggle("Synchroniser avec Santé", isOn: $prefs.healthKitEnabled)
                 .tint(Theme.accent)
-            if prefs.healthKitEnabled {
-                Button("Autoriser l'accès") {
-                    Task {
-                        try? await healthKit.requestAuthorization()
-                        hkStatus = "Autorisation demandée"
+
+            LabeledContent("État d'accès") {
+                Text(healthAuthorizationStatusLabel)
+                    .foregroundStyle(Theme.textSecondary)
+            }
+
+            if !healthKit.isAvailable {
+                Text("HealthKit n'est pas disponible sur cet appareil.")
+                    .font(.caption)
+                    .foregroundStyle(Theme.textSecondary)
+            } else if prefs.healthKitEnabled {
+                if healthAuthorizationStatus == .notDetermined {
+                    Button("Autoriser l'accès à Santé") {
+                        Task {
+                            healthAuthorizationStatus = await healthKit.requestAuthorizationIfNeeded()
+                        }
                     }
+                    .foregroundStyle(Theme.textSecondary)
                 }
-                .foregroundStyle(Theme.textSecondary)
-                if let hkStatus {
-                    Text(hkStatus)
-                        .font(.caption)
-                        .foregroundStyle(Theme.textSecondary)
-                }
+
+                Text(healthAuthorizationStatusDetail)
+                    .font(.caption)
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else {
+                Text("Activez la synchronisation pour autoriser l'écriture des séances terminées dans Santé.")
+                    .font(.caption)
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         } header: {
             sectionHeader("SANTÉ")
         } footer: {
-            Text("Enregistre les minutes de pleine conscience dans l'app Santé d'Apple.")
+            Text("Seules les séances terminées normalement sont candidates à la synchronisation.")
                 .foregroundStyle(Theme.textSecondary)
         }
         .listRowBackground(Theme.surface)
@@ -178,5 +204,35 @@ struct SettingsView: View {
             get: { prefs.uiLanguageSelection },
             set: { prefs.uiLanguageSelection = $0 }
         )
+    }
+
+    private var healthAuthorizationStatusLabel: LocalizedStringResource {
+        switch healthAuthorizationStatus {
+        case .unavailable:
+            "Indisponible"
+        case .notDetermined:
+            "Non demandé"
+        case .authorized:
+            "Autorisé"
+        case .denied:
+            "Refusé"
+        }
+    }
+
+    private var healthAuthorizationStatusDetail: LocalizedStringResource {
+        switch healthAuthorizationStatus {
+        case .unavailable:
+            "HealthKit n'est pas disponible sur cet appareil."
+        case .notDetermined:
+            "L'autorisation est requise pour écrire les séances terminées normalement dans Santé."
+        case .authorized:
+            "Les séances terminées normalement peuvent être enregistrées dans l'app Santé."
+        case .denied:
+            "L'accès à Santé a été refusé. Vous pouvez le modifier depuis l'app Santé."
+        }
+    }
+
+    private func refreshHealthAuthorizationStatus() {
+        healthAuthorizationStatus = healthKit.authorizationStatus
     }
 }

@@ -26,7 +26,7 @@ SwiftUI + `@Observable` (iOS 17+, Swift 5.10). Pas de dépendances externes.
 - **`SessionEngine`** — moteur de séance : gère le timer, les phases (`intro → meditation → closing`) et les transitions. Callbacks `onPhaseChange` / `onSessionEnd` pour brancher l'audio.
 - **`StatsStore`** — persistance `UserDefaults` (`siturem.sessions`) + calcul de streak / statistiques. Encode `[SessionRecord]` en JSON.
 - **`PreferencesStore`** — préférences utilisateur persistées, dont un override optionnel de langue UI pour l'interface. La locale audio active est dérivée de la langue UI effective.
-- **`HealthKitService`** — écriture des séances dans HealthKit (droits déclarés dans `project.yml`).
+- **`HealthKitService`** — expose disponibilité, état d'autorisation, demande d'accès contextuelle depuis `SettingsView`, et écriture silencieuse des seules séances terminées normalement dans HealthKit.
 
 ### Assets audio
 
@@ -52,7 +52,7 @@ Le séquençage vocal ne repose plus sur des timestamps fixes : `AudioService` c
 
 ### Flux de navigation
 
-`SituremApp` → `ContentView` → `HomeView` (lancement) → `SessionView` (séance active) → `SessionSummaryView` (bilan). `StatsView` et `SettingsView` accessibles depuis `HomeView`. La locale SwiftUI suit `PreferencesStore.uiLanguage` au niveau racine, avec priorité `override utilisateur > langue système supportée > anglais`.
+`SituremApp` → `ContentView` → `HomeView` (lancement) → `SessionView` (séance active) → `SessionSummaryView` (bilan). `StatsView` et `SettingsView` accessibles depuis `HomeView`. La locale SwiftUI suit `PreferencesStore.uiLanguage` au niveau racine, avec priorité `override utilisateur > langue système supportée > anglais`. En V1, `SessionView.handleEnd` tente ensuite l'écriture HealthKit de façon asynchrone et silencieuse, uniquement pour les séances terminées normalement, si le toggle applicatif est actif et si l'autorisation a déjà été accordée depuis `SettingsView`.
 
 ## Références produit
 
