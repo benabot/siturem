@@ -25,7 +25,7 @@ SwiftUI + `@Observable` (iOS 17+, Swift 5.10). Pas de dépendances externes.
 
 - **`SessionEngine`** — moteur de séance : gère le timer, les phases (`intro → meditation → closing`) et les transitions. Callbacks `onPhaseChange` / `onSessionEnd` pour brancher l'audio.
 - **`StatsStore`** — persistance `UserDefaults` (`siturem.sessions`) + calcul de streak / statistiques. Encode `[SessionRecord]` en JSON.
-- **`PreferencesStore`** — préférences utilisateur persistées, dont un override optionnel de langue UI pour l'interface et `audioLocale` pour l'audio.
+- **`PreferencesStore`** — préférences utilisateur persistées, dont un override optionnel de langue UI pour l'interface. La locale audio active est dérivée de la langue UI effective.
 - **`HealthKitService`** — écriture des séances dans HealthKit (droits déclarés dans `project.yml`).
 
 ### Assets audio
@@ -41,7 +41,7 @@ Les fichiers audio sont dans `Siturem/Audio/`, organisés par locale puis par ca
   - **`VoiceGuidance/Outro/`** — séquence ordonnée du retour, puis silence jusqu'à la fin réelle de la séance
 
 Format recommandé : `.caf` (Core Audio Format, lecture native AVAudioPlayer). Ambiances longues possibles en `.m4a` pour réduire la taille du bundle.
-La résolution audio est centralisée par `AudioLocale` avec fallback vers `fr` si la locale demandée n'est pas encore alimentée. `project.yml` déclare `Siturem/Audio` explicitement pour préserver cette hiérarchie dans le bundle. Des `.gitkeep` gardent visibles les dossiers de locales encore vides.
+La résolution audio est centralisée par `AudioLocale` et suit la langue UI effective quand l'audio est disponible (`fr`, `en`, `es`), sinon fallback global vers `en`. Si un asset manque dans la locale résolue, le resolver tente `en`, puis reste silencieux si l'asset est absent partout. `project.yml` déclare `Siturem/Audio` explicitement pour préserver cette hiérarchie dans le bundle.
 Le séquençage vocal ne repose plus sur des timestamps fixes : `AudioService` calcule une timeline ordonnée à partir de l'ordre des clips, des gaps configurés et des durées attendues ou mesurées.
 
 ### Modèles clés

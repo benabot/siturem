@@ -6,8 +6,6 @@ import Foundation
 @Observable
 final class PreferencesStore {
 
-    static let defaultAudioLocale: AudioLocale = .fallback
-
     private let defaults = UserDefaults.standard
 
     var totalDuration: Int {
@@ -34,9 +32,6 @@ final class PreferencesStore {
             }
         }
     }
-    var audioLocale: AudioLocale {
-        didSet { defaults.set(audioLocale.rawValue, forKey: "pref.audioLocale") }
-    }
     var healthKitEnabled: Bool {
         didSet { defaults.set(healthKitEnabled, forKey: "pref.healthKit") }
     }
@@ -49,12 +44,18 @@ final class PreferencesStore {
         ambient = AmbientSound(rawValue: d.string(forKey: "pref.ambient") ?? "") ?? .off
         reminder = ReminderInterval(rawValue: d.string(forKey: "pref.reminder") ?? "") ?? .off
         uiLanguageOverride = PreferencesStore.resolveUILanguageOverride(from: d.string(forKey: "pref.uiLanguage"))
-        audioLocale = PreferencesStore.resolveAudioLocale(from: d.string(forKey: "pref.audioLocale"))
         healthKitEnabled = d.bool(forKey: "pref.healthKit")
+
+        // Legacy key kept from the earlier UI/audio split. Audio now follows the active UI language.
+        d.removeObject(forKey: "pref.audioLocale")
     }
 
     var uiLanguage: AppLanguage {
         uiLanguageOverride ?? AppLanguage.resolveSystemLanguage()
+    }
+
+    var audioLocale: AudioLocale {
+        AudioLocale.resolved(for: uiLanguage)
     }
 
     var uiLanguageSelection: AppLanguageSelection {
@@ -101,14 +102,6 @@ final class PreferencesStore {
         default:
             return .guided
         }
-    }
-
-    private static func resolveAudioLocale(from rawValue: String?) -> AudioLocale {
-        guard let rawValue, let locale = AudioLocale(rawValue: rawValue) else {
-            return defaultAudioLocale
-        }
-
-        return locale
     }
 
     private static func resolveUILanguageOverride(from rawValue: String?) -> AppLanguage? {

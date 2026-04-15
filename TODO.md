@@ -129,7 +129,8 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 
 - [x] Migrer l'arborescence audio vers `Audio/{fr,en,es,de}/{Gongs,Ambiance,VoiceGuidance/{Intro,Reminders,Outro}}`
 - [x] Déclarer `Siturem/Audio` explicitement dans `project.yml` pour embarquer la hiérarchie localisée
-- [x] Centraliser la résolution des assets audio par `AudioLocale` avec fallback `fr`
+- [x] Centraliser la résolution des assets audio par `AudioLocale` avec fallback global `en`
+- [x] Raccorder automatiquement la langue audio à la langue UI effective, sans réglage audio séparé pour cette phase
 - [x] Déposer les fichiers audio (.caf/.m4a) disponibles dans `Audio/fr/` et les ajouter au target Xcode
 - [x] AudioService : gong unique en bornes de séance (`gong.caf` après `intro_01_bonjour`, puis à la fin réelle)
 - [x] AudioService : ambiance sonore en boucle (AmbientSound)
@@ -155,7 +156,7 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 ## Dernière livraison
 
 - [x] `AudioService.swift` réécrit : un player voix, un player gong, un player ambiance ; intro/outro vocaux minutés ; gong unique de début/fin ; reminder central ; fallback silencieux si assets absents
-- [x] `AudioAsset.swift` étendu : résolution centralisée par `AudioLocale` et `AudioAssetGroup`, fallback `fr`, IDs techniques inchangés
+- [x] `AudioAsset.swift` étendu : résolution centralisée par `AudioLocale` et `AudioAssetGroup`, audio dérivé de la langue UI, fallback global `en`, IDs techniques inchangés
 - [x] `SessionView.swift` branchée sur `startSessionAudio`, `handleTick`, `handlePhaseChange`, `handleSessionEnd`, `pauseAll`, `resumeAll`, `stopAll`
 - [x] `project.yml` mis à jour pour intégrer `Siturem/Audio` comme folder resource et préserver `Audio/<locale>/...` dans le bundle
 - [x] Arborescence `Siturem/Audio/` réorganisée en `fr`, `en`, `es`, `de` avec placeholders sur les dossiers non alimentés

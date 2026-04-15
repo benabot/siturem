@@ -153,7 +153,8 @@ Ce positionnement entraîne plusieurs conséquences :
 Note d'implémentation actuelle :
 - l'UI de Siturem est déjà livrée en fr / en-US / es / de
 - le switcher de langue UI est dans `SettingsView`
-- la langue audio reste séparée et hors scope de cette phase
+- la langue audio suit la langue UI effective quand des assets existent (`fr`, `en`, `es`), sinon fallback `en`
+- l'architecture reste séparée : la disponibilité audio n'est pas identique à la disponibilité UI
 
 ### 3. Définir une matrice de disponibilité par langue
 Exemple recommandé :

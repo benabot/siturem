@@ -4,9 +4,21 @@ enum AudioLocale: String, CaseIterable, Codable {
     case fr
     case en
     case es
-    case de
 
-    static let fallback: AudioLocale = .fr
+    static let fallback: AudioLocale = .en
+
+    static func resolved(for uiLanguage: AppLanguage) -> AudioLocale {
+        switch uiLanguage {
+        case .fr:
+            .fr
+        case .enUS:
+            .en
+        case .es:
+            .es
+        case .de:
+            .fallback
+        }
+    }
 }
 
 enum AudioAssetGroup: String {

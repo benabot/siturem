@@ -56,7 +56,7 @@
 		870A2CBA71CDA3AE368BB740 /* SessionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionModels.swift; sourceTree = "<group>"; };
 		90EF0AECB1B17CB1457163AC /* BlobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobView.swift; sourceTree = "<group>"; };
 		95273A2C4013FEB1086D4ECE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		97A10DC34DC56DE9C0FE5056 /* Siturem.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Siturem.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97A10DC34DC56DE9C0FE5056 /* Siturem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Siturem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98BFCEB44F63999C06D14C70 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9967C956042C857BB59F3BBD /* SessionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEngine.swift; sourceTree = "<group>"; };
 		9EC0F3AF7E51263AF4540528 /* AudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioService.swift; sourceTree = "<group>"; };
@@ -383,6 +383,8 @@
 				CODE_SIGN_ENTITLEMENTS = Siturem/Siturem.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Siturem/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Siturem;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -470,6 +472,8 @@
 				CODE_SIGN_ENTITLEMENTS = Siturem/Siturem.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Siturem/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Siturem;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
