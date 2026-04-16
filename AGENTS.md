@@ -14,7 +14,7 @@ Audio content should follow `Siturem/Audio/`.
 
 HealthKit-related code should be isolated in `Siturem/Services/Health/` or the closest dedicated service area rather than mixed into views or unrelated services.
 
-Product, marketing, and branding references live in `docs/`.
+Product, marketing, branding references, and the active V2 backlog live in `docs/`.
 
 `project.yml` is the source of truth for the generated Xcode project.
 
@@ -35,6 +35,7 @@ Prefer a focused skill over a general one.
 
 ## Task Routing
 - Start with `project-kickoff` for new feature, bug, refactor, or product-scope requests.
+- Use `docs/2026-04-16-siturem-v2-backlog.md` first for V2 UX/UI and feature evolution.
 - Use `swift-bugfix` for regressions, crashes, incorrect behavior, or compiler fixes.
 - Use `swiftui-feature` for user-facing UI work.
 - Use `swift-test-cycle` when implementing or validating a contained Swift change.
@@ -128,9 +129,10 @@ Include:
 When documents differ, use this order:
 1. `docs/cahierCharges-v1.md` for product behavior
 2. `docs/BrandingGuideline.md` for tone and terminology
-3. `docs/meditation-market-priorities.md` for language, market, localization, and messaging priorities
-4. `PROJECT_STATUS.md` and `TODO.md` for shared implementation status and next steps
-5. `README.md` for general repository context
+3. `docs/2026-04-16-siturem-v2-backlog.md` for V2 UX/UI and feature priorities
+4. `docs/meditation-market-priorities.md` for language, market, localization, and messaging priorities
+5. `PROJECT_STATUS.md` and `TODO.md` for shared implementation status and next steps
+6. `README.md` for general repository context
 
 ## Documentation Updates
 Update `PROJECT_STATUS.md` or `TODO.md` when you change:
@@ -140,6 +142,9 @@ Update `PROJECT_STATUS.md` or `TODO.md` when you change:
 - major follow-up work
 - HealthKit integration scope
 - multilingual rollout decisions
+- V2 UX/UI or feature priorities
+
+Update `docs/2026-04-16-siturem-v2-backlog.md` when V2 UX/UI or feature priorities change.
 
 ## Source of Truth
 For product behavior, prefer `README.md`, `docs/cahierCharges-v1.md`, and `docs/BrandingGuideline.md` over assumptions.

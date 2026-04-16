@@ -43,6 +43,7 @@ Siturem/
 ## Documentation
 - `docs/BrandingGuideline.md` — Identité, ton, territoire visuel
 - `docs/cahierCharges-v1.md`  — Spécifications produit complètes
+- `docs/2026-04-16-siturem-v2-backlog.md` — backlog V2 priorisé écran par écran, document de référence pour la prochaine phase produit
 - `TODO.md`                   — Tâches actionnables
 - `PROJECT_STATUS.md`         — État du projet, décisions, points ouverts
 

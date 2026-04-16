@@ -48,6 +48,7 @@ Le bundle identifier Xcode est désormais `com.beabot.siturem` dans `project.yml
 ## Références locales
 - `docs/BrandingGuideline.md` — identité visuelle, ton, territoire
 - `docs/cahierCharges-v1.md` — spécifications fonctionnelles complètes (source de vérité)
+- `docs/2026-04-16-siturem-v2-backlog.md` — backlog V2 priorisé écran par écran
 
 ## Contexte produit
 Application iOS minimaliste de méditation structurée pour pratiquants autonomes.
@@ -83,4 +84,5 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - **Bundle identifier** : migration vers `com.beabot.siturem`
 
 ## Prochain focus
-Déposer et valider les assets vocaux `fr`, puis alimenter `en` / `es` / `de` selon la matrice de disponibilité audio. Ajouter ensuite une couverture de tests pour les états d'autorisation et le flux HealthKit si un target XCTest est introduit.
+Déposer et valider les assets vocaux `fr`, puis alimenter `en` / `es` / `de` selon la matrice de disponibilité audio. Ajouter ensuite une couverture de tests pour les états d’autorisation et le flux HealthKit si un target XCTest est introduit.
+Le cadrage V2 est désormais centralisé dans `docs/2026-04-16-siturem-v2-backlog.md`; s’y référer pour les prochains lots UX/UI et fonctionnalités.

@@ -1,5 +1,20 @@
 # TODO
 
+## V2 — Référence documentaire
+
+Le backlog détaillé de la prochaine phase est maintenu dans [`docs/2026-04-16-siturem-v2-backlog.md`](docs/2026-04-16-siturem-v2-backlog.md).
+
+Ne pas recopier ce contenu ici ; garder `TODO.md` pour la coordination courte et les points d’exécution.
+
+Chantiers V2 prioritaires :
+- HomeView comme point d’entrée principal
+- SessionView plus sobre et masquable
+- SessionSummaryView plus utile et plus discrète
+- StatsView essentielle
+- SettingsView pour les préférences durables
+
+Les cadres de pratique et les widgets sont documentés dans le backlog V2 et viennent après les écrans de base.
+
 ## Localisation UI V1 ✅
 
 Phase dédiée à la localisation de l'interface uniquement. La langue audio reste hors scope pour ce ticket et conserve sa matrice propre.
