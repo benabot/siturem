@@ -89,6 +89,8 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - **Rappels guidés** : les libellés de réglage sont alignés sur leur cadence réelle, avec `Occasionnelles = 2m30` et `Fréquentes = 1m30`
 - **Bundle identifier** : migration vers `com.beabot.siturem`
 - **Validation V1.1** : la V1.1 est considérée comme validée côté app / intégration / périmètre ; la seule réserve explicitement maintenue concerne la qualité finale de certains assets d’ambiance
+- **Pilotage opérationnel** : le GitHub Project `Siturem — Delivery` (`github.com/users/benabot/projects/2`) est le tableau de pilotage principal du repo
+- **Cycle de travail** : lire une issue, la passer en `En cours`, implémenter, valider localement, faire un commit documenté au format `type(area): action concise (#issue)`, commenter / fermer l’issue, puis synchroniser `TODO.md` et `PROJECT_STATUS.md` si nécessaire
 
 ## Arbitrage V2
 
@@ -106,9 +108,9 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - monétisation sobre, stats par cadre, Siri Shortcuts / App Intents
 
 ## Prochain focus
-`[S1] Docs — figer le périmètre V2.0 strict`
+`[S0] V1.2 — Polish & stability`
 
-- relire le backlog V2 et les docs de pilotage déjà présentes
-- distinguer clairement **V2.0 strict** et **V2.1+**
-- ne garder que les chantiers réellement essentiels pour un dev solo
-- figer un ordre de livraison simple, séquentiel et incrémental
+- refaire puis revalider les sons d’ambiance encore en réserve qualité
+- finaliser les assets localisés `en` / `es` / `de` selon la matrice effectivement retenue
+- ajouter des haptics légers aux transitions
+- revalider le flux complet avant de remettre la V2 au premier plan

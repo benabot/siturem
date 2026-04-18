@@ -2,27 +2,35 @@
 
 ## Priorité active
 
-### [S1] Docs — figer le périmètre V2.0 strict
+### [S0] V1.2 — Polish & stability
 
 **Statut**
-Priorité active de pilotage. Le cadrage documentaire est désormais posé et doit servir de filtre avant toute ouverture de nouveau chantier V2.
+Sprint courant de reprise avant réouverture effective de la V2.
 
 **Objectif**
-Définir noir sur blanc ce qui entre dans **V2.0 strict** et ce qui est repoussé à **V2.1+**.
+Fermer proprement les réserves audio et stabilité encore ouvertes, puis revalider le flux complet avant de remettre la V2 au premier plan.
 
 **Tâches**
-- [x] relire le backlog V2 dans `docs/`
-- [x] relire les docs de roadmap / planification déjà présentes dans le repo
-- [x] distinguer le scope **V2.0 strict** des extensions **V2.1+**
-- [x] valider la liste des chantiers réellement prioritaires
-- [x] documenter l’ordre de livraison retenu
-- [x] repousser explicitement les extensions non essentielles
-- [x] garder un périmètre compatible avec un dev solo et une livraison incrémentale
+- [ ] refaire et valider les sons d’ambiance encore en réserve qualité
+- [ ] finaliser les assets localisés `en` / `es` / `de` selon la matrice réellement retenue
+- [ ] ajouter des haptics légers aux transitions
+- [ ] revalider le flux complet après les derniers ajustements
+- [ ] resynchroniser la documentation partagée si l’état réel change
 
 **Critère de fin**
+- [ ] le rendu audio résiduel est jugé propre
+- [ ] les langues audio effectivement supportées sont bornées clairement
+- [ ] le flux complet est revalidé
+- [ ] `TODO.md` et `PROJECT_STATUS.md` reflètent l’état final de la reprise V1.x
+
+## Cadrage V2 — prêt
+
+Le cadrage documentaire V2 est posé. Il sert de filtre pour éviter d’ouvrir trop de sujets en parallèle, mais il n’est plus la priorité active tant que la reprise `V1.2` n’est pas terminée.
+
+### Acté
 - [x] le périmètre **V2.0 strict** est défini
-- [x] les extensions non essentielles sont repoussées explicitement
-- [x] la documentation de pilotage est claire
+- [x] les extensions **V2.1+** sont repoussées explicitement
+- [x] l’ordre de livraison retenu est documenté
 
 ## V1.1 — validée avec réserve
 
