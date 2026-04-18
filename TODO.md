@@ -13,7 +13,7 @@ Fermer proprement les réserves audio et stabilité encore ouvertes, puis revali
 **Tâches**
 - [ ] refaire et valider les sons d’ambiance encore en réserve qualité
 - [ ] finaliser les assets localisés `en` / `es` / `de` selon la matrice réellement retenue
-- [ ] ajouter des haptics légers aux transitions
+- [x] ajouter des haptics légers aux transitions
 - [ ] revalider le flux complet après les derniers ajustements
 - [ ] resynchroniser la documentation partagée si l’état réel change
 

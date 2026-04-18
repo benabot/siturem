@@ -15,6 +15,7 @@ struct SessionView: View {
     private let healthKit = HealthKitService()
 
     @State private var audioService: AudioService?
+    @State private var hapticsService = HapticsService()
     @State private var showEndConfirmation = false
     @State private var showSummary = false
     @State private var sessionStartDate: Date?
@@ -38,6 +39,8 @@ struct SessionView: View {
                 sessionStartDate = Date()
             }
 
+            hapticsService.prepareForSession()
+
             engine.onSessionEnd = {
                 audio.handleSessionEnd(configuration: engine.config)
                 handleEnd()
@@ -60,6 +63,7 @@ struct SessionView: View {
                 to: newValue,
                 configuration: engine.config
             )
+            hapticsService.handlePhaseTransition(from: oldValue, to: newValue)
         }
         .onDisappear {
             audioService?.stopAll()

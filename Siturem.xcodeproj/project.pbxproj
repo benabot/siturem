@@ -20,6 +20,7 @@
 		5C64E9CA0EFB554FABC5BD14 /* SituremApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED8CF95E49373BEED26515E /* SituremApp.swift */; };
 		619F7F831CA5D8214B0F504C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9939668564E814F39210C13 /* HomeView.swift */; };
 		69146BFE1EC8ACE4B57C23A4 /* BlobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF0AECB1B17CB1457163AC /* BlobView.swift */; };
+		726BA844ED9A98185BB50102 /* HapticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E015C00768624A292BFE89 /* HapticsService.swift */; };
 		72C7A1E5F2B455F92ED96014 /* SessionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9967C956042C857BB59F3BBD /* SessionEngine.swift */; };
 		7465DD0998FAB7975AA4F3F1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 29471116FEEA5F0AD9788E54 /* Localizable.strings */; };
 		7652905424C8F7B80150BEF5 /* AudioAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCACA972E82F4E0425529687 /* AudioAsset.swift */; };
@@ -55,6 +56,7 @@
 		8561C2DD2BFEFF8D7F001EF1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		870A2CBA71CDA3AE368BB740 /* SessionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionModels.swift; sourceTree = "<group>"; };
 		90EF0AECB1B17CB1457163AC /* BlobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobView.swift; sourceTree = "<group>"; };
+		95E015C00768624A292BFE89 /* HapticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsService.swift; sourceTree = "<group>"; };
 		95273A2C4013FEB1086D4ECE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		97A10DC34DC56DE9C0FE5056 /* Siturem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Siturem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98BFCEB44F63999C06D14C70 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 			children = (
 				FCACA972E82F4E0425529687 /* AudioAsset.swift */,
 				9EC0F3AF7E51263AF4540528 /* AudioService.swift */,
+				95E015C00768624A292BFE89 /* HapticsService.swift */,
 				6D57D0584530035947C75A99 /* HealthKitService.swift */,
 				9F89194112BB337F148B388F /* PreferencesStore.swift */,
 				9967C956042C857BB59F3BBD /* SessionEngine.swift */,
@@ -265,6 +268,7 @@
 				A7FF9209B5122A01EA6790BA /* AudioService.swift in Sources */,
 				69146BFE1EC8ACE4B57C23A4 /* BlobView.swift in Sources */,
 				1339C7A61124E01F9154198E /* ContentView.swift in Sources */,
+				726BA844ED9A98185BB50102 /* HapticsService.swift in Sources */,
 				7F4EDDF40605E2B397A23F36 /* HealthKitService.swift in Sources */,
 				619F7F831CA5D8214B0F504C /* HomeView.swift in Sources */,
 				2B53099344F21E0FE41608FB /* Layout.swift in Sources */,

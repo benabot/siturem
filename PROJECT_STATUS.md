@@ -40,6 +40,7 @@ Le bundle identifier Xcode est désormais `com.beabot.siturem` dans `project.yml
 | AppIcon | ✅ Intégrée — 5 tailles PNG via `scripts/generate-icons.swift`, `Assets.xcassets` correctement référencé |
 | HealthKitService | ✅ Intégré — état d'autorisation explicite, demande contextuelle, écriture silencieuse en fin de séance |
 | AudioService | ✅ Implémenté — intro/outro vocaux séquencés dans l'ordre avec gaps configurés, intro FR complète, closing long avec gong final intégré à la séquence guidée, reminder phase centrale robuste par bucket, voix guidée poussée devant une ambiance légèrement remontée avec ducking renforcé, pause/reprise, langue audio dérivée de l'UI avec fallback global `en`, silence si assets absents partout |
+| Haptics | ✅ Légers et discrets — feedback natif limité aux transitions `intro -> méditation` et `méditation -> closing`, sans logique ajoutée dans `SessionEngine` |
 
 ## Points ouverts
 
@@ -86,6 +87,7 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - **Fallback audio** : si la langue UI n'a pas d'audio disponible, fallback global vers `en`. Si un asset manque dans la langue résolue, tentative en `en`, puis silence si absent partout
 - **Séquençage voix** : intro/outro reposent sur une séquence ordonnée, des gaps configurés et des durées attendues ou mesurées. `intro_07_scan_corporel` est réintégré à l'intro FR, `intro_04_fermer_les_yeux` démarre 3 s plus tard qu'avant, le gap `intro_05 -> intro_06` est élargi à 10 s, `intro_08_concentration_souffle` reste ancré 5 s avant la fin de l'intro avec rattrapage si la frontière de phase approche, et le gong final fait désormais partie de la séquence de closing guidée.
 - **Mix audio** : l'ambiance reste volontairement secondaire face à la voix, avec une voix guidée poussée au premier plan, un niveau de base légèrement remonté mais toujours bas, un ducking plus marqué pendant les interventions, une remontée plus douce ensuite, et un profil pluie un peu plus présent tout en restant discret.
+- **Haptics de transition** : un feedback natif léger est déclenché uniquement lors des bascules de phase majeures (`intro -> méditation`, `méditation -> closing`) depuis `SessionView`, via un service dédié, sans dérive de responsabilité dans `SessionEngine`
 - **Rappels guidés** : les libellés de réglage sont alignés sur leur cadence réelle, avec `Occasionnelles = 2m30` et `Fréquentes = 1m30`
 - **Bundle identifier** : migration vers `com.beabot.siturem`
 - **Validation V1.1** : la V1.1 est considérée comme validée côté app / intégration / périmètre ; la seule réserve explicitement maintenue concerne la qualité finale de certains assets d’ambiance
@@ -112,5 +114,4 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 
 - refaire puis revalider les sons d’ambiance encore en réserve qualité
 - finaliser les assets localisés `en` / `es` / `de` selon la matrice effectivement retenue
-- ajouter des haptics légers aux transitions
 - revalider le flux complet avant de remettre la V2 au premier plan
