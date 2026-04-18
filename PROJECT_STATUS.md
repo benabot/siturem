@@ -12,6 +12,9 @@ Siturem — Méditation structurée
 ## État actuel
 Base fonctionnelle — UI et logique métier complètes. L'interface est désormais localisée en fr / en-US / es / de avec un switcher persistant dans `SettingsView`, une option `Système`, et une locale SwiftUI appliquée au niveau racine. Règle actuelle : au premier lancement, l'UI suit la langue système / scheme Xcode si elle est supportée (`fr`, `en-US`, `es`, `de`), sinon fallback anglais ; dès qu'un utilisateur choisit explicitement une langue, cet override prend priorité jusqu'à retour sur `Système`. L'audio suit maintenant la langue UI effective si des assets audio existent pour cette langue (`fr`, `en`, `es`), sinon fallback global vers `en`. Si un asset manque dans la langue audio résolue, le resolver tente `en`, puis silence. `de` reste prêt structurellement côté bundle mais n'est pas considéré comme une locale audio disponible. Le séquençage vocal est ordonné, avec gaps configurés, une intro FR complète incluant `intro_07_scan_corporel`, un gap renforcé entre `intro_05_points_de_contact` et `intro_06_conscience_environnement`, et un ancrage de fin de phase durci pour `intro_08_concentration_souffle`. Le mix ambiance / voix a été abaissé et le ducking renforcé, avec un profil plus discret pour la pluie afin de rendre sa boucle moins perceptible. La phase de closing a été portée à `92 s` pour couvrir la séquence réelle de retour avec gong final. L'intégration HealthKit V1 est maintenant branchée au flux de fin de séance, avec écriture silencieuse uniquement pour les séances terminées normalement et permission contextualisée depuis `SettingsView`.
 
+**V1.1 validée côté app / intégration / périmètre.**
+La réserve restante porte sur certains sons d’ambiance qui doivent être refaits côté assets pour obtenir un rendu plus propre. Cette réserve n’invalide pas le périmètre fonctionnel V1.1.
+
 **Refonte visuelle et UX terminée.**
 Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre de progression (6pt) + contrôles ancrés via `.safeAreaInset`, SettingsView recentrée avec section PRINCIPES, splash animée et renforcée. Système `LayoutMetrics` (φ ≈ 1.618). Logo géométrique (`SituremMark` / `SituremLogo`) décliné sur splash et HomeView.
 
@@ -41,6 +44,7 @@ Le bundle identifier Xcode est désormais `com.beabot.siturem` dans `project.yml
 ## Points ouverts
 
 - **Assets audio** : arborescence `Audio/{fr,en,es,de}/...` en place, `Siturem/Audio` déclaré explicitement dans `project.yml`. Les locales audio actuellement traitées comme disponibles sont `fr`, `en`, `es`. `de` reste incomplet côté voix et n'est pas sélectionné automatiquement.
+- **Réserve qualité V1.1** : certains sons d’ambiance doivent encore être refaits puis redéposés côté assets. Cette réserve reste limitée à la qualité finale des fichiers et ne remet pas en cause la validation fonctionnelle de la V1.1.
 - **Localisation audio** : la langue audio suit désormais la langue UI effective avec fallback global `en`. La séparation d'architecture UI / audio reste conservée ; seule la règle de résolution a changé.
 - **HealthKit** : synchro V1 optionnelle activée côté app. Permission demandée seulement depuis `SettingsView`. Écriture tentée uniquement pour les séances terminées normalement ; refus, indisponibilité et échec restent silencieux et non bloquants
 - **Tests** : aucun test unitaire ou UI en place
@@ -84,7 +88,27 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - **Mix audio** : l'ambiance reste volontairement secondaire face à la voix, avec une voix guidée poussée au premier plan, un niveau de base légèrement remonté mais toujours bas, un ducking plus marqué pendant les interventions, une remontée plus douce ensuite, et un profil pluie un peu plus présent tout en restant discret.
 - **Rappels guidés** : les libellés de réglage sont alignés sur leur cadence réelle, avec `Occasionnelles = 2m30` et `Fréquentes = 1m30`
 - **Bundle identifier** : migration vers `com.beabot.siturem`
+- **Validation V1.1** : la V1.1 est considérée comme validée côté app / intégration / périmètre ; la seule réserve explicitement maintenue concerne la qualité finale de certains assets d’ambiance
+
+## Arbitrage V2
+
+### V2.0 strict
+- `HomeView` recentrée sur le lancement immédiat, les réglages rapides et la relance de la dernière configuration
+- `SessionView` plus discrète avec temps et progression masquables, contrôles stables
+- `SessionSummaryView` plus sobre et plus utile, orientée clôture et relance simple
+- `StatsView` recentrée sur une vue essentielle de registre de pratique
+- `SettingsView` limitée aux préférences durables directement utiles à ces flux
+
+### V2.1+
+- cadres de pratique complets (`PracticeFrame`, CRUD, favoris, cadres natifs)
+- stats avancées (`heatmap`, détail de séance, agrégations étendues, export CSV)
+- haptics légers, widgets, deep links, rappels opt-in
+- monétisation sobre, stats par cadre, Siri Shortcuts / App Intents
 
 ## Prochain focus
-Déposer et valider les assets vocaux `fr`, puis alimenter `en` / `es` / `de` selon la matrice de disponibilité audio. Ajouter ensuite une couverture de tests pour les états d’autorisation et le flux HealthKit si un target XCTest est introduit.
-Le cadrage V2 est désormais centralisé dans `docs/2026-04-16-siturem-v2-backlog.md`; s’y référer pour les prochains lots UX/UI et fonctionnalités.
+`[S1] Docs — figer le périmètre V2.0 strict`
+
+- relire le backlog V2 et les docs de pilotage déjà présentes
+- distinguer clairement **V2.0 strict** et **V2.1+**
+- ne garder que les chantiers réellement essentiels pour un dev solo
+- figer un ordre de livraison simple, séquentiel et incrémental

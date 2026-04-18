@@ -1,7 +1,7 @@
 # Siturem — Backlog V2 priorisé
 
 - **Date :** 2026-04-16
-- **Statut :** Document de coordination V2
+- **Statut :** Document de coordination V2 — arbitrage resserré validé le 2026-04-18
 - **Périmètre :** UX/UI + fonctionnalités de la prochaine phase produit
 - **Principe directeur :** différencier Siturem par la clarté, la vitesse de lancement, la sobriété, la neutralité, la configurabilité simple et la stabilité d’usage.
 
@@ -32,27 +32,41 @@ La V2 doit rendre Siturem plus rapide à lancer, plus lisible et plus simple à 
 - [ ] **Apple Watch hors périmètre V2 de base**.
 - [ ] **Pas de dérive produit** : pas de gamification, pas de social, pas de contenu éditorial, pas d’abonnement.
 
+### Note de cadrage
+Les sections détaillées plus bas restent un réservoir de travail.
+Elles n’entrent pas automatiquement dans **V2.0 strict**. Le scope opérationnel à suivre est celui de la section 3.
+
 ---
 
 ## 3. Ordre global de priorisation
 
 ### V2.0 strict
-- [ ] Refonte HomeView
-- [ ] SessionView avec temps/progression masquables
-- [ ] SessionSummaryView plus utile et plus sobre
-- [ ] StatsView essentielle
-- [ ] SettingsView enrichi pour préférences durables
+- [ ] `HomeView` recentrée sur le lancement immédiat
+- [ ] Réglages rapides sur l’accueil, sans ouvrir de modèle de cadres complet
+- [ ] Relance de la dernière configuration utilisée
+- [ ] `SessionView` avec temps / progression masquables et contrôles stabilisés
+- [ ] `SessionSummaryView` plus sobre avec relance simple de la même configuration
+- [ ] `StatsView` essentielle uniquement
+- [ ] `SettingsView` limitée aux préférences durables directement nécessaires à ces flux
 
-### V2.1
-- [ ] Cadres de pratique
-- [ ] Widgets utiles
+### V2.1+
+- [ ] Cadres de pratique complets (`PracticeFrame`, CRUD, favoris, cadres natifs)
 - [ ] Haptics légers
+- [ ] Widgets utiles
 - [ ] Export CSV
+- [ ] Stats avancées (`heatmap`, détail de séance, agrégations étendues)
 
 ### V2.2 conditionnel
 - [ ] Monétisation sobre
 - [ ] Stats par cadre
 - [ ] Siri Shortcuts / App Intents
+
+### Ordre de livraison retenu
+1. `HomeView` — lancement immédiat, réglages rapides, relance de la dernière configuration
+2. `SessionView` — temps / progression masquables, contrôles stables
+3. `SessionSummaryView` — clôture sobre et réutilisation simple
+4. `StatsView` — vue essentielle de registre de pratique
+5. `SettingsView` — préférences durables limitées au strict utile
 
 ---
 
@@ -405,30 +419,30 @@ Proposer seulement des widgets réellement utiles au retour à la pratique.
 
 ## Lot A — Différenciation immédiate
 - [ ] Refonte HomeView
-- [ ] Dernier cadre
-- [ ] Favoris
+- [ ] Relance de la dernière configuration
 - [ ] Réglages rapides
-- [ ] Accès réglages avancés
+- [ ] Accès réglages avancés limité au strict nécessaire
 
 ## Lot B — Séance invisible
 - [ ] Temps masquable
 - [ ] Progression masquable
 - [ ] Contrôles consolidés
-- [ ] Haptics légers
 
 ## Lot C — Clôture et registre
 - [ ] SessionSummaryView utile et sobre
 - [ ] Stats essentielles
-- [ ] Heatmap
-- [ ] Export CSV
 
-## Lot D — Cadres et réglages durables
-- [ ] Modèle cadre
+## Lot D — Réglages durables stricts
+- [ ] Préférences persistantes directement liées au rendu de séance
+- [ ] Nettoyage de `SettingsView`
+
+## Lot E — Extensions V2.1+
+- [ ] Modèle cadre complet
 - [ ] CRUD
 - [ ] Favoris
 - [ ] Cadres natifs
-
-## Lot E — Widgets et monétisation sobre
+- [ ] Heatmap
+- [ ] Export CSV
 - [ ] Widget de démarrage favori
 - [ ] Widget dernier cadre
 - [ ] Modèle de monétisation simple
@@ -442,7 +456,7 @@ Proposer seulement des widgets réellement utiles au retour à la pratique.
 - [ ] L’accueil est plus lisible et plus rapide qu’en V1
 - [ ] L’écran de séance peut devenir presque invisible
 - [ ] Les stats restent utiles sans effet “fitness app”
-- [ ] Les cadres renforcent l’usage régulier sans complexifier l’app
+- [ ] Le cœur V2 reste livrable sans système complet de cadres
 - [ ] La monétisation reste sobre, optionnelle et sans abonnement
 - [ ] Le produit reste minimaliste, configurable avec simplicité, neutre et visuellement clair
 - [ ] Aucune promesse hors scope ne s’ajoute à la V2 de base

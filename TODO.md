@@ -1,191 +1,54 @@
 # TODO
 
-## V2 — Référence documentaire
+## Priorité active
 
-Le backlog détaillé de la prochaine phase est maintenu dans [`docs/2026-04-16-siturem-v2-backlog.md`](docs/2026-04-16-siturem-v2-backlog.md).
+### [S1] Docs — figer le périmètre V2.0 strict
 
-Ne pas recopier ce contenu ici ; garder `TODO.md` pour la coordination courte et les points d’exécution.
+**Statut**
+Priorité active de pilotage. Le cadrage documentaire est désormais posé et doit servir de filtre avant toute ouverture de nouveau chantier V2.
 
-Chantiers V2 prioritaires :
-- HomeView comme point d’entrée principal
-- SessionView plus sobre et masquable
-- SessionSummaryView plus utile et plus discrète
-- StatsView essentielle
-- SettingsView pour les préférences durables
+**Objectif**
+Définir noir sur blanc ce qui entre dans **V2.0 strict** et ce qui est repoussé à **V2.1+**.
 
-Les cadres de pratique et les widgets sont documentés dans le backlog V2 et viennent après les écrans de base.
+**Tâches**
+- [x] relire le backlog V2 dans `docs/`
+- [x] relire les docs de roadmap / planification déjà présentes dans le repo
+- [x] distinguer le scope **V2.0 strict** des extensions **V2.1+**
+- [x] valider la liste des chantiers réellement prioritaires
+- [x] documenter l’ordre de livraison retenu
+- [x] repousser explicitement les extensions non essentielles
+- [x] garder un périmètre compatible avec un dev solo et une livraison incrémentale
 
-## Localisation UI V1 ✅
+**Critère de fin**
+- [x] le périmètre **V2.0 strict** est défini
+- [x] les extensions non essentielles sont repoussées explicitement
+- [x] la documentation de pilotage est claire
 
-Phase dédiée à la localisation de l'interface uniquement. La langue audio reste hors scope pour ce ticket et conserve sa matrice propre.
+## V1.1 — validée avec réserve
 
-### Étape 1 — Cartographie i18n
+La V1.1 est considérée comme validée côté app, intégration et périmètre fonctionnel.
+La réserve restante porte sur la qualité finale de certains sons d’ambiance, à refaire côté assets pour obtenir un rendu plus propre.
 
-- [x] Externaliser toutes les chaînes utilisateur visibles dans les vues SwiftUI et les textes exposés par les enums utilisés par l'UI.
-- [x] Normaliser les clés / ressources de traduction par écran et par domaine.
-- [x] Vérifier les chaînes dans l'onboarding, le splash, l'accueil, la séance, le bilan, les statistiques, les réglages et les messages d'erreur.
+### Clos
+- [x] base applicative V1.1 stable
+- [x] refonte visuelle et UX validée
+- [x] localisation UI `fr` / `en-US` / `es` / `de`
+- [x] audio intégré avec règle `langue UI -> langue audio` et fallback global `en`
+- [x] phase de closing fixée à `92 s`
+- [x] intégration HealthKit V1 non bloquante
+- [x] documentation de statut partagée remise à jour
 
-### Étape 2 — Langue UI
+### Réserve assets
+- [ ] refaire certains sons d’ambiance pour obtenir un rendu plus propre
+- [ ] redéposer puis revalider les assets d’ambiance concernés dans le bundle
+- [ ] finaliser et valider les packs audio localisés `en`, `es`, `de` selon la matrice UI / audio retenue
 
-- [x] Ajouter un réglage persistant de langue d'interface dans `PreferencesStore`.
-- [x] Appliquer la langue UI au niveau racine de l'app SwiftUI.
-- [x] Ajouter le sélecteur de langue UI dans `SettingsView` avec les choix Français, English (US), Español et Deutsch.
+## Référence V2
 
-### Étape 3 — Ressources localisées
+Le cadrage V2 actif est maintenu dans :
+- `docs/2026-04-16-siturem-v2-backlog.md`
+- `docs/2026-04-16-siturem-v2-sprint-plan.md`
 
-- [x] Ajouter les ressources de traduction fr, en-US, es et de pour l'interface.
-- [x] Ajouter les chaînes de permissions système nécessaires pour HealthKit.
-- [x] Vérifier que les labels d'interface restent séparés des noms de fichiers audio et de la future langue audio.
-
-### Étape 4 — Validation
-
-- [x] Régénérer le projet si nécessaire avec `xcodegen generate`.
-- [x] Recompiler l'app et corriger toute régression de signature ou de localisation.
-- [x] Mettre à jour `PROJECT_STATUS.md` et les autres notes partagées une fois l'état final stabilisé.
-- [x] Corriger la règle de premier lancement : aucun défaut UI interne forcé, priorité `override utilisateur > système supporté > anglais`.
-
-## Refonte visuelle et UX (en cours)
-
-### ~~Étape 1 — Palette & thème~~ ✅
-
-`Siturem/Views/Theme.swift` créé. Palette : anthracite `#181820`, surface `#222229`, accent bleu ardoise `#6E7FA3`, blanc cassé `#F0EDE8`. Appliqué dans toutes les vues.
-
-### ~~Étape 2 — BlobView (composant autonome)~~ ✅
-
-`Siturem/Views/BlobView.swift` créé. 3 ellipses + 5 états indépendants (scale×3 + offset×2), chacun animé à durée incommensurable (×1.00, ×1.37, ×0.79, ×1.19, ×0.91) pour mouvement organique irrégulier jamais périodique. Redémarre au changement de phase.
-
-### ~~Étape 3 — SessionView refonte~~ ✅
-
-Compteur numérique supprimé. `BlobView` centré verticalement (`.frame(maxHeight: .infinity)`). Barre de progression (5pt, opacité 0.80) + contrôles groupés en bas (padding 72pt via nombre d'or). Label de phase discret en haut. Progression globale `totalElapsed / totalDuration`. Mise en page basée sur φ ≈ 1.618.
-
-### ~~Étape 3b — Ajustements visuels fins~~ ✅
-
-`SessionView` : barre de progression abaissée et recentrée horizontalement avec largeur plafonnée, contrôles conservés à leur position validée visuellement.
-`BlobView` : halo rendu sur un canevas plus large avec padding interne pour éviter l'effet de bloc carré et garder le blob lisible dans son espace.
-
-### ~~Étape 4 — Refonte SettingsView (préférences système)~~ ✅
-
-Section "SÉANCE PAR DÉFAUT" retirée. `SettingsView` conservée avec : Santé (HealthKit), À propos (version). Placeholders commentés pour interface/voix/langue à venir.
-
-### ~~Étape 5 — Build & vérification~~ ✅
-
-`xcodegen generate` + BUILD SUCCEEDED (iPhone 16 simulator, iOS 18.6).
-
-### ~~Ajout système Layout (nombre d'or)~~ ✅
-
-`LayoutMetrics.swift` créé avec constantes basées sur φ ≈ 1.618 :
-- Base : 40 pt
-- Small : 40 / φ ≈ 24.7 pt
-- Large : 40 × φ ≈ 64.7 pt
-- X-Large : 40 × φ² ≈ 104.7 pt
-- Safe area bottom : 24.7 pt
-
-`SessionView` refactorisée :
-- `.safeAreaInset(edge: .bottom)` pour ancrer barre + contrôles physiquement au-dessus du home indicator
-- Blob remplit l'espace restant, centré verticalement
-- Barre de progression épaissie à 6pt
-- Tous les espacements appliquent φ (phaseTopOffset, progressToControlsSpacing, hPadding)
-
-### ~~Logo Siturem (SituremMark + SituremLogo)~~ ✅
-
-`SituremMark.swift` créé : 3 capsules horizontales gauche-alignées, largeurs proportionnelles aux phases (intro 55%, méditation 100%, closing 30%), opacités 70/100/45%. Scalable, 2 déclinaisons via `SituremLogo(layout:)` :
-- `.vertical` (splash) : mark + wordmark + sous-titre
-- `.horizontal` (nav bar) : mark + wordmark côte à côte
-
-`SplashView` : logo vertical taille 56, aligné à gauche, tagline animée.
-`HomeView` : grand titre remplacé par `SituremLogo(layout: .horizontal, markSize: 18)` en `.principal` toolbar.
-
-### ~~Retrait Rappels + Splash agrandie~~ ✅
-
-`HomeView` : option "Rappels" retirée (fonctionnalité non encore implémentée). 3 options restantes : Accompagnement, Gong, Ambiance.
-`SplashView` : tagline passée en `.subheadline`, animations allongées (0.8 s, délai 1.1 s).
-
-### ~~HomeView : sélecteur de durée 6–60 min + padding φ~~ ✅
-
-`HomeView` : chips fixes remplacées par un bloc durée avec valeur grande (ultraLight monospaced) + wheel picker compact (6–60 min, pas de 1 min) persisté dans `prefs.totalDuration`. Padding uniformisé via `LayoutMetrics` (horizontal 40 pt, rangées options 24.7 pt).
-
-### ~~Splash renforcée + SettingsView Principes~~ ✅
-
-`SplashView` : fond anthracite (Theme), animation séquencée (titre 0.7 s → baseline après 0.9 s), durée totale 3.4 s (était 2.1 s). Baseline : "Le cadre discret de votre pratique."
-
-`SettingsView` : section PRINCIPES ajoutée — 4 entrées : Trois phases fixes, Pour qui, Philosophie, Durée minimale.
-
-`HomeView` : padding bas du bouton "Commencer" porté à LayoutMetrics.sm (24.7 pt, φ).
-
-### ~~Onboarding 4 pages (premier lancement)~~ ✅
-
-### ~~Transition splash → HomeView (fondu enchaîné)~~ ✅
-
-`SituremApp` : remplacement du `if showSplash { .transition(.opacity) }` par deux `opacity` explicites animées en parallèle (`splashOpacity` 1→0, `contentOpacity` 0→1). Fondu enchaîné propre, sans saut de frame. `.allowsHitTesting` désactivé sur la splash une fois invisible.
-
-### ~~Icône app (AppIcon)~~ ✅
-
-`scripts/generate-icons.swift` : script CoreGraphics standalone générant 5 tailles PNG (120/152/167/180/1024 px). Motif SituremMark centré sur fond anthracite `#181820`, capsules bleu ardoise `#6E7FA3`. `Contents.json` mis à jour par Xcode avec les tailles standard iOS.
-`project.yml` : correction — suppression du pattern `excludes/resources` cassé ; `Assets.xcassets` maintenant auto-détecté par xcodegen lors du scan `Siturem/`.
-
-### ~~Splash, Onboarding, Réglages — refonte textes et timing~~ ✅
-
-`SplashView` : markSize 80→96, baseline `.body` weight `.light`, opacité 0.85, animations allongées (0.9 s, délai 1.2 s). Durée totale splash : 4.5 s + fade 0.8 s.
-`SituremApp` : `asyncAfter` 2.8 s → 4.5 s, fade 0.6 s → 0.8 s.
-`OnboardingView` : textes des 4 pages remplacés par le contenu sobre et direct prévu produit. Délai synchronisé sur 5.0 s. Pages 1–3 : phrases épurées, sans titre. Page 4 : dernière phrase + bouton COMMENCER.
-`SettingsView` : section SÉANCE ajoutée avec `Picker` segmenté pour `ReminderInterval` (Aucune / Occasionnelles / Fréquentes).
-`SessionModels` : `ReminderInterval.settingsLabel` ajouté pour les labels sobres en réglages.
-
-`Siturem/Views/Onboarding/OnboardingView.swift` créé. 4 pages swipeables (TabView `.page`) :
-- Page 1 — Identité : "SITUREM" + "Méditation structurée", animation 3.2 s (synchronisée avec splash)
-- Page 2 — Promesse : titre + 3 étapes numérotées avec tiret accent, révélation décalée
-- Page 3 — Structure : titre + 3 barres de phase proportionnelles (GeometryReader) + labels
-- Page 4 — Commencer : titre + sous-titre + bouton "COMMENCER"
-Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingCompleted")` dans `ContentView` — affiché une seule fois.
-
----
-
-## Critique (V1 bloquée)
-
-- [x] Migrer l'arborescence audio vers `Audio/{fr,en,es,de}/{Gongs,Ambiance,VoiceGuidance/{Intro,Reminders,Outro}}`
-- [x] Déclarer `Siturem/Audio` explicitement dans `project.yml` pour embarquer la hiérarchie localisée
-- [x] Centraliser la résolution des assets audio par `AudioLocale` avec fallback global `en`
-- [x] Raccorder automatiquement la langue audio à la langue UI effective, sans réglage audio séparé pour cette phase
-- [x] Déposer les fichiers audio (.caf/.m4a) disponibles dans `Audio/fr/` et les ajouter au target Xcode
-- [x] AudioService : gong unique en bornes de séance (`gong.caf` après `intro_01_bonjour`, puis à la fin réelle)
-- [x] AudioService : ambiance sonore en boucle (AmbientSound)
-- [x] AudioService : intro/outro vocaux minutés avec déclenchement par franchissement de seuil
-- [x] AudioService : séquençage vocal ordonné (clips dans l'ordre, gaps configurés, `intro_07_scan_corporel` inclus, `intro_08_concentration_souffle` ancré 5 s avant la fin de l'intro)
-- [x] Rappels périodiques phase méditation (`ReminderInterval` géré côté `AudioService`, hors `SessionEngine`)
-- [x] AudioService : mix ambiance / voix rééquilibré (bed plus bas, ducking renforcé, pluie plus discrète)
-- [x] AudioService : gap `intro_05_points_de_contact` -> `intro_06_conscience_environnement` élargi, avec robustesse accrue pour `intro_08_concentration_souffle` en fin d'intro
-- [x] AudioService : reminders fiabilisés par bucket interne de phase méditation, compatibles pause / reprise
-- [x] `ReminderInterval.settingsLabel` réaligné sur les vraies cadences (`Occasionnelles = 2m30`, `Fréquentes = 1m30`)
-- [ ] Déposer les assets vocaux `fr` dans `Audio/fr/VoiceGuidance/{Intro,Reminders,Outro}`
-- [ ] Déposer les assets localisés `en`, `es`, `de` selon la matrice UI/audio
-- [x] Intégrer HealthKit au flux de fin de séance (`SessionView.handleEnd` → `HealthKitService.saveCompletedSession`)
-- [x] Activer entitlement HealthKit dans `Siturem/Siturem.entitlements`
-
-## Important
-
-- [x] Accompagnement simplifié : `Guidé` / `Silencieux`, avec guidance audio active en mode guidé
-- [ ] Haptics légers aux transitions de phase
-- [ ] Test end-to-end des flux utilisateur (simulateur Xcode)
-- [ ] Ajouter une couverture de tests pour les états d'autorisation HealthKit si un target XCTest est créé
-
-## Souhaitable
-
-- [ ] Vérification accessibilité VoiceOver
-- [x] Icône app finale (AppIcon dans Assets.xcassets)
-
-## Dernière livraison
-
-- [x] `AudioService.swift` corrigé : séquençage strict sans chevauchement, intro FR complète avec `intro_07_scan_corporel`, `intro_04_fermer_les_yeux` décalé de +3 s, closing guidé avec longues pauses et gong final inclus
-- [x] `AudioService.swift` ajusté : voix guidée encore renforcée face à l'ambiance, ambiance légèrement remontée, ducking renforcé, pluie plus discrète, gap `intro_05 -> intro_06` porté à 10 s, reminders méditation fiabilisés, rattrapage des événements ancrés de fin d'intro
-- [x] `SessionView.swift` ajustée : barre de progression remontée pour retrouver une respiration nette au-dessus des contrôles après l'élargissement du blob
-- [x] `SessionModels.swift` corrigé : mapping `Occasionnelles` / `Fréquentes` remis sur les bonnes cadences
-- [x] `AudioAsset.swift` étendu : résolution centralisée par `AudioLocale` et `AudioAssetGroup`, audio dérivé de la langue UI, fallback global `en`, IDs techniques inchangés
-- [x] `SessionConfiguration.swift` aligné sur une phase de closing fixe à `92 s` pour couvrir la séquence réelle de fin de séance
-- [x] `SessionView.swift` branchée sur `startSessionAudio`, `handleTick`, `handlePhaseChange`, `handleSessionEnd`, `pauseAll`, `resumeAll`, `stopAll`
-- [x] `BlobView.swift` et `Layout.swift` ajustés pour supprimer le cadre visible quand le blob grossit
-- [x] `project.yml` mis à jour pour intégrer `Siturem/Audio` comme folder resource et préserver `Audio/<locale>/...` dans le bundle
-- [x] Arborescence `Siturem/Audio/` réorganisée en `fr`, `en`, `es`, `de` avec placeholders sur les dossiers non alimentés
-- [x] `project.yml` et le projet généré alignés sur le bundle identifier `com.beabot.siturem`
-- [x] `SessionView` et `BlobView` ajustés visuellement pour le layout final
-- [x] `xcodegen generate`
-- [x] Build simulateur revalidé (`xcodebuild ... -destination 'id=9C12A4F4-26F1-45EA-B40A-E54537DE73B1' build`)
+Règle de pilotage :
+- ne pas rouvrir les extensions V2.1+ tant que le bloc **V2.0 strict** n’est pas livré proprement
+- garder un seul lot principal actif à la fois

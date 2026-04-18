@@ -2,7 +2,7 @@
 
 **Date :** 2026-04-16  
 **Statut :** Plan d’exécution proposé  
-**Contexte :** Dev solo, V1 publiée, audio V1 encore à finaliser avant ouverture complète de la V2  
+**Contexte :** Dev solo, V1.1 validée côté app / intégration / périmètre, avec une réserve qualité limitée sur certains assets d’ambiance
 **Rythme cible :** 6 à 10h par semaine  
 **Cadence recommandée :** sprints de 1 semaine, extensibles à 2 semaines si nécessaire  
 
@@ -10,13 +10,15 @@
 
 ## 1. Principe général
 
-La V2 ne doit pas démarrer comme un chantier parallèle alors que la V1 audio reste incomplète.
+La V2 ne doit pas repartir comme un chantier large.
+Le premier travail utile consiste à figer un **V2.0 strict** court, exécutable et compatible avec un dev solo.
 
 L’ordre recommandé est :
 
-1. finir l’audio V1
-2. stabiliser le flux complet de séance
-3. ouvrir une V2 courte, incrémentale, centrée sur le vrai différenciateur produit
+1. figer le périmètre **V2.0 strict**
+2. livrer `HomeView` comme point de départ plus rapide
+3. rendre `SessionView` et `SessionSummaryView` plus sobres
+4. poser un socle `StatsView` + `SettingsView` sans ouvrir d’extensions
 
 ### Règles de conduite
 - chaque sprint doit produire un incrément testable
@@ -25,17 +27,22 @@ L’ordre recommandé est :
 - pas de dérive produit vers gamification, social, dashboard complexe ou abonnement
 - priorité à la clarté, à la vitesse d’usage et à la sobriété
 
+### Note de cadrage
+Le détail des sprints ci-dessous reste un matériau de planification.
+Le scope réellement actif doit désormais suivre la section **18. Scope réel recommandé**.
+
 ---
 
 ## 2. Critère d’entrée en V2
 
 La V2 ne commence réellement que quand les points suivants sont vrais :
 
-- [ ] audio FR complet et validé dans les flux réels
+- [x] V1.1 validée côté app / intégration / périmètre
+- [ ] réserve qualité sur certains sons d’ambiance documentée et traitée côté assets
 - [ ] aucun bug bloquant sur le moteur de séance
 - [ ] pause / reprise / fin / annulation testés manuellement
-- [ ] HealthKit V1 validé en fonctionnement non bloquant
-- [ ] documentation projet mise à jour après clôture V1 audio
+- [x] HealthKit V1 validé en fonctionnement non bloquant
+- [x] documentation projet mise à jour après clôture V1.1
 
 ---
 
@@ -414,22 +421,29 @@ Ajouter une extension réellement utile et terminer proprement le cycle.
 # 18. Scope réel recommandé
 
 ## V2.0 strict
-- [ ] clôture V1 audio
-- [ ] `PracticeFrame`
-- [ ] HomeView refondue
-- [ ] dernier cadre
-- [ ] favoris
-- [ ] SessionView avec temps/progression masquables
-- [ ] SessionSummaryView utile
-- [ ] StatsView essentielle
-- [ ] heatmap 90 jours
-- [ ] SettingsView propre
+- [ ] `HomeView` recentrée sur le lancement immédiat
+- [ ] réglages rapides sur l’accueil
+- [ ] relance de la dernière configuration utilisée
+- [ ] `SessionView` avec temps / progression masquables
+- [ ] `SessionSummaryView` utile et sobre
+- [ ] `StatsView` essentielle uniquement
+- [ ] `SettingsView` limitée aux préférences durables directement nécessaires
 
-## V2.1
+## V2.1+
+- [ ] cadres de pratique complets (`PracticeFrame`, CRUD, favoris, cadres natifs)
+- [ ] `heatmap` 90 jours et stats avancées
 - [ ] export CSV
 - [ ] widget utile
+- [ ] haptics légers
 - [ ] stats par cadre si la fondation est prête
 - [ ] monétisation sobre si la stratégie est décidée
+
+## Ordre de livraison retenu
+1. `HomeView`
+2. `SessionView`
+3. `SessionSummaryView`
+4. `StatsView`
+5. `SettingsView`
 
 ---
 
