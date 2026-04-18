@@ -152,6 +152,10 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 - [x] AudioService : intro/outro vocaux minutés avec déclenchement par franchissement de seuil
 - [x] AudioService : séquençage vocal ordonné (clips dans l'ordre, gaps configurés, `intro_07_scan_corporel` inclus, `intro_08_concentration_souffle` ancré 5 s avant la fin de l'intro)
 - [x] Rappels périodiques phase méditation (`ReminderInterval` géré côté `AudioService`, hors `SessionEngine`)
+- [x] AudioService : mix ambiance / voix rééquilibré (bed plus bas, ducking renforcé, pluie plus discrète)
+- [x] AudioService : gap `intro_05_points_de_contact` -> `intro_06_conscience_environnement` élargi, avec robustesse accrue pour `intro_08_concentration_souffle` en fin d'intro
+- [x] AudioService : reminders fiabilisés par bucket interne de phase méditation, compatibles pause / reprise
+- [x] `ReminderInterval.settingsLabel` réaligné sur les vraies cadences (`Occasionnelles = 2m30`, `Fréquentes = 1m30`)
 - [ ] Déposer les assets vocaux `fr` dans `Audio/fr/VoiceGuidance/{Intro,Reminders,Outro}`
 - [ ] Déposer les assets localisés `en`, `es`, `de` selon la matrice UI/audio
 - [x] Intégrer HealthKit au flux de fin de séance (`SessionView.handleEnd` → `HealthKitService.saveCompletedSession`)
@@ -172,9 +176,13 @@ Bouton "Continuer" discret (pages 0–2). `@AppStorage("siturem.onboardingComple
 ## Dernière livraison
 
 - [x] `AudioService.swift` corrigé : séquençage strict sans chevauchement, intro FR complète avec `intro_07_scan_corporel`, `intro_04_fermer_les_yeux` décalé de +3 s, closing guidé avec longues pauses et gong final inclus
+- [x] `AudioService.swift` ajusté : voix guidée encore renforcée face à l'ambiance, ambiance légèrement remontée, ducking renforcé, pluie plus discrète, gap `intro_05 -> intro_06` porté à 10 s, reminders méditation fiabilisés, rattrapage des événements ancrés de fin d'intro
+- [x] `SessionView.swift` ajustée : barre de progression remontée pour retrouver une respiration nette au-dessus des contrôles après l'élargissement du blob
+- [x] `SessionModels.swift` corrigé : mapping `Occasionnelles` / `Fréquentes` remis sur les bonnes cadences
 - [x] `AudioAsset.swift` étendu : résolution centralisée par `AudioLocale` et `AudioAssetGroup`, audio dérivé de la langue UI, fallback global `en`, IDs techniques inchangés
 - [x] `SessionConfiguration.swift` aligné sur une phase de closing fixe à `92 s` pour couvrir la séquence réelle de fin de séance
 - [x] `SessionView.swift` branchée sur `startSessionAudio`, `handleTick`, `handlePhaseChange`, `handleSessionEnd`, `pauseAll`, `resumeAll`, `stopAll`
+- [x] `BlobView.swift` et `Layout.swift` ajustés pour supprimer le cadre visible quand le blob grossit
 - [x] `project.yml` mis à jour pour intégrer `Siturem/Audio` comme folder resource et préserver `Audio/<locale>/...` dans le bundle
 - [x] Arborescence `Siturem/Audio/` réorganisée en `fr`, `en`, `es`, `de` avec placeholders sur les dossiers non alimentés
 - [x] `project.yml` et le projet généré alignés sur le bundle identifier `com.beabot.siturem`

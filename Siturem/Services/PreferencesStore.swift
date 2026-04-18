@@ -42,7 +42,7 @@ final class PreferencesStore {
         accompaniment = PreferencesStore.resolveAccompanimentMode(from: d.string(forKey: "pref.accompaniment"))
         gong = PreferencesStore.resolveGongMode(from: d.string(forKey: "pref.gong")) ?? .sessionBounds
         ambient = AmbientSound(rawValue: d.string(forKey: "pref.ambient") ?? "") ?? .off
-        reminder = ReminderInterval(rawValue: d.string(forKey: "pref.reminder") ?? "") ?? .off
+        reminder = PreferencesStore.resolveReminderInterval(from: d.string(forKey: "pref.reminder")) ?? .off
         uiLanguageOverride = PreferencesStore.resolveUILanguageOverride(from: d.string(forKey: "pref.uiLanguage"))
         healthKitEnabled = d.bool(forKey: "pref.healthKit")
 
@@ -107,5 +107,22 @@ final class PreferencesStore {
     private static func resolveUILanguageOverride(from rawValue: String?) -> AppLanguage? {
         guard let rawValue else { return nil }
         return AppLanguage(rawValue: rawValue)
+    }
+
+    private static func resolveReminderInterval(from rawValue: String?) -> ReminderInterval? {
+        guard let rawValue else { return nil }
+
+        if let interval = ReminderInterval(rawValue: rawValue) {
+            return interval
+        }
+
+        switch rawValue {
+        case "Toutes les 3 min":
+            return .every90sec
+        case "Toutes les 5 min":
+            return .every150sec
+        default:
+            return nil
+        }
     }
 }

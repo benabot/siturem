@@ -91,16 +91,16 @@ enum AmbientSound: String, CaseIterable, Identifiable {
 
 enum ReminderInterval: String, CaseIterable, Identifiable {
     case off = "Off"
-    case every3min = "Toutes les 3 min"
-    case every5min = "Toutes les 5 min"
+    case every90sec = "Toutes les 1m30"
+    case every150sec = "Toutes les 2m30"
 
     var id: String { rawValue }
 
     var seconds: Int? {
         switch self {
         case .off: nil
-        case .every3min: 180
-        case .every5min: 300
+        case .every90sec: 90
+        case .every150sec: 150
         }
     }
 
@@ -108,8 +108,8 @@ enum ReminderInterval: String, CaseIterable, Identifiable {
     var settingsLabel: LocalizedStringResource {
         switch self {
         case .off: "Aucune"
-        case .every3min: "Occasionnelles"
-        case .every5min: "Fréquentes"
+        case .every90sec: "Fréquentes"
+        case .every150sec: "Occasionnelles"
         }
     }
 }

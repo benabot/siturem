@@ -36,10 +36,10 @@ enum LayoutMetrics {
     static let blobToProgressSpacing: CGFloat = 65
 
     /// Padding interne du blob pour que le halo ne touche jamais le bord visuel
-    static let blobPadding: CGFloat = md * 0.9
+    static let blobPadding: CGFloat = md * 1.2
 
     /// Taille de canevas dédiée au blob pour éviter une rasterisation trop serrée du halo
-    static let blobCanvasSize: CGFloat = xl * 3.4
+    static let blobCanvasSize: CGFloat = xl * 4.2
 
     /// Spacing progression → boutons
     static let progressToControlsSpacing: CGFloat = sm

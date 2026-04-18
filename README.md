@@ -53,6 +53,12 @@ Siturem/
 - Un choix explicite dans `Réglages > Langue` prend priorité jusqu'au retour sur `Système`
 - La langue UI reste distincte de la langue audio sur le plan architectural, mais l'audio suit désormais la langue UI effective quand des assets existent en `fr`, `en` ou `es`, sinon fallback global `en`
 
+## Audio guidé
+- `AudioService` orchestre le séquençage des clips vocaux, le ducking d'ambiance et les rappels, sans déplacer cette logique dans `SessionEngine`
+- L'intro guidée FR est jouée dans l'ordre des clips, avec gaps configurés, respiration élargie entre `intro_05_points_de_contact` et `intro_06_conscience_environnement`, et `intro_08_concentration_souffle` maintenu 5 s avant la fin d'intro
+- Les rappels restent limités à la phase de méditation guidée, sur paliers d'intervalle, avec reprise correcte après pause
+- L'ambiance reste sous la voix, avec un profil pluie plus discret pour rendre la jointure moins perceptible
+
 ## HealthKit V1
 - Synchronisation optionnelle activée côté app depuis `Réglages`
 - Demande d'autorisation contextualisée dans `SettingsView`, jamais au premier lancement

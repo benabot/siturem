@@ -60,10 +60,10 @@ struct BlobView: View {
                 .blur(radius: 15)
         }
         .frame(width: LayoutMetrics.blobCanvasSize, height: LayoutMetrics.blobCanvasSize)
-        .scaleEffect(visualScale)
-        .compositingGroup()
         .padding(LayoutMetrics.blobPadding)
+        .scaleEffect(visualScale)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .allowsHitTesting(false)
         .onAppear(perform: startAnimations)
         .onChange(of: phase) { _, _ in restartAnimations() }
     }

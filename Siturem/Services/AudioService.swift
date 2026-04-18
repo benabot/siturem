@@ -24,20 +24,24 @@ protocol AudioServicing: AnyObject {
 final class AudioService: AudioServicing {
 
     private enum Constants {
-        static let ambientVolume: Float = 0.20
+        static let ambientVolume: Float = 0.07
         static let gongVolume: Float = 0.48
-        static let voiceVolume: Float = 0.92
-        static let reminderVolume: Float = 0.40
-        static let ambientDuckedVolume: Float = 0.14
-        static let ambientFadeIn: TimeInterval = 0.6
+        static let voiceVolume: Float = 1.0
+        static let reminderVolume: Float = 0.78
+        static let ambientDuckedVolume: Float = 0.03
+        static let ambientFadeIn: TimeInterval = 0.8
         static let ambientFadeOut: TimeInterval = 0.5
-        static let ambientRestoreFade: TimeInterval = 0.25
-        static let ambientDuckPadding: TimeInterval = 0.2
+        static let ambientRestoreFade: TimeInterval = 0.45
+        static let ambientDuckPadding: TimeInterval = 0.35
+        static let rainAmbientVolumeMultiplier: Float = 0.65
+        static let rainDuckedVolumeMultiplier: Float = 0.5
+        static let overdueGuidanceTolerance: TimeInterval = 0.35
     }
 
     private struct PendingGuidanceEvent {
         let phase: SessionPhase
         let asset: AudioAsset
+        let placement: GuidanceSequencePlacement
         let fireOffset: TimeInterval
         var fireDate: Date?
         var remainingDelay: TimeInterval?
@@ -67,6 +71,7 @@ final class AudioService: AudioServicing {
 
     private var pendingGuidanceEvents: [PendingGuidanceEvent] = []
     private var assetDurationCache: [String: TimeInterval] = [:]
+    private var lastPlayedReminderBucket = 0
 
     private var ambientRestoreWorkItem: DispatchWorkItem?
     private var deferredCleanupWorkItem: DispatchWorkItem?
@@ -87,6 +92,7 @@ final class AudioService: AudioServicing {
         voiceWasPlayingBeforePause = false
         gongWasPlayingBeforePause = false
         ambientWasPlayingBeforePause = false
+        lastPlayedReminderBucket = 0
 
         cancelGuidanceSchedule()
         cancelAmbientRestore()
@@ -103,6 +109,7 @@ final class AudioService: AudioServicing {
         voiceWasPlayingBeforePause = false
         gongWasPlayingBeforePause = false
         ambientWasPlayingBeforePause = false
+        lastPlayedReminderBucket = 0
 
         cancelGuidanceSchedule()
         cancelAmbientRestore()
@@ -181,8 +188,10 @@ final class AudioService: AudioServicing {
         guard isSessionActive else { return }
 
         self.configuration = configuration
+        playOverdueAnchoredGuidanceIfNeeded(for: oldPhase)
         currentPhase = newPhase
         cancelGuidanceSchedule()
+        lastPlayedReminderBucket = 0
 
         switch newPhase {
         case .intro:
@@ -203,6 +212,7 @@ final class AudioService: AudioServicing {
         voiceWasPlayingBeforePause = false
         gongWasPlayingBeforePause = false
         ambientWasPlayingBeforePause = false
+        lastPlayedReminderBucket = 0
 
         cancelGuidanceSchedule()
         cancelAmbientRestore()
@@ -252,11 +262,11 @@ final class AudioService: AudioServicing {
         guard configuration.accompaniment == .guided else { return }
         guard let interval = configuration.reminder.seconds else { return }
 
-        let previousBucket = Int(previousElapsed / TimeInterval(interval))
         let currentBucket = Int(currentElapsed / TimeInterval(interval))
+        guard currentBucket >= 1 else { return }
+        guard currentBucket > lastPlayedReminderBucket else { return }
 
-        guard currentBucket > previousBucket else { return }
-
+        lastPlayedReminderBucket = currentBucket
         playReminderIfPossible()
     }
 
@@ -357,6 +367,7 @@ final class AudioService: AudioServicing {
                 PendingGuidanceEvent(
                     phase: phase,
                     asset: step.asset,
+                    placement: step.placement,
                     fireOffset: fireOffset
                 )
             )
@@ -478,7 +489,7 @@ final class AudioService: AudioServicing {
             player.volume = 0
             player.prepareToPlay()
             player.play()
-            player.setVolume(Constants.ambientVolume, fadeDuration: Constants.ambientFadeIn)
+            player.setVolume(targetAmbientVolume, fadeDuration: Constants.ambientFadeIn)
             ambientPlayer = player
         } catch {
             Self.logger.debug("Ambient player creation failed: \(error.localizedDescription)")
@@ -511,14 +522,14 @@ final class AudioService: AudioServicing {
         guard let ambientPlayer, ambientPlayer.isPlaying else { return }
 
         cancelAmbientRestore()
-        ambientPlayer.setVolume(Constants.ambientDuckedVolume, fadeDuration: 0.08)
+        ambientPlayer.setVolume(targetDuckedAmbientVolume, fadeDuration: 0.12)
 
         let workItem = DispatchWorkItem { [weak self] in
             guard let self, self.isSessionActive, self.isPaused == false, let ambientPlayer = self.ambientPlayer else {
                 return
             }
 
-            ambientPlayer.setVolume(Constants.ambientVolume, fadeDuration: Constants.ambientRestoreFade)
+            ambientPlayer.setVolume(self.targetAmbientVolume, fadeDuration: Constants.ambientRestoreFade)
         }
 
         ambientRestoreWorkItem = workItem
@@ -579,6 +590,44 @@ final class AudioService: AudioServicing {
     private func stopPlayer(_ player: inout AVAudioPlayer?) {
         player?.stop()
         player = nil
+    }
+
+    private func playOverdueAnchoredGuidanceIfNeeded(for phase: SessionPhase?) {
+        guard let phase else { return }
+
+        let dueAnchoredEvents = pendingGuidanceEvents.enumerated().filter { index, event in
+            guard event.hasPlayed == false else { return false }
+            guard event.phase == phase else { return false }
+            guard case .anchoredToPhaseEnd = event.placement else { return false }
+
+            let fireDate = event.fireDate ?? Date().addingTimeInterval(event.fireOffset)
+            return fireDate.timeIntervalSinceNow <= Constants.overdueGuidanceTolerance
+        }
+
+        guard let target = dueAnchoredEvents.max(by: { $0.element.fireOffset < $1.element.fireOffset }) else {
+            return
+        }
+
+        _ = playGuidanceAsset(target.element.asset)
+        markGuidanceEventPlayed(phase: target.element.phase, asset: target.element.asset)
+    }
+
+    private var targetAmbientVolume: Float {
+        switch configuration.ambient {
+        case .rain:
+            Constants.ambientVolume * Constants.rainAmbientVolumeMultiplier
+        case .off, .river, .forest, .whiteNoise:
+            Constants.ambientVolume
+        }
+    }
+
+    private var targetDuckedAmbientVolume: Float {
+        switch configuration.ambient {
+        case .rain:
+            Constants.ambientDuckedVolume * Constants.rainDuckedVolumeMultiplier
+        case .off, .river, .forest, .whiteNoise:
+            Constants.ambientDuckedVolume
+        }
     }
 
     private func remainingPlaybackDuration(of player: AVAudioPlayer?) -> TimeInterval {

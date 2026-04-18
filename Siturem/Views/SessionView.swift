@@ -140,7 +140,7 @@ struct SessionView: View {
             }
         }
         .frame(height: 6)
-        .offset(y: LayoutMetrics.progressBarYOffset)
+        .offset(y: LayoutMetrics.lg * 0.34)
     }
 
     private var globalProgress: Double {
