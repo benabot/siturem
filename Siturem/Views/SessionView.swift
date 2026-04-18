@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // MARK: - Session View
 // Écran affiché pendant une séance en cours.
@@ -15,7 +16,6 @@ struct SessionView: View {
     private let healthKit = HealthKitService()
 
     @State private var audioService: AudioService?
-    @State private var hapticsService = HapticsService()
     @State private var showEndConfirmation = false
     @State private var showSummary = false
     @State private var sessionStartDate: Date?
@@ -38,9 +38,6 @@ struct SessionView: View {
             if sessionStartDate == nil {
                 sessionStartDate = Date()
             }
-
-            hapticsService.prepareForSession()
-
             engine.onSessionEnd = {
                 audio.handleSessionEnd(configuration: engine.config)
                 handleEnd()
@@ -63,7 +60,7 @@ struct SessionView: View {
                 to: newValue,
                 configuration: engine.config
             )
-            hapticsService.handlePhaseTransition(from: oldValue, to: newValue)
+            playPhaseTransitionHaptic(from: oldValue, to: newValue)
         }
         .onDisappear {
             audioService?.stopAll()
@@ -184,6 +181,17 @@ struct SessionView: View {
     }
 
     // MARK: - Fin de séance
+
+    private func playPhaseTransitionHaptic(from oldPhase: SessionPhase, to newPhase: SessionPhase) {
+        switch (oldPhase, newPhase) {
+        case (.intro, .meditation), (.meditation, .closing):
+            let generator = UIImpactFeedbackGenerator(style: .soft)
+            generator.prepare()
+            generator.impactOccurred(intensity: 0.72)
+        default:
+            break
+        }
+    }
 
     private func handleEnd() {
         let endDate = Date()
