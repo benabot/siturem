@@ -2,40 +2,46 @@
 
 ## Priorité active
 
-### [S0] V1.2 — Polish & stability
+### [S1] V2.0 — fondation des cadres
 
 **Statut**
-Sprint courant de reprise avant réouverture effective de la V2.
+La V1.2 est livrée. Le prochain lot actif repasse sur la fondation V2, avec un seul chantier principal ouvert à la fois.
 
 **Objectif**
-Fermer proprement les réserves audio et stabilité encore ouvertes, puis revalider le flux complet avant de remettre la V2 au premier plan.
+Définir le socle minimal des cadres de pratique avant d’ouvrir les écrans V2.
 
 **Tâches**
-- [ ] refaire et valider les sons d’ambiance encore en réserve qualité
-- [ ] finaliser les assets localisés `en` / `es` / `de` selon la matrice réellement retenue
-- [x] ajouter des haptics légers aux transitions
-- [ ] revalider le flux complet après les derniers ajustements
-- [ ] resynchroniser la documentation partagée si l’état réel change
+- [ ] définir le modèle `PracticeFrame`
+- [ ] borner les propriétés réellement nécessaires pour `V2.0 strict`
+- [ ] vérifier la compatibilité avec `HomeView`, `SessionView`, `SessionSummaryView` et les préférences existantes
+- [ ] documenter les impacts techniques immédiats sans ouvrir de refactor large
 
 **Critère de fin**
-- [ ] le rendu audio résiduel est jugé propre
-- [ ] les langues audio effectivement supportées sont bornées clairement
-- [ ] le flux complet est revalidé
-- [ ] `TODO.md` et `PROJECT_STATUS.md` reflètent l’état final de la reprise V1.x
+- [ ] le modèle conceptuel est stabilisé
+- [ ] les impacts techniques directs sont connus
+- [ ] l’ordre d’implémentation du socle V2 reste séquentiel et réaliste
+
+## V1.2 — livrée
+
+La V1.2 clôture les dernières réserves V1.x. Elle est considérée comme livrée côté app, audio, intégration et validation manuelle.
+
+### Clos
+- [x] refaire et valider les sons d’ambiance
+- [x] borner les packs audio localisés `en` / `es` / `de`
+- [x] ajouter des haptics légers aux transitions
+- [x] revalider le flux complet après les derniers ajustements
+- [x] synchroniser `TODO.md` et `PROJECT_STATUS.md`
 
 ## Cadrage V2 — prêt
 
-Le cadrage documentaire V2 est posé. Il sert de filtre pour éviter d’ouvrir trop de sujets en parallèle, mais il n’est plus la priorité active tant que la reprise `V1.2` n’est pas terminée.
+Le cadrage documentaire V2 est posé. Il sert de filtre pour éviter d’ouvrir trop de sujets en parallèle et reste la base de référence pour le redémarrage séquentiel de la V2.
 
 ### Acté
 - [x] le périmètre **V2.0 strict** est défini
 - [x] les extensions **V2.1+** sont repoussées explicitement
 - [x] l’ordre de livraison retenu est documenté
 
-## V1.1 — validée avec réserve
-
-La V1.1 est considérée comme validée côté app, intégration et périmètre fonctionnel.
-La réserve restante porte sur la qualité finale de certains sons d’ambiance, à refaire côté assets pour obtenir un rendu plus propre.
+## V1.1 — validée
 
 ### Clos
 - [x] base applicative V1.1 stable
@@ -45,11 +51,6 @@ La réserve restante porte sur la qualité finale de certains sons d’ambiance,
 - [x] phase de closing fixée à `92 s`
 - [x] intégration HealthKit V1 non bloquante
 - [x] documentation de statut partagée remise à jour
-
-### Réserve assets
-- [ ] refaire certains sons d’ambiance pour obtenir un rendu plus propre
-- [ ] redéposer puis revalider les assets d’ambiance concernés dans le bundle
-- [ ] finaliser et valider les packs audio localisés `en`, `es`, `de` selon la matrice UI / audio retenue
 
 ## Référence V2
 
