@@ -56,8 +56,8 @@
 		8561C2DD2BFEFF8D7F001EF1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		870A2CBA71CDA3AE368BB740 /* SessionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionModels.swift; sourceTree = "<group>"; };
 		90EF0AECB1B17CB1457163AC /* BlobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobView.swift; sourceTree = "<group>"; };
-		95E015C00768624A292BFE89 /* HapticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsService.swift; sourceTree = "<group>"; };
 		95273A2C4013FEB1086D4ECE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		95E015C00768624A292BFE89 /* HapticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsService.swift; sourceTree = "<group>"; };
 		97A10DC34DC56DE9C0FE5056 /* Siturem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Siturem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98BFCEB44F63999C06D14C70 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9967C956042C857BB59F3BBD /* SessionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEngine.swift; sourceTree = "<group>"; };
@@ -216,11 +216,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1600;
-				TargetAttributes = {
-					63FE6C488C977458A5BF0C8D = {
-						DevelopmentTeam = "";
-					};
-				};
 			};
 			buildConfigurationList = 389D6C2CBF66499B4FE219F0 /* Build configuration list for PBXProject "Siturem" */;
 			developmentRegion = en;
@@ -386,6 +381,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Siturem/Siturem.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 3Q33594A3N;
 				INFOPLIST_FILE = Siturem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Siturem;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
@@ -394,7 +390,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.beabot.siturem;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.beabot.siturem;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -475,6 +471,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Siturem/Siturem.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 3Q33594A3N;
 				INFOPLIST_FILE = Siturem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Siturem;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
@@ -483,7 +480,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.beabot.siturem;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.beabot.siturem;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
