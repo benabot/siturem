@@ -74,6 +74,15 @@ final class PreferencesStore {
         )
     }
 
+    /// Snapshot du V1 courant sous forme de cadre nommé, sans changer la source de vérité.
+    func makePracticeFrame(name: String, isFavorite: Bool = false) -> PracticeFrame {
+        PracticeFrame(
+            name: name,
+            sessionConfiguration: sessionConfiguration,
+            isFavorite: isFavorite
+        )
+    }
+
     private static func resolveGongMode(from rawValue: String?) -> GongMode? {
         guard let rawValue else { return nil }
 

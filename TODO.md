@@ -5,21 +5,28 @@
 ### [S1] V2.0 — fondation des cadres
 
 **Statut**
-La V1.2 est livrée. Le prochain lot actif repasse sur la fondation V2, avec un seul chantier principal ouvert à la fois.
+La V1.2 est livrée. Le socle V2 des cadres de pratique est maintenant stabilisé autour de `PracticeFrame`, sans migration de persistance ni changement de flux V1.
 
 **Objectif**
 Définir le socle minimal des cadres de pratique avant d’ouvrir les écrans V2.
 
 **Tâches**
-- [ ] définir le modèle `PracticeFrame`
-- [ ] borner les propriétés réellement nécessaires pour `V2.0 strict`
-- [ ] vérifier la compatibilité avec `HomeView`, `SessionView`, `SessionSummaryView` et les préférences existantes
-- [ ] documenter les impacts techniques immédiats sans ouvrir de refactor large
+- [x] définir le modèle `PracticeFrame`
+- [x] borner les propriétés réellement nécessaires pour `V2.0 strict`
+- [x] vérifier la compatibilité avec `HomeView`, `SessionView`, `SessionSummaryView` et les préférences existantes
+- [x] documenter les impacts techniques immédiats sans ouvrir de refactor large
 
 **Critère de fin**
-- [ ] le modèle conceptuel est stabilisé
-- [ ] les impacts techniques directs sont connus
-- [ ] l’ordre d’implémentation du socle V2 reste séquentiel et réaliste
+- [x] le modèle conceptuel est stabilisé
+- [x] les impacts techniques directs sont connus
+- [x] l’ordre d’implémentation du socle V2 reste séquentiel et réaliste
+
+**Suites identifiées**
+- [ ] créer `PracticeFrameStore`
+- [ ] persister le dernier cadre utilisé par identifiant
+- [ ] persister les favoris
+- [ ] persister l'ordre d'affichage
+- [ ] brancher `HomeView` et `SessionSummaryView` sur ce futur store
 
 ## V1.2 — livrée
 
