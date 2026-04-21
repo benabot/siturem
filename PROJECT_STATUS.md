@@ -52,11 +52,13 @@ Le bundle identifier Xcode est désormais `com.beabot.siturem` dans `project.yml
 - **Stats / persistance** : `StatsStore` et `SessionRecord` restent inchangés. Les stats par cadre attendront un identifiant de cadre persistant dans un futur `PracticeFrameStore` ou dans une évolution ciblée de `SessionRecord`
 - **HealthKit** : aucun ajustement frame n'est écrit dans Santé. La couche HealthKit reste strictement session-centric
 - **Tests** : aucun test unitaire ou UI en place
+- **Cartographie V2** : les impacts techniques Home / Session / Stats / Settings sont maintenant documentés dans `docs/2026-04-21-s1-v2-impact-mapping.md` pour préparer l'introduction d'un futur `PracticeFrameStore` sans refactor large
 
 ## Références locales
 - `docs/BrandingGuideline.md` — identité visuelle, ton, territoire
 - `docs/cahierCharges-v1.md` — spécifications fonctionnelles complètes (source de vérité)
 - `docs/2026-04-16-siturem-v2-backlog.md` — backlog V2 priorisé écran par écran
+- `docs/2026-04-21-s1-v2-impact-mapping.md` — cartographie technique S1 avant raccord des cadres V2
 
 ## Contexte produit
 Application iOS minimaliste de méditation structurée pour pratiquants autonomes.
@@ -99,6 +101,7 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - **Validation V1.1** : la V1.1 est considérée comme validée côté app / intégration / périmètre
 - **Livraison V1.2** : la V1.2 clôture les dernières réserves audio / stabilité avant reprise de la V2
 - **Cadres V2** : le modèle `PracticeFrame` est stabilisé comme couche conceptuelle. Le prochain chantier persistance portera sur `PracticeFrameStore`, le dernier cadre utilisé, les favoris et l'ordre d'affichage
+- **Impact mapping S1** : la cartographie confirme que `HomeView` et `PreferencesStore` sont les points de risque principaux, que `SessionConfiguration` doit rester le contrat d'exécution, et que `StatsStore` / `SettingsView` doivent rester découplés tant que la persistance des cadres n'est pas stabilisée
 - **Pilotage opérationnel** : le GitHub Project `Siturem — Delivery` (`github.com/users/benabot/projects/2`) est le tableau de pilotage principal du repo
 - **Cycle de travail** : lire une issue, la passer en `En cours`, implémenter, valider localement, faire un commit documenté au format `type(area): action concise (#issue)`, commenter / fermer l’issue, puis synchroniser `TODO.md` et `PROJECT_STATUS.md` si nécessaire
 
@@ -118,8 +121,8 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - monétisation sobre, stats par cadre, Siri Shortcuts / App Intents
 
 ## Prochain focus
-`[S1] Frames — modèle PracticeFrame stabilisé`
+`[S1] Infra — cartographie d'impact V2 prête`
 
-- `PracticeFrame` est maintenant une façade légère au-dessus de `SessionConfiguration`
-- le flux `HomeView` → `SessionView` → `SessionSummaryView` reste inchangé pour V1
-- le prochain sous-chantier logique sera `PracticeFrameStore` pour la persistance du dernier cadre utilisé, des favoris et de l'ordre d'affichage
+- la cartographie cible d'abord `PreferencesStore`, `PracticeFrame` et un futur `PracticeFrameStore`
+- `HomeView` reste le premier point de raccord à traiter, avant toute propagation vers `SessionView` et `SessionSummaryView`
+- `StatsStore` et `SettingsView` restent volontairement hors migration tant que l'identité de cadre persistée n'est pas stabilisée

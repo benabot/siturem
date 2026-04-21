@@ -2,6 +2,34 @@
 
 ## Priorité active
 
+### [S1] V2.0 — cartographie d'impact des cadres
+
+**Statut**
+La fondation conceptuelle `PracticeFrame` est en place. La cartographie technique Home / Session / Stats / Settings est maintenant posée pour préparer la suite sans refactor large.
+
+**Objectif**
+Identifier les zones à raccorder et l'ordre d'implémentation réaliste avant d'introduire le store minimal des cadres.
+
+**Tâches**
+- [x] cartographier les impacts côté Home
+- [x] cartographier les impacts côté Session
+- [x] cartographier les impacts côté Summary / Stats / Settings
+- [x] documenter les dépendances critiques
+- [x] documenter les risques de migration
+- [x] proposer un ordre d'implémentation par petits diffs
+
+**Critère de fin**
+- [x] les zones de code touchées sont identifiées
+- [x] les dépendances et risques sont documentés
+- [x] l'ordre de raccord V2 est exploitable
+
+**Suites identifiées**
+- [ ] créer `PracticeFrameStore`
+- [ ] définir la frontière exacte entre réglages actifs V1 et cadres persistés V2
+- [ ] raccorder `HomeView`
+- [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView`
+- [ ] reconsidérer `SessionRecord` / `StatsStore` seulement après stabilisation du contrat de persistance
+
 ### [S1] V2.0 — fondation des cadres
 
 **Statut**
