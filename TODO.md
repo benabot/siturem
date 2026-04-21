@@ -2,6 +2,32 @@
 
 ## Priorité active
 
+### [S2] V2.0 — store minimal des cadres
+
+**Statut**
+Le store local des cadres V2 est maintenant en place avec une persistance simple, lisible et séparée des réglages actifs V1.
+
+**Objectif**
+Persister les `PracticeFrame` sans refactor large, avec CRUD de base, favoris et dernier cadre utilisé.
+
+**Tâches**
+- [x] choisir une stratégie de persistance cohérente avec le repo
+- [x] rendre `PracticeFrame` persistant de façon propre
+- [x] créer `PracticeFrameStore`
+- [x] couvrir CRUD, favoris et dernier cadre utilisé
+- [x] documenter la frontière avec `PreferencesStore`
+
+**Critère de fin**
+- [x] le store compile et persiste localement
+- [x] `PreferencesStore` reste la source de vérité V1 pour les réglages actifs
+- [x] aucun raccord UI large n'est introduit
+
+**Suites identifiées**
+- [ ] raccorder `ContentView` puis `HomeView` au store
+- [ ] définir comment un réglage actif devient un cadre enregistré sans ambiguïté
+- [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView`
+- [ ] reconsidérer `SessionRecord` / `StatsStore` seulement après stabilisation de l'identité de cadre
+
 ### [S1] V2.0 — cartographie d'impact des cadres
 
 **Statut**
@@ -24,7 +50,6 @@ Identifier les zones à raccorder et l'ordre d'implémentation réaliste avant d
 - [x] l'ordre de raccord V2 est exploitable
 
 **Suites identifiées**
-- [ ] créer `PracticeFrameStore`
 - [ ] définir la frontière exacte entre réglages actifs V1 et cadres persistés V2
 - [ ] raccorder `HomeView`
 - [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView`
@@ -50,11 +75,11 @@ Définir le socle minimal des cadres de pratique avant d’ouvrir les écrans V2
 - [x] l’ordre d’implémentation du socle V2 reste séquentiel et réaliste
 
 **Suites identifiées**
-- [ ] créer `PracticeFrameStore`
-- [ ] persister le dernier cadre utilisé par identifiant
-- [ ] persister les favoris
+- [x] créer `PracticeFrameStore`
+- [x] persister le dernier cadre utilisé par identifiant
+- [x] persister les favoris
 - [ ] persister l'ordre d'affichage
-- [ ] brancher `HomeView` et `SessionSummaryView` sur ce futur store
+- [ ] brancher `HomeView` et `SessionSummaryView` sur ce store
 
 ## V1.2 — livrée
 

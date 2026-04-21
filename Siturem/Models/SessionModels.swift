@@ -22,7 +22,7 @@ enum SessionDuration: Int, CaseIterable, Identifiable {
 
 // MARK: - Accompaniment Mode
 
-enum AccompanimentMode: String, CaseIterable, Identifiable {
+enum AccompanimentMode: String, CaseIterable, Identifiable, Codable {
     case silent = "Silencieux"
     case guided = "Guidé"
 
@@ -40,7 +40,7 @@ enum AccompanimentMode: String, CaseIterable, Identifiable {
 
 // MARK: - Gong Mode
 
-enum GongMode: String, CaseIterable, Identifiable {
+enum GongMode: String, CaseIterable, Identifiable, Codable {
     case off = "Off"
     case sessionBounds = "Début / Fin"
 
@@ -62,7 +62,7 @@ enum GongMode: String, CaseIterable, Identifiable {
 
 // MARK: - Ambient Sound
 
-enum AmbientSound: String, CaseIterable, Identifiable {
+enum AmbientSound: String, CaseIterable, Identifiable, Codable {
     case off = "Off"
     case rain = "Pluie"
     case river = "Rivière"
@@ -89,7 +89,7 @@ enum AmbientSound: String, CaseIterable, Identifiable {
 
 // MARK: - Reminder Interval
 
-enum ReminderInterval: String, CaseIterable, Identifiable {
+enum ReminderInterval: String, CaseIterable, Identifiable, Codable {
     case off = "Off"
     case every90sec = "Toutes les 1m30"
     case every150sec = "Toutes les 2m30"
