@@ -11,6 +11,7 @@ struct SessionView: View {
     @Bindable var engine: SessionEngine
     let stats: StatsStore
     @Bindable var prefs: PreferencesStore
+    let onRestart: (SessionConfiguration) -> Void
     let onEnd: () -> Void
 
     private let healthKit = HealthKitService()
@@ -26,6 +27,8 @@ struct SessionView: View {
             if showSummary {
                 SessionSummaryView(
                     duration: engine.totalElapsed,
+                    todayTotal: stats.secondsToday,
+                    onRestart: { onRestart(engine.config) },
                     onDone: onEnd
                 )
             } else {

@@ -34,7 +34,7 @@ Le bundle identifier Xcode est désormais `fr.beabot.siturem` dans `project.yml`
 | StatsStore (persistance + streaks) | ✅ Complet |
 | HomeView (sélection durée/modes) | ✅ Sélecteur 6–60 min, 3 options, accompagnement simplifié à `Guidé` / `Silencieux`, logo nav bar, padding φ |
 | SessionView (séance en cours) | ✅ Complet |
-| SessionSummaryView (bilan) | ✅ Complet |
+| SessionSummaryView (bilan) | ✅ Sobre et utile — durée réalisée, cumul aujourd'hui, relance simple |
 | StatsView (statistiques) | ✅ Complet |
 | SettingsView (préférences système) | ✅ Refondue — sections PRINCIPES + LANGUE (UI), SÉANCE (ReminderInterval aligné sur ses vraies cadences 1m30 / 2m30), HealthKit + À propos |
 | Localisation UI | ✅ fr / en-US / es / de, switcher persistant dans SettingsView avec option `Système`, fallback anglais pour locale non supportée |
@@ -49,8 +49,9 @@ Le bundle identifier Xcode est désormais `fr.beabot.siturem` dans `project.yml`
 - **Assets audio** : arborescence `Audio/{fr,en,es,de}/...` en place, `Siturem/Audio` déclaré explicitement dans `project.yml`. Les locales audio effectivement traitées comme disponibles sont `fr`, `en`, `es`. `de` reste borné côté bundle mais n'est pas sélectionné automatiquement.
 - **Localisation audio** : la langue audio suit désormais la langue UI effective avec fallback global `en`. La séparation d'architecture UI / audio reste conservée ; seule la règle de résolution a changé.
 - **HealthKit** : synchro V1 optionnelle activée côté app. Permission demandée seulement depuis `SettingsView`. Écriture tentée uniquement pour les séances terminées normalement ; refus, indisponibilité et échec restent silencieux et non bloquants
-- **Flux UI** : `HomeView` affiche maintenant le dernier cadre persistant via `PracticeFrameStore`. Le bloc `Dernier cadre` reste un point de chargement honnête vers les réglages visibles, tandis que `Commencer` lance toujours le runtime via `SessionConfiguration`. `SessionView` et `SessionSummaryView` restent inchangées et session-centric pour ce ticket
+- **Flux UI** : `HomeView` affiche maintenant le dernier cadre persistant via `PracticeFrameStore`. Le bloc `Dernier cadre` reste un point de chargement honnête vers les réglages visibles, tandis que `Commencer` lance toujours le runtime via `SessionConfiguration`. `SessionView` reste session-centric et `SessionSummaryView` conserve un rôle de clôture discret
 - **Contrôles de séance** : l'alerte d'arrêt suspend désormais la séance et l'audio si l'utilisateur était en cours d'exécution, puis restaure proprement cet état sur `Continuer`. `SessionEngine` reste inchangé et centré sur le timing / l'état
+- **Écran de fin** : `SessionSummaryView` affiche maintenant la durée réalisée, un cumul simple `Aujourd'hui`, puis une relance directe de la même configuration. Le ton reste neutre et l'écran évite toujours les stats avancées
 - **Stats / persistance** : `StatsStore` et `SessionRecord` restent inchangés. Les stats par cadre attendront un identifiant de cadre persistant dans un futur `PracticeFrameStore` ou dans une évolution ciblée de `SessionRecord`
 - **HealthKit** : aucun ajustement frame n'est écrit dans Santé. La couche HealthKit reste strictement session-centric
 - **Tests** : aucun test unitaire ou UI en place
@@ -109,6 +110,7 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - **Cadres V2** : le modèle `PracticeFrame` est stabilisé comme couche conceptuelle et `PracticeFrameStore` couvre maintenant la persistance locale du dernier cadre, des favoris et de l'ordre d'affichage. Le prochain chantier est le raccord contrôlé de `HomeView`
 - **Raccord Home / frames** : `ContentView` injecte maintenant `PracticeFrameStore` dans `HomeView`. Au premier accès réel au bloc, une migration lazy peut seed un unique cadre nommé depuis les préférences V1 persistées. Si aucun cadre n'est disponible après ce contrôle, l'accueil reste inchangé et n'affiche aucun bloc vide
 - **Stabilité pause / reprise / arrêt** : `SessionView` porte maintenant un garde-fou local pour figer la séance pendant la confirmation d'arrêt, éviter qu'une fin naturelle tombe derrière l'alerte, et reprendre proprement seulement si la séance était en cours avant l'annulation
+- **Clôture de séance** : le bilan reste volontairement compact. Le seul cumul exposé est `Aujourd'hui`, calculé via `StatsStore`, et `Relancer` recrée une séance avec la configuration runtime existante sans étendre le rôle de `SessionEngine`
 - **Persistance frames V2** : `PracticeFrameStore` persiste `[PracticeFrame]` en JSON dans `UserDefaults`, conserve le dernier cadre utilisé via un identifiant séparé, et réutilise l'ordre du tableau comme ordre d'affichage. L'initialisation retombe sur un état sain si l'état persisté est vide, partiel ou incohérent. Cette couche ne remplace pas `PreferencesStore` et ne branche pas encore l'UI
 - **Migration des préférences** : seuls `durée`, `accompagnement`, `gong`, `ambiance` et `rappels` sont migrables vers un premier `PracticeFrame`. `uiLanguageOverride`, `audioLocale` dérivée, `healthKitEnabled` et l'onboarding restent hors cadre et dans `PreferencesStore` / `AppStorage`
 - **Impact mapping S1** : la cartographie confirme que `HomeView` et `PreferencesStore` sont les points de risque principaux, que `SessionConfiguration` doit rester le contrat d'exécution, et que `StatsStore` / `SettingsView` doivent rester découplés tant que la persistance des cadres n'est pas stabilisée

@@ -2,6 +2,30 @@
 
 ## Priorité active
 
+### [S6] Summary — clôture utile et relance sobre
+
+**Statut**
+`SessionSummaryView` affiche maintenant la durée réalisée, un cumul simple `Aujourd'hui`, et une relance directe de la même configuration.
+
+**Objectif**
+Rendre la fin de séance plus utile sans transformer l'écran en tableau de bord ni ajouter de ton célébratoire.
+
+**Tâches**
+- [x] afficher la durée réalisée de façon claire
+- [x] choisir un seul cumul simple et le garder discret
+- [x] ajouter une relance sobre de la même configuration
+- [x] revalider la continuité du flux en fin de séance
+
+**Critère de fin**
+- [x] l'écran reste calme et lisible
+- [x] la durée et le cumul choisi sont visibles
+- [x] `Relancer` repart sur une nouvelle séance cohérente
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] ne considérer un autre cumul ou des stats plus riches qu'après stabilisation de ce bilan minimal
+- [ ] garder tout futur enrichissement Summary en dehors d'une logique de dashboard
+
 ### [S5] Session — contrôles stables
 
 **Statut**

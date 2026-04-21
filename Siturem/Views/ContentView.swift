@@ -23,7 +23,14 @@ struct ContentView: View {
                     }
                 }
             } else if let engine {
-                SessionView(engine: engine, stats: stats, prefs: prefs) {
+                SessionView(
+                    engine: engine,
+                    stats: stats,
+                    prefs: prefs,
+                    onRestart: { config in
+                        self.engine = SessionEngine(config: config)
+                    }
+                ) {
                     self.engine = nil
                 }
                 .id(engine.id)

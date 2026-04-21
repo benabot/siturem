@@ -28,6 +28,12 @@ final class StatsStore {
         records.reduce(0) { $0 + $1.actualDuration }
     }
 
+    var secondsToday: Int {
+        records
+            .filter { Calendar.current.isDateInToday($0.date) }
+            .reduce(0) { $0 + $1.actualDuration }
+    }
+
     var seconds7Days: Int {
         let cutoff = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
         return records.filter { $0.date >= cutoff }.reduce(0) { $0 + $1.actualDuration }

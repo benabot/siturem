@@ -29,6 +29,9 @@
 "Elle fournit un cadre stable, discret et reproductible pour lancer rapidement une séance structurée." = "It provides a stable, discreet, repeatable framework to start a structured session quickly.";
 "Une séance prête à l'emploi, sobre, stable et structurée." = "A ready-to-use session, restrained, stable, and structured.";
 "Séance terminée" = "Session complete";
+"Durée réalisée" = "Actual duration";
+"Aujourd'hui" = "Today";
+"Relancer" = "Restart";
 "Terminer" = "Done";
 
 /* Stats */
