@@ -181,7 +181,7 @@ struct SettingsView: View {
                 Text("Version")
                     .foregroundStyle(Theme.textPrimary)
                 Spacer()
-                Text("1.0.0")
+                Text(appVersionDisplay)
                     .foregroundStyle(Theme.textSecondary)
             }
         } header: {
@@ -204,6 +204,17 @@ struct SettingsView: View {
             get: { prefs.uiLanguageSelection },
             set: { prefs.uiLanguageSelection = $0 }
         )
+    }
+
+    private var appVersionDisplay: String {
+        let marketingVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        let buildVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+
+        if let marketingVersion, let buildVersion, !buildVersion.isEmpty {
+            return "\(marketingVersion) (\(buildVersion))"
+        }
+
+        return marketingVersion ?? "-"
     }
 
     private var healthAuthorizationStatusLabel: LocalizedStringResource {
