@@ -2,6 +2,32 @@
 
 ## Priorité active
 
+### [S2] V2.0 — persistance du dernier cadre et des favoris
+
+**Statut**
+Le store de cadres couvre maintenant le dernier cadre utilisé, les favoris, l'ordre d'affichage et les cas d'initialisation partiels, sans raccorder encore la refonte `HomeView`.
+
+**Objectif**
+Durcir la persistance du socle V2 avant le premier branchement UI.
+
+**Tâches**
+- [x] confirmer où persister le dernier cadre utilisé
+- [x] confirmer où persister les favoris
+- [x] prévoir l'ordre d'affichage
+- [x] couvrir les cas sans cadre existant ou avec état persisté incohérent
+- [x] garder `PreferencesStore` séparé des cadres persistés
+
+**Critère de fin**
+- [x] le dernier cadre est conservé
+- [x] les favoris sont persistés
+- [x] l'ordre d'affichage est prévu proprement
+- [x] l'initialisation retombe sur un état sain
+
+**Suites identifiées**
+- [ ] raccorder `HomeView` au store sans mélanger réglages actifs et cadres enregistrés
+- [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView` si nécessaire
+- [ ] ne reconsidérer `SessionRecord` / `StatsStore` qu'après stabilisation du raccord Home
+
 ### [S2] V2.0 — store minimal des cadres
 
 **Statut**
@@ -78,7 +104,7 @@ Définir le socle minimal des cadres de pratique avant d’ouvrir les écrans V2
 - [x] créer `PracticeFrameStore`
 - [x] persister le dernier cadre utilisé par identifiant
 - [x] persister les favoris
-- [ ] persister l'ordre d'affichage
+- [x] persister l'ordre d'affichage
 - [ ] brancher `HomeView` et `SessionSummaryView` sur ce store
 
 ## V1.2 — livrée

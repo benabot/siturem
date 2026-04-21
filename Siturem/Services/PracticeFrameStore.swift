@@ -14,7 +14,10 @@ final class PracticeFrameStore {
     private let defaults: UserDefaults
     private let isPersistenceEnabled: Bool
 
+    /// L'ordre du tableau persisté fait foi pour le futur affichage côté Home.
     private(set) var frames: [PracticeFrame]
+
+    /// Le dernier cadre utilisé reste une métadonnée du store, pas du modèle métier.
     private(set) var lastUsedFrameID: UUID?
 
     init(defaults: UserDefaults = .standard) {
@@ -38,6 +41,10 @@ final class PracticeFrameStore {
 
     var favoriteFrames: [PracticeFrame] {
         frames.filter(\.isFavorite)
+    }
+
+    var frameIDsInDisplayOrder: [UUID] {
+        frames.map(\.id)
     }
 
     var lastUsedFrame: PracticeFrame? {
@@ -82,6 +89,29 @@ final class PracticeFrameStore {
         updateFrame(frame)
     }
 
+    /// Réordonne les cadres existants de façon déterministe.
+    /// Les identifiants inconnus sont ignorés, les doublons sont dédupliqués et les absents sont conservés en fin de liste.
+    func updateDisplayOrder(frameIDs: [UUID]) {
+        let framesByID = Dictionary(uniqueKeysWithValues: frames.map { ($0.id, $0) })
+        var orderedFrames: [PracticeFrame] = []
+        var seenIDs = Set<UUID>()
+
+        for id in frameIDs where seenIDs.insert(id).inserted {
+            if let frame = framesByID[id] {
+                orderedFrames.append(frame)
+            }
+        }
+
+        for frame in frames where seenIDs.insert(frame.id).inserted {
+            orderedFrames.append(frame)
+        }
+
+        guard orderedFrames.map(\.id) != frames.map(\.id) else { return }
+
+        frames = orderedFrames
+        persist()
+    }
+
     func markLastUsed(frameID: UUID?) {
         guard let frameID else {
             lastUsedFrameID = nil
@@ -117,10 +147,17 @@ final class PracticeFrameStore {
 
     private func load() {
         guard isPersistenceEnabled else { return }
+        var requiresPersistenceCleanup = false
 
-        if let data = defaults.data(forKey: StorageKey.frames),
-           let savedFrames = try? JSONDecoder().decode([PracticeFrame].self, from: data) {
-            frames = savedFrames
+        if let data = defaults.data(forKey: StorageKey.frames) {
+            if let savedFrames = try? JSONDecoder().decode([PracticeFrame].self, from: data) {
+                let normalizedFrames = normalizeFrames(savedFrames)
+                frames = normalizedFrames
+                requiresPersistenceCleanup = normalizedFrames.count != savedFrames.count
+            } else {
+                frames = []
+                requiresPersistenceCleanup = true
+            }
         }
 
         if let rawLastUsedFrameID = defaults.string(forKey: StorageKey.lastUsedFrameID),
@@ -128,8 +165,21 @@ final class PracticeFrameStore {
            frames.contains(where: { $0.id == lastUsedFrameID }) {
             self.lastUsedFrameID = lastUsedFrameID
         } else {
+            requiresPersistenceCleanup = requiresPersistenceCleanup || defaults.object(forKey: StorageKey.lastUsedFrameID) != nil
             lastUsedFrameID = nil
-            persistLastUsedFrameID()
+        }
+
+        if requiresPersistenceCleanup {
+            persist()
+        }
+    }
+
+    /// En cas de doublons accidentels, on conserve la première occurrence pour rester stable et prévisible.
+    private func normalizeFrames(_ candidateFrames: [PracticeFrame]) -> [PracticeFrame] {
+        var seenIDs = Set<UUID>()
+
+        return candidateFrames.filter { frame in
+            seenIDs.insert(frame.id).inserted
         }
     }
 }
@@ -138,7 +188,7 @@ extension PracticeFrameStore {
     static var preview: PracticeFrameStore {
         PracticeFrameStore(
             previewFrames: PracticeFrame.previewFrames,
-            lastUsedFrameID: PracticeFrame.previewFrames.first?.id
+            lastUsedFrameID: PracticeFrame.previewFrames.last?.id
         )
     }
 }
