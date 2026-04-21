@@ -2,6 +2,31 @@
 
 ## Priorité active
 
+### [S5] Session — contrôles stables
+
+**Statut**
+Pause / reprise / arrêt sont maintenant stabilisés dans `SessionView` avec un garde-fou local pendant la confirmation d'arrêt.
+
+**Objectif**
+Éviter les états intermédiaires incohérents entre timer, audio et UI sans changer le rôle de `SessionEngine`.
+
+**Tâches**
+- [x] figer la séance pendant l'alerte d'arrêt si elle était en cours
+- [x] reprendre proprement sur annulation seulement si la séance tournait avant l'alerte
+- [x] conserver un arrêt confirmé simple, sans refactor du moteur
+- [x] revalider pause, reprise, arrêt annulé, arrêt confirmé et fin normale
+
+**Critère de fin**
+- [x] pause / reprise restent fiables
+- [x] l'arrêt confirmé quitte proprement la séance
+- [x] l'annulation d'arrêt ne laisse pas l'UI dans un état ambigu
+- [x] la fin normale arrive toujours sur le bilan
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] revisiter les contrôles seulement si une future V2 de `SessionView` change leur hiérarchie visuelle
+- [ ] ne pas étendre ce ticket à une refonte audio ou à un changement de rôle de `SessionEngine`
+
 ### [S3] Home — hiérarchie simplifiée
 
 **Statut**

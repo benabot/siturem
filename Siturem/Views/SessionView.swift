@@ -19,6 +19,7 @@ struct SessionView: View {
     @State private var showEndConfirmation = false
     @State private var showSummary = false
     @State private var sessionStartDate: Date?
+    @State private var shouldResumeAfterStopConfirmation = false
 
     var body: some View {
         Group {
@@ -66,6 +67,7 @@ struct SessionView: View {
             audioService?.stopAll()
             audioService = nil
             engine.onSessionEnd = nil
+            shouldResumeAfterStopConfirmation = false
         }
     }
 
@@ -99,11 +101,11 @@ struct SessionView: View {
         }
         .alert("Arrêter la séance ?", isPresented: $showEndConfirmation) {
             Button("Arrêter", role: .destructive) {
-                audioService?.stopAll()
-                engine.stop()
-                onEnd()
+                stopSession()
             }
-            Button("Continuer", role: .cancel) {}
+            Button("Continuer", role: .cancel) {
+                cancelStopConfirmation()
+            }
         }
     }
 
@@ -155,7 +157,7 @@ struct SessionView: View {
     private var controls: some View {
         HStack(spacing: LayoutMetrics.lg * 0.88) {
             Button {
-                showEndConfirmation = true
+                requestStopConfirmation()
             } label: {
                 Image(systemName: "xmark")
                     .font(.title2)
@@ -163,13 +165,7 @@ struct SessionView: View {
             }
 
             Button {
-                if engine.state == .running {
-                    engine.pause()
-                    audioService?.pauseAll()
-                } else if engine.state == .paused {
-                    audioService?.resumeAll()
-                    engine.start()
-                }
+                togglePauseResume()
             } label: {
                 Image(systemName: engine.state == .running ? "pause" : "play.fill")
                     .font(.system(size: 44, weight: .thin))
@@ -193,7 +189,55 @@ struct SessionView: View {
         }
     }
 
+    private func requestStopConfirmation() {
+        guard !showSummary else { return }
+        guard !showEndConfirmation else { return }
+
+        if engine.state == .running {
+            engine.pause()
+            audioService?.pauseAll()
+            shouldResumeAfterStopConfirmation = true
+        } else {
+            shouldResumeAfterStopConfirmation = false
+        }
+
+        showEndConfirmation = true
+    }
+
+    private func cancelStopConfirmation() {
+        guard shouldResumeAfterStopConfirmation else { return }
+        shouldResumeAfterStopConfirmation = false
+        audioService?.resumeAll()
+        engine.start()
+    }
+
+    private func stopSession() {
+        shouldResumeAfterStopConfirmation = false
+        audioService?.stopAll()
+        engine.stop()
+        onEnd()
+    }
+
+    private func togglePauseResume() {
+        guard !showEndConfirmation else { return }
+        guard !showSummary else { return }
+
+        switch engine.state {
+        case .running:
+            engine.pause()
+            audioService?.pauseAll()
+        case .paused:
+            audioService?.resumeAll()
+            engine.start()
+        default:
+            break
+        }
+    }
+
     private func handleEnd() {
+        showEndConfirmation = false
+        shouldResumeAfterStopConfirmation = false
+
         let endDate = Date()
         let startDate = sessionStartDate ?? endDate.addingTimeInterval(-TimeInterval(engine.totalElapsed))
         let record = SessionRecord(
