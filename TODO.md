@@ -2,6 +2,30 @@
 
 ## Priorité active
 
+### [S7] Stats — registre essentiel
+
+**Statut**
+`StatsView` est recentrée sur un registre essentiel unique, avec `Temps total` comme entrée principale puis `Séances`, `7 jours`, `30 jours`, `Streak actuel` et `Meilleur streak` en lecture secondaire.
+
+**Objectif**
+Rendre `StatsView` plus calme et plus lisible, sans dérive dashboard ni logique fitness.
+
+**Tâches**
+- [x] remettre le temps total en tête de lecture
+- [x] garder les métriques essentielles déjà disponibles
+- [x] regrouper période et régularité sans multiplier les cartes
+- [x] revalider le rendu iPhone pour éviter l'effet "fitness dashboard"
+
+**Critère de fin**
+- [x] la hiérarchie essentielle est claire
+- [x] la vue reste sobre et lisible
+- [x] aucune nouvelle persistance n'est introduite
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] garder `heatmap`, détail de séance et stats par cadre hors du périmètre tant que S8 n'est pas ouverte
+- [ ] ne réenrichir `StatsView` qu'avec une vraie nécessité produit, sans retour vers un dashboard
+
 ### [S6] Summary — clôture utile et relance sobre
 
 **Statut**

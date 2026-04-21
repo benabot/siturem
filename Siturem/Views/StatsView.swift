@@ -10,32 +10,79 @@ struct StatsView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                Section("Pratique") {
-                    statRow("Temps total", value: formatMinutes(stats.totalSeconds))
-                    statRow("Séances", value: "\(stats.totalSessions)")
+            ScrollView {
+                VStack(alignment: .leading, spacing: LayoutMetrics.md) {
+                    sectionLabel("Pratique")
+                    essentialsCard
                 }
-
-                Section("Période") {
-                    statRow("7 derniers jours", value: formatMinutes(stats.seconds7Days))
-                    statRow("30 derniers jours", value: formatMinutes(stats.seconds30Days))
-                }
-
-                Section("Régularité") {
-                    statRow("Streak actuel", value: "\(stats.currentStreak) \(dayAbbreviation)")
-                    statRow("Meilleur streak", value: "\(stats.bestStreak) \(dayAbbreviation)")
-                }
+                .padding(.horizontal, LayoutMetrics.hPadding)
+                .padding(.top, LayoutMetrics.sm)
+                .padding(.bottom, LayoutMetrics.md)
             }
-            .scrollContentBackground(.hidden)
             .background(Theme.background)
-            .listRowBackground(Theme.surface)
             .navigationTitle("Suivi")
             .toolbarBackground(Theme.background, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
     }
 
-    private func statRow(_ label: LocalizedStringResource, value: String) -> some View {
+    private var essentialsCard: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Temps total")
+                    .font(.system(.caption, design: .monospaced))
+                    .foregroundStyle(Theme.textSecondary)
+                    .tracking(2)
+
+                Text(formatMinutes(stats.totalSeconds))
+                    .font(.system(size: 44, weight: .ultraLight, design: .monospaced))
+                    .foregroundStyle(Theme.textPrimary)
+            }
+
+            metricRow("Séances", value: "\(stats.totalSessions)")
+
+            cardSeparator
+
+            metricGroup(title: "Période") {
+                metricRow("7 derniers jours", value: formatMinutes(stats.seconds7Days))
+                metricRow("30 derniers jours", value: formatMinutes(stats.seconds30Days))
+            }
+
+            cardSeparator
+
+            metricGroup(title: "Régularité") {
+                metricRow("Streak actuel", value: "\(stats.currentStreak) \(dayAbbreviation)")
+                metricRow("Meilleur streak", value: "\(stats.bestStreak) \(dayAbbreviation)")
+            }
+        }
+        .padding(LayoutMetrics.sm)
+        .background(Theme.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func sectionLabel(_ text: LocalizedStringResource) -> some View {
+        Text(text)
+            .font(.system(.caption2, design: .monospaced))
+            .foregroundStyle(Theme.textSecondary)
+            .tracking(2)
+    }
+
+    @ViewBuilder
+    private func metricGroup<Content: View>(
+        title: LocalizedStringResource,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title)
+                .font(.system(.caption, design: .monospaced))
+                .foregroundStyle(Theme.textSecondary)
+                .tracking(2)
+
+            content()
+        }
+    }
+
+    private func metricRow(_ label: LocalizedStringResource, value: String) -> some View {
         HStack {
             Text(label)
                 .foregroundStyle(Theme.textPrimary)
@@ -44,6 +91,11 @@ struct StatsView: View {
                 .foregroundStyle(Theme.textSecondary)
                 .font(.system(.body, design: .monospaced))
         }
+    }
+
+    private var cardSeparator: some View {
+        Theme.surfaceHigh
+            .frame(height: 0.5)
     }
 
     private func formatMinutes(_ seconds: Int) -> String {
