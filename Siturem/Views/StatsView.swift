@@ -20,6 +20,7 @@ struct StatsView: View {
                     sectionLabel("Pratique")
                     essentialsCard
                     rhythmCard
+                    recentSessionsCard
                     heatmapCard
                 }
                 .padding(.horizontal, LayoutMetrics.hPadding)
@@ -116,6 +117,42 @@ struct StatsView: View {
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
+    @ViewBuilder
+    private var recentSessionsCard: some View {
+        let records = Array(stats.recentRecords.prefix(5))
+
+        if !records.isEmpty {
+            VStack(alignment: .leading, spacing: 14) {
+                Text("Séances récentes")
+                    .font(.system(.caption, design: .monospaced))
+                    .foregroundStyle(Theme.textSecondary)
+                    .tracking(2)
+
+                VStack(spacing: 0) {
+                    ForEach(Array(records.enumerated()), id: \.element.id) { index, record in
+                        NavigationLink {
+                            SessionDetailView(record: record)
+                        } label: {
+                            recentSessionRow(for: record)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityHint("Ouvre le détail de la séance")
+
+                        if index < records.count - 1 {
+                            cardSeparator
+                                .padding(.leading, LayoutMetrics.sm)
+                        }
+                    }
+                }
+                .background(Theme.surfaceHigh.opacity(0.35))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
+            .padding(LayoutMetrics.sm)
+            .background(Theme.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+    }
+
     private func sectionLabel(_ text: LocalizedStringResource) -> some View {
         Text(text)
             .font(.system(.caption2, design: .monospaced))
@@ -165,6 +202,32 @@ struct StatsView: View {
             .frame(height: 0.5)
     }
 
+    private func recentSessionRow(for record: SessionRecord) -> some View {
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(sessionRowDate(for: record.date))
+                    .foregroundStyle(Theme.textPrimary)
+                    .multilineTextAlignment(.leading)
+
+                Text(sessionRowTime(for: record.date))
+                    .font(.system(.caption))
+                    .foregroundStyle(Theme.textSecondary)
+            }
+
+            Spacer()
+
+            Text(formatMinutes(record.actualDuration))
+                .font(.system(.body, design: .monospaced))
+                .foregroundStyle(Theme.textSecondary)
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(Theme.textSecondary.opacity(0.7))
+        }
+        .padding(LayoutMetrics.sm)
+        .contentShape(Rectangle())
+    }
+
     private func formatMinutes(_ seconds: Int) -> String {
         let totalMinutes = max(0, seconds / 60)
 
@@ -207,6 +270,25 @@ struct StatsView: View {
             .locale(locale)
             .month(.abbreviated)
             .year()
+        )
+    }
+
+    private func sessionRowDate(for date: Date) -> String {
+        date.formatted(
+            .dateTime
+            .locale(locale)
+            .weekday(.abbreviated)
+            .day()
+            .month(.abbreviated)
+        )
+    }
+
+    private func sessionRowTime(for date: Date) -> String {
+        date.formatted(
+            .dateTime
+            .locale(locale)
+            .hour()
+            .minute()
         )
     }
 }

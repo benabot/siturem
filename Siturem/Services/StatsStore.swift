@@ -85,6 +85,10 @@ final class StatsStore {
         recentAverageWeeklySeconds(windowDays: 28)
     }
 
+    var recentRecords: [SessionRecord] {
+        records.sorted { $0.date > $1.date }
+    }
+
     // MARK: - Private
 
     private func practiceDays(last days: Int, endingOn endDate: Date = Date()) -> [PracticeDay] {

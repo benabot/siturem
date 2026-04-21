@@ -25,4 +25,8 @@ struct SessionRecord: Identifiable, Codable {
         self.accompaniment = accompaniment.rawValue
         self.isComplete = isComplete
     }
+
+    var accompanimentMode: AccompanimentMode? {
+        AccompanimentMode(rawValue: accompaniment)
+    }
 }

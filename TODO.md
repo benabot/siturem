@@ -2,6 +2,30 @@
 
 ## Priorité active
 
+### [S8] Stats — détail d'une séance
+
+**Statut**
+`StatsView` propose maintenant une zone `Séances récentes` qui ouvre un détail de séance simple depuis l'historique local.
+
+**Objectif**
+Permettre de consulter une séance passée sans transformer la zone stats en écran analytique dense.
+
+**Tâches**
+- [x] définir le sous-ensemble utile d'informations déjà disponibles dans `SessionRecord`
+- [x] ajouter un point d'entrée discret depuis `StatsView`
+- [x] créer une vue dédiée avec navigation aller / retour simple
+- [x] revalider le rendu iPhone avec historique léger et historique vide
+
+**Critère de fin**
+- [x] une séance récente peut être ouverte depuis `StatsView`
+- [x] le détail reste sobre et utile
+- [x] le retour vers `Suivi` est propre
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] garder hors périmètre toute comparaison entre séances ou métrique dérivée
+- [ ] ne considérer d'autres champs de configuration que si `SessionRecord` les porte déjà de façon stable
+
 ### [S8] Stats — totaux mensuels et moyenne hebdomadaire
 
 **Statut**
