@@ -2,10 +2,36 @@
 
 ## Priorité active
 
+### [S3] Home — dernier cadre et démarrage immédiat
+
+**Statut**
+Le premier raccord UI V2 est en place : `HomeView` affiche le dernier cadre persistant quand il existe et peut lancer immédiatement une séance depuis ce cadre sans toucher au runtime de séance.
+
+**Objectif**
+Faire de l'accueil un point de relance rapide, tout en gardant `PreferencesStore` comme source de vérité des réglages actifs.
+
+**Tâches**
+- [x] injecter `PracticeFrameStore` dans `HomeView`
+- [x] afficher le dernier cadre si disponible
+- [x] déclencher la migration lazy au premier accès réel si nécessaire
+- [x] lancer une séance depuis le cadre via `SessionConfiguration`
+- [x] proposer un `Modifier` honnête sans écran d'édition artificiel
+
+**Critère de fin**
+- [x] le dernier cadre s'affiche correctement quand il existe
+- [x] le démarrage immédiat fonctionne
+- [x] l'accueil reste propre si aucun cadre n'est disponible
+- [x] le flux `Home -> Session` continue de reposer sur `SessionConfiguration`
+
+**Suites identifiées**
+- [ ] décider si `SessionSummaryView` doit réafficher le cadre utilisé
+- [ ] décider comment exposer plus tard l'édition complète d'un cadre nommé
+- [ ] propager l'identité de cadre vers l'historique seulement après stabilisation du flux Home
+
 ### [S2] Infra — stratégie de migration des préférences
 
 **Statut**
-La stratégie de migration entre réglages actifs V1 et cadres persistés V2 est maintenant cadrée et encodée sous forme de helper lazy, sans brancher encore la refonte `HomeView`.
+La stratégie de migration entre réglages actifs V1 et cadres persistés V2 est cadrée et déjà appelée au premier accès réel aux frames dans `HomeView`, sans refonte large de l'accueil.
 
 **Objectif**
 Éviter une rupture entre `PreferencesStore` et `PracticeFrameStore` au moment du premier raccord UI.
@@ -23,14 +49,18 @@ La stratégie de migration entre réglages actifs V1 et cadres persistés V2 est
 - [x] la migration ne change pas encore l'UX ni le runtime de séance
 
 **Suites identifiées**
-- [ ] appeler la migration au premier accès réel aux frames lors du raccord `HomeView`
-- [ ] fournir le nom localisé du cadre seedé au point d'appel UI futur
-- [ ] garder `PreferencesStore` comme source de vérité des réglages actifs tant que Home n'est pas migrée
+- [x] appeler la migration au premier accès réel aux frames lors du raccord `HomeView`
+- [x] fournir le nom initial du cadre seedé au point d'appel UI
+- [x] garder `PreferencesStore` comme source de vérité des réglages actifs tant que Home n'est pas migrée
+- [x] confirmer que le premier lancement absolu n'affiche pas `Dernier cadre`
+- [x] documenter que la migration lazy ne seed un cadre que depuis de vraies préférences V1 persistées
+- [x] noter que le faux positif observé venait d'un état résiduel du simulateur
+- [ ] revisiter le nom seedé si l'édition ou la localisation complète des cadres évolue
 
 ### [S2] V2.0 — persistance du dernier cadre et des favoris
 
 **Statut**
-Le store de cadres couvre maintenant le dernier cadre utilisé, les favoris, l'ordre d'affichage et les cas d'initialisation partiels, sans raccorder encore la refonte `HomeView`.
+Le store de cadres couvre maintenant le dernier cadre utilisé, les favoris, l'ordre d'affichage et les cas d'initialisation partiels, avec un premier raccord contrôlé dans `HomeView`.
 
 **Objectif**
 Durcir la persistance du socle V2 avant le premier branchement UI.
@@ -49,7 +79,7 @@ Durcir la persistance du socle V2 avant le premier branchement UI.
 - [x] l'initialisation retombe sur un état sain
 
 **Suites identifiées**
-- [ ] raccorder `HomeView` au store sans mélanger réglages actifs et cadres enregistrés
+- [x] raccorder `HomeView` au store sans mélanger réglages actifs et cadres enregistrés
 - [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView` si nécessaire
 - [ ] ne reconsidérer `SessionRecord` / `StatsStore` qu'après stabilisation du raccord Home
 
@@ -74,7 +104,7 @@ Persister les `PracticeFrame` sans refactor large, avec CRUD de base, favoris et
 - [x] aucun raccord UI large n'est introduit
 
 **Suites identifiées**
-- [ ] raccorder `ContentView` puis `HomeView` au store
+- [x] raccorder `ContentView` puis `HomeView` au store
 - [x] définir comment un réglage actif devient un cadre enregistré sans ambiguïté
 - [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView`
 - [ ] reconsidérer `SessionRecord` / `StatsStore` seulement après stabilisation de l'identité de cadre
@@ -102,7 +132,7 @@ Identifier les zones à raccorder et l'ordre d'implémentation réaliste avant d
 
 **Suites identifiées**
 - [x] définir la frontière exacte entre réglages actifs V1 et cadres persistés V2
-- [ ] raccorder `HomeView`
+- [x] raccorder `HomeView`
 - [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView`
 - [ ] reconsidérer `SessionRecord` / `StatsStore` seulement après stabilisation du contrat de persistance
 
@@ -130,7 +160,8 @@ Définir le socle minimal des cadres de pratique avant d’ouvrir les écrans V2
 - [x] persister le dernier cadre utilisé par identifiant
 - [x] persister les favoris
 - [x] persister l'ordre d'affichage
-- [ ] brancher `HomeView` et `SessionSummaryView` sur ce store
+- [x] brancher `HomeView` sur ce store
+- [ ] brancher `SessionSummaryView` sur ce store
 
 ## V1.2 — livrée
 

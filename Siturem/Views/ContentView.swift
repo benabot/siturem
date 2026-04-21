@@ -8,6 +8,7 @@ struct ContentView: View {
     @Bindable var prefs: PreferencesStore
     @AppStorage("siturem.onboardingCompleted") private var onboardingCompleted = false
     @State private var stats = StatsStore()
+    @State private var frameStore = PracticeFrameStore()
     @State private var engine: SessionEngine? = nil
     @State private var selectedTab: Tab = .home
 
@@ -28,7 +29,7 @@ struct ContentView: View {
                 .id(engine.id)
             } else {
                 TabView(selection: $selectedTab) {
-                    HomeView(prefs: prefs) { config in
+                    HomeView(prefs: prefs, frameStore: frameStore) { config in
                         let e = SessionEngine(config: config)
                         engine = e
                     }

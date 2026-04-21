@@ -13,7 +13,7 @@ settings:
     CURRENT_PROJECT_VERSION: "2"
     DEVELOPMENT_TEAM: ""
     DEVELOPMENT_LANGUAGE: fr
-    PRODUCT_BUNDLE_IDENTIFIER: com.beabot.siturem
+    PRODUCT_BUNDLE_IDENTIFIER: fr.beabot.siturem
 
 targets:
   Siturem:
@@ -46,7 +46,7 @@ targets:
         NSHealthUpdateUsageDescription: "Siturem enregistre vos séances de méditation dans l'app Santé."
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beabot.siturem
+        PRODUCT_BUNDLE_IDENTIFIER: fr.beabot.siturem
         INFOPLIST_FILE: Siturem/Info.plist
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor

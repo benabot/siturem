@@ -19,7 +19,7 @@ La V1.2 clôture les dernières réserves `V1.x` : sons d’ambiance repris et r
 Palette anthracite + accent bleu ardoise, blob animé irrégulièrement, barre de progression (6pt) + contrôles ancrés via `.safeAreaInset`, SettingsView recentrée avec section PRINCIPES, splash animée et renforcée. Système `LayoutMetrics` (φ ≈ 1.618). Logo géométrique (`SituremMark` / `SituremLogo`) décliné sur splash et HomeView.
 
 **Identité projet mise à jour.**
-Le bundle identifier Xcode est désormais `com.beabot.siturem` dans `project.yml` et dans le projet généré. Les entitlements et `Info.plist` continuent d'hériter de `$(PRODUCT_BUNDLE_IDENTIFIER)`.
+Le bundle identifier Xcode est désormais `fr.beabot.siturem` dans `project.yml` et dans le projet généré. Les entitlements et `Info.plist` continuent d'hériter de `$(PRODUCT_BUNDLE_IDENTIFIER)`.
 
 ## Fonctionnel
 
@@ -49,13 +49,15 @@ Le bundle identifier Xcode est désormais `com.beabot.siturem` dans `project.yml
 - **Assets audio** : arborescence `Audio/{fr,en,es,de}/...` en place, `Siturem/Audio` déclaré explicitement dans `project.yml`. Les locales audio effectivement traitées comme disponibles sont `fr`, `en`, `es`. `de` reste borné côté bundle mais n'est pas sélectionné automatiquement.
 - **Localisation audio** : la langue audio suit désormais la langue UI effective avec fallback global `en`. La séparation d'architecture UI / audio reste conservée ; seule la règle de résolution a changé.
 - **HealthKit** : synchro V1 optionnelle activée côté app. Permission demandée seulement depuis `SettingsView`. Écriture tentée uniquement pour les séances terminées normalement ; refus, indisponibilité et échec restent silencieux et non bloquants
-- **Flux UI** : `HomeView`, `SessionView` et `SessionSummaryView` restent branchées sur `SessionConfiguration` pour ce ticket. Le passage à `PracticeFrame` sera fait plus tard, sans changer le flux de navigation actuel
+- **Flux UI** : `HomeView` affiche maintenant le dernier cadre persistant via `PracticeFrameStore` et peut relancer immédiatement une séance à partir de ce cadre, tout en continuant à lancer le runtime via `SessionConfiguration`. `SessionView` et `SessionSummaryView` restent inchangées et session-centric pour ce ticket
 - **Stats / persistance** : `StatsStore` et `SessionRecord` restent inchangés. Les stats par cadre attendront un identifiant de cadre persistant dans un futur `PracticeFrameStore` ou dans une évolution ciblée de `SessionRecord`
 - **HealthKit** : aucun ajustement frame n'est écrit dans Santé. La couche HealthKit reste strictement session-centric
 - **Tests** : aucun test unitaire ou UI en place
 - **Cartographie V2** : les impacts techniques Home / Session / Stats / Settings sont maintenant documentés dans `docs/2026-04-21-s1-v2-impact-mapping.md` pour préparer l'introduction d'un futur `PracticeFrameStore` sans refactor large
 - **PracticeFrameStore** : store V2 local avec persistance `UserDefaults + JSON`, CRUD, favoris, dernier cadre utilisé et ordre d'affichage porté par l'ordre du tableau persisté. `PreferencesStore` reste inchangé et conserve les réglages actifs V1
 - **Migration V1 -> V2** : stratégie lazy et idempotente préparée. Si aucun cadre n'existe encore, un futur premier accès aux frames pourra seed un cadre unique depuis les réglages de séance V1 persistés; si aucun héritage V1 n'existe, aucune création automatique n'est faite
+- **Home V2** : le raccord minimal est en place. Si un dernier cadre existe, `HomeView` affiche un bloc sobre de relance rapide avec `Commencer` et `Modifier`. `Modifier` recharge les réglages actifs V1 dans l'écran d'accueil existant au lieu d'ouvrir un éditeur de cadre dédié
+- **Premier lancement** : le bloc `Dernier cadre` n'apparaît pas sur un vrai premier lancement absolu. La migration lazy ne seed un cadre que pour un utilisateur V1 dont au moins une vraie préférence de séance est déjà persistée. Le faux positif observé pendant les vérifications venait d'un état résiduel du simulateur, pas d'un bug de logique
 
 ## Références locales
 - `docs/BrandingGuideline.md` — identité visuelle, ton, territoire
@@ -100,10 +102,11 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - **Haptics de transition** : un feedback natif léger est déclenché uniquement lors des bascules de phase majeures (`intro -> méditation`, `méditation -> closing`) depuis `SessionView`, sans dérive de responsabilité dans `SessionEngine`
 - **Compatibilité V1** : `PreferencesStore` reste la source de vérité pour les réglages actifs. Il peut déjà snapshotter un cadre nommé via `makePracticeFrame(name:isFavorite:)`, sans changer la persistance existante
 - **Rappels guidés** : les libellés de réglage sont alignés sur leur cadence réelle, avec `Occasionnelles = 2m30` et `Fréquentes = 1m30`
-- **Bundle identifier** : migration vers `com.beabot.siturem`
+- **Bundle identifier** : migration vers `fr.beabot.siturem`
 - **Validation V1.1** : la V1.1 est considérée comme validée côté app / intégration / périmètre
 - **Livraison V1.2** : la V1.2 clôture les dernières réserves audio / stabilité avant reprise de la V2
 - **Cadres V2** : le modèle `PracticeFrame` est stabilisé comme couche conceptuelle et `PracticeFrameStore` couvre maintenant la persistance locale du dernier cadre, des favoris et de l'ordre d'affichage. Le prochain chantier est le raccord contrôlé de `HomeView`
+- **Raccord Home / frames** : `ContentView` injecte maintenant `PracticeFrameStore` dans `HomeView`. Au premier accès réel au bloc, une migration lazy peut seed un unique cadre nommé depuis les préférences V1 persistées. Si aucun cadre n'est disponible après ce contrôle, l'accueil reste inchangé et n'affiche aucun bloc vide
 - **Persistance frames V2** : `PracticeFrameStore` persiste `[PracticeFrame]` en JSON dans `UserDefaults`, conserve le dernier cadre utilisé via un identifiant séparé, et réutilise l'ordre du tableau comme ordre d'affichage. L'initialisation retombe sur un état sain si l'état persisté est vide, partiel ou incohérent. Cette couche ne remplace pas `PreferencesStore` et ne branche pas encore l'UI
 - **Migration des préférences** : seuls `durée`, `accompagnement`, `gong`, `ambiance` et `rappels` sont migrables vers un premier `PracticeFrame`. `uiLanguageOverride`, `audioLocale` dérivée, `healthKitEnabled` et l'onboarding restent hors cadre et dans `PreferencesStore` / `AppStorage`
 - **Impact mapping S1** : la cartographie confirme que `HomeView` et `PreferencesStore` sont les points de risque principaux, que `SessionConfiguration` doit rester le contrat d'exécution, et que `StatsStore` / `SettingsView` doivent rester découplés tant que la persistance des cadres n'est pas stabilisée
@@ -126,9 +129,9 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - monétisation sobre, stats par cadre, Siri Shortcuts / App Intents
 
 ## Prochain focus
-`[S2] Infra — stratégie de migration des préférences prête`
+`[S3] Home — bloc Dernier cadre branché`
 
-- `PracticeFrameStore` persiste maintenant le dernier cadre utilisé, les favoris et l'ordre d'affichage sans modifier la source de vérité V1 des réglages actifs
-- la migration future sera lazy, idempotente, et ne seedera un premier cadre que pour les utilisateurs V1 avec réglages de séance déjà persistés
-- `HomeView` reste le premier point de raccord à traiter, avant toute propagation vers `SessionView` et `SessionSummaryView`
-- `StatsStore` et `SettingsView` restent volontairement hors migration tant que l'identité de cadre persistée n'est pas stabilisée
+- `HomeView` affiche maintenant le dernier cadre persistant et peut relancer immédiatement une séance via sa conversion explicite vers `SessionConfiguration`
+- si aucun cadre n'existe, y compris après la migration lazy éventuelle depuis `PreferencesStore`, l'accueil garde son flux V1 actuel sans bloc additionnel
+- `Modifier` recharge le cadre dans les réglages actifs existants de `HomeView`, sans ouvrir d'éditeur V2 artificiel
+- `SessionView`, `SessionSummaryView`, `StatsStore` et `SettingsView` restent volontairement hors propagation de l'identité de cadre à ce stade

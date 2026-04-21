@@ -5,11 +5,27 @@ import SwiftUI
 
 struct HomeView: View {
 
+    private enum FrameEditFeedback {
+        case applied
+        case alreadyVisible
+
+        var message: LocalizedStringResource {
+            switch self {
+            case .applied:
+                "Cadre chargé dans les réglages"
+            case .alreadyVisible:
+                "Cadre déjà chargé dans les réglages"
+            }
+        }
+    }
+
     @Bindable var prefs: PreferencesStore
+    @Bindable var frameStore: PracticeFrameStore
     let onStart: (SessionConfiguration) -> Void
 
     @State private var selectedMinutes: Int = 10
     @State private var showDurationError: Bool = false
+    @State private var frameEditFeedback: FrameEditFeedback?
 
     private var selectedDuration: Int { selectedMinutes * 60 }
 
@@ -17,6 +33,9 @@ struct HomeView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: LayoutMetrics.md) {
+                    if let lastUsedFrame {
+                        lastFrameSection(lastUsedFrame)
+                    }
                     durationSection
                     optionsSection
                 }
@@ -46,12 +65,84 @@ struct HomeView: View {
                 Text("Durée minimale : 6 minutes.")
             }
             .onAppear {
+                migrateFramesIfNeeded()
                 let minutes = prefs.totalDuration / 60
                 selectedMinutes = max(6, min(60, minutes))
             }
             .onChange(of: selectedMinutes) { _, v in
                 prefs.totalDuration = v * 60
             }
+        }
+    }
+
+    private var lastUsedFrame: PracticeFrame? {
+        frameStore.lastUsedFrame
+    }
+
+    // MARK: - Dernier cadre
+
+    private func lastFrameSection(_ frame: PracticeFrame) -> some View {
+        VStack(alignment: .leading, spacing: 14) {
+            sectionLabel("DERNIER CADRE")
+
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(alignment: .firstTextBaseline, spacing: 10) {
+                    Text(frame.name)
+                        .font(.system(.title3, design: .rounded, weight: .light))
+                        .foregroundStyle(Theme.textPrimary)
+
+                    if frame.isFavorite {
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(Theme.accent)
+                            .accessibilityLabel("Cadre favori")
+                    }
+
+                    Spacer()
+                }
+
+                HStack(spacing: 8) {
+                    detailPill("\(frame.duration / 60) min")
+                    detailPill(frame.accompaniment.displayLabel)
+                }
+
+                VStack(alignment: .leading, spacing: 6) {
+                    detailRow("Gong", value: frame.gong.displayLabel)
+
+                    if frame.ambient != .off {
+                        detailRow("Ambiance", value: frame.ambient.displayLabel)
+                    }
+
+                    if frame.reminder != .off {
+                        detailRow("Rappels", value: frame.reminder.settingsLabel)
+                    }
+                }
+
+                HStack(spacing: 10) {
+                    Button("Charger") {
+                        apply(frame: frame)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(Theme.textSecondary)
+
+                    Button("Commencer") {
+                        start(frame: frame)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(Theme.accent)
+                    .foregroundStyle(Theme.background)
+                }
+
+                if let frameEditFeedback {
+                    Text(frameEditFeedback.message)
+                        .font(.system(.caption))
+                        .foregroundStyle(Theme.textSecondary)
+                        .transition(.opacity)
+                }
+            }
+            .padding(LayoutMetrics.md)
+            .background(Theme.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
         }
     }
 
@@ -149,16 +240,14 @@ struct HomeView: View {
 
     private var startButton: some View {
         Button {
-            let config = SessionConfiguration(
+            start(config: SessionConfiguration(
                 totalDuration: selectedDuration,
                 accompaniment: prefs.accompaniment,
                 gong: prefs.gong,
                 ambient: prefs.ambient,
                 reminder: prefs.reminder,
                 audioLocale: prefs.audioLocale
-            )
-            guard config.isValid else { showDurationError = true; return }
-            onStart(config)
+            ))
         } label: {
             Text("COMMENCER")
                 .font(.system(.subheadline, weight: .light))
@@ -178,5 +267,93 @@ struct HomeView: View {
             .font(.system(.caption2, design: .monospaced))
             .foregroundStyle(Theme.textSecondary)
             .tracking(2)
+    }
+
+    private func detailPill(_ label: LocalizedStringResource) -> some View {
+        Text(label)
+            .font(.system(.caption, design: .monospaced))
+            .foregroundStyle(Theme.textSecondary)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(Theme.surfaceHigh)
+            .clipShape(Capsule())
+    }
+
+    private func detailRow(_ title: LocalizedStringResource, value: LocalizedStringResource) -> some View {
+        HStack(spacing: 8) {
+            Text(title)
+                .font(.system(.caption, design: .monospaced))
+                .foregroundStyle(Theme.textSecondary)
+
+            Spacer()
+
+            Text(value)
+                .font(.system(.caption))
+                .foregroundStyle(Theme.textPrimary)
+        }
+    }
+
+    private func migrateFramesIfNeeded() {
+        frameStore.migratePreferencesIfNeeded(
+            from: prefs,
+            frameName: seededFrameName
+        )
+    }
+
+    private func apply(frame: PracticeFrame) {
+        let isAlreadyVisible = selectedDuration == frame.duration
+            && prefs.accompaniment == frame.accompaniment
+            && prefs.gong == frame.gong
+            && prefs.ambient == frame.ambient
+
+        prefs.totalDuration = frame.duration
+        prefs.accompaniment = frame.accompaniment
+        prefs.gong = frame.gong
+        prefs.ambient = frame.ambient
+        prefs.reminder = frame.reminder
+        selectedMinutes = max(6, min(60, frame.duration / 60))
+
+        showFrameEditFeedback(isAlreadyVisible ? .alreadyVisible : .applied)
+    }
+
+    private func start(frame: PracticeFrame) {
+        frameStore.markLastUsed(frameID: frame.id)
+        start(config: frame.sessionConfiguration(audioLocale: prefs.audioLocale))
+    }
+
+    private func start(config: SessionConfiguration) {
+        guard config.isValid else {
+            showDurationError = true
+            return
+        }
+
+        onStart(config)
+    }
+
+    private var seededFrameName: String {
+        switch prefs.uiLanguage {
+        case .fr:
+            "Cadre habituel"
+        case .enUS:
+            "Usual frame"
+        case .es:
+            "Marco habitual"
+        case .de:
+            "Ueblicher Rahmen"
+        }
+    }
+
+    private func showFrameEditFeedback(_ feedback: FrameEditFeedback) {
+        withAnimation(.easeOut(duration: 0.18)) {
+            frameEditFeedback = feedback
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+            guard frameEditFeedback == feedback else { return }
+
+            withAnimation(.easeOut(duration: 0.18)) {
+                frameEditFeedback = nil
+            }
+        }
     }
 }
