@@ -35,7 +35,7 @@ Le bundle identifier Xcode est désormais `fr.beabot.siturem` dans `project.yml`
 | HomeView (sélection durée/modes) | ✅ Sélecteur 6–60 min, 3 options, accompagnement simplifié à `Guidé` / `Silencieux`, logo nav bar, padding φ |
 | SessionView (séance en cours) | ✅ Complet |
 | SessionSummaryView (bilan) | ✅ Sobre et utile — durée réalisée, cumul aujourd'hui, relance simple |
-| StatsView (statistiques) | ✅ Registre essentiel recentré — temps total, séances, 7/30 jours, streaks |
+| StatsView (statistiques) | ✅ Registre essentiel + heatmap 90 jours sobre |
 | SettingsView (préférences système) | ✅ Refondue — sections PRINCIPES + LANGUE (UI), SÉANCE (ReminderInterval aligné sur ses vraies cadences 1m30 / 2m30), HealthKit + À propos |
 | Localisation UI | ✅ fr / en-US / es / de, switcher persistant dans SettingsView avec option `Système`, fallback anglais pour locale non supportée |
 | OnboardingView (4 pages, premier lancement) | ✅ Textes refondus et localisés — 4 phrases sobres, délai synchronisé avec nouvelle durée splash |
@@ -52,7 +52,7 @@ Le bundle identifier Xcode est désormais `fr.beabot.siturem` dans `project.yml`
 - **Flux UI** : `HomeView` affiche maintenant le dernier cadre persistant via `PracticeFrameStore`. Le bloc `Dernier cadre` reste un point de chargement honnête vers les réglages visibles, tandis que `Commencer` lance toujours le runtime via `SessionConfiguration`. `SessionView` reste session-centric et `SessionSummaryView` conserve un rôle de clôture discret
 - **Contrôles de séance** : l'alerte d'arrêt suspend désormais la séance et l'audio si l'utilisateur était en cours d'exécution, puis restaure proprement cet état sur `Continuer`. `SessionEngine` reste inchangé et centré sur le timing / l'état
 - **Écran de fin** : `SessionSummaryView` affiche maintenant la durée réalisée, un cumul simple `Aujourd'hui`, puis une relance directe de la même configuration. Le ton reste neutre et l'écran évite toujours les stats avancées
-- **StatsView** : la vue est recentrée sur un registre essentiel unique. `Temps total` porte l'entrée de lecture, puis `Séances`, `7/30 jours` et les streaks restent groupés dans une hiérarchie calme, sans logique fitness ni effet dashboard
+- **StatsView** : la vue est recentrée sur un registre essentiel unique. `Temps total` porte l'entrée de lecture, puis `Séances`, `7/30 jours` et les streaks restent groupés dans une hiérarchie calme, sans logique fitness ni effet dashboard. Une heatmap 90 jours binaire complète maintenant ce registre, de façon discrète
 - **Stats / persistance** : `StatsStore` et `SessionRecord` restent inchangés. Les stats par cadre attendront un identifiant de cadre persistant dans un futur `PracticeFrameStore` ou dans une évolution ciblée de `SessionRecord`
 - **HealthKit** : aucun ajustement frame n'est écrit dans Santé. La couche HealthKit reste strictement session-centric
 - **Tests** : aucun test unitaire ou UI en place

@@ -8,12 +8,18 @@ struct StatsView: View {
     let stats: StatsStore
     @Environment(\.locale) private var locale
 
+    private let heatmapColumns = Array(
+        repeating: GridItem(.flexible(), spacing: 4),
+        count: 15
+    )
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: LayoutMetrics.md) {
                     sectionLabel("Pratique")
                     essentialsCard
+                    heatmapCard
                 }
                 .padding(.horizontal, LayoutMetrics.hPadding)
                 .padding(.top, LayoutMetrics.sm)
@@ -53,6 +59,33 @@ struct StatsView: View {
             metricGroup(title: "Régularité") {
                 metricRow("Streak actuel", value: "\(stats.currentStreak) \(dayAbbreviation)")
                 metricRow("Meilleur streak", value: "\(stats.bestStreak) \(dayAbbreviation)")
+            }
+        }
+        .padding(LayoutMetrics.sm)
+        .background(Theme.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+
+    private var heatmapCard: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("90 derniers jours")
+                .font(.system(.caption, design: .monospaced))
+                .foregroundStyle(Theme.textSecondary)
+                .tracking(2)
+
+            LazyVGrid(columns: heatmapColumns, spacing: 4) {
+                ForEach(stats.practiceHeatmap90Days) { day in
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(day.didPractice ? Theme.accent.opacity(0.55) : Theme.surfaceHigh)
+                        .frame(maxWidth: .infinity)
+                        .aspectRatio(1, contentMode: .fit)
+                }
+            }
+
+            if stats.practiceHeatmap90Days.allSatisfy({ !$0.didPractice }) {
+                Text("Aucune séance sur les 90 derniers jours")
+                    .font(.system(.caption))
+                    .foregroundStyle(Theme.textSecondary)
             }
         }
         .padding(LayoutMetrics.sm)

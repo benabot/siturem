@@ -2,6 +2,30 @@
 
 ## Priorité active
 
+### [S8] Stats — heatmap 90 jours
+
+**Statut**
+`StatsView` affiche maintenant une heatmap 90 jours binaire calculée depuis les `SessionRecord`, en complément discret du registre essentiel.
+
+**Objectif**
+Rendre la continuité de pratique visible d'un coup d'œil sans dérive dashboard ni logique gamifiée.
+
+**Tâches**
+- [x] définir une structure journalière minimale compatible avec les données existantes
+- [x] calculer l'activité quotidienne sans migration de persistance
+- [x] intégrer une heatmap 90 jours sobre dans `StatsView`
+- [x] revalider le rendu sur petit iPhone
+
+**Critère de fin**
+- [x] les jours actifs et inactifs sont lisibles
+- [x] la heatmap reste secondaire par rapport au registre essentiel
+- [x] aucune nouvelle persistance complexe n'est introduite
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] garder le détail de séance hors du périmètre tant qu'un ticket dédié n'est pas ouvert
+- [ ] ne considérer un niveau d'intensité ou des agrégations plus fines qu'avec un besoin produit explicite
+
 ### [S7] Stats — registre essentiel
 
 **Statut**
@@ -23,7 +47,8 @@ Rendre `StatsView` plus calme et plus lisible, sans dérive dashboard ni logique
 - [x] le build local passe
 
 **Suites identifiées**
-- [ ] garder `heatmap`, détail de séance et stats par cadre hors du périmètre tant que S8 n'est pas ouverte
+- [x] ajouter une heatmap 90 jours sobre
+- [ ] garder le détail de séance et les stats par cadre hors du périmètre tant qu'un ticket dédié n'est pas ouvert
 - [ ] ne réenrichir `StatsView` qu'avec une vraie nécessité produit, sans retour vers un dashboard
 
 ### [S6] Summary — clôture utile et relance sobre

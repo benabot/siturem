@@ -6,10 +6,24 @@ import Foundation
 @Observable
 final class StatsStore {
 
+    struct PracticeDay: Identifiable, Hashable {
+        let date: Date
+        let didPractice: Bool
+
+        var id: Date { date }
+    }
+
     private let key = "siturem.sessions"
     private(set) var records: [SessionRecord] = []
 
     init() {
+        #if DEBUG
+        if let seededRecords = Self.debugRecordsFromEnvironment() {
+            records = seededRecords
+            return
+        }
+        #endif
+
         load()
     }
 
@@ -52,7 +66,31 @@ final class StatsStore {
         computeBestStreak()
     }
 
+    var practiceHeatmap90Days: [PracticeDay] {
+        practiceDays(last: 90)
+    }
+
     // MARK: - Private
+
+    private func practiceDays(last days: Int, endingOn endDate: Date = Date()) -> [PracticeDay] {
+        guard days > 0 else { return [] }
+
+        let calendar = Calendar.current
+        let lastDay = calendar.startOfDay(for: endDate)
+        let practicedDays = Set(records.map { calendar.startOfDay(for: $0.date) })
+
+        return (0..<days).compactMap { offset in
+            let remainingDays = days - offset - 1
+            guard let date = calendar.date(byAdding: .day, value: -remainingDays, to: lastDay) else {
+                return nil
+            }
+
+            return PracticeDay(
+                date: date,
+                didPractice: practicedDays.contains(date)
+            )
+        }
+    }
 
     private func streak(from date: Date) -> Int {
         var count = 0
@@ -94,4 +132,56 @@ final class StatsStore {
               let saved = try? JSONDecoder().decode([SessionRecord].self, from: data) else { return }
         records = saved
     }
+
+    #if DEBUG
+    private static func debugRecordsFromEnvironment() -> [SessionRecord]? {
+        if let scenario = ProcessInfo.processInfo.environment["SITUREM_STATS_SCENARIO"] {
+            return debugRecords(for: scenario)
+        }
+
+        let arguments = ProcessInfo.processInfo.arguments
+        guard let scenarioIndex = arguments.firstIndex(of: "-stats-scenario"),
+              arguments.indices.contains(scenarioIndex + 1) else {
+            return nil
+        }
+
+        return debugRecords(for: arguments[scenarioIndex + 1])
+    }
+
+    private static func debugRecords(for scenario: String) -> [SessionRecord]? {
+        let calendar = Calendar.current
+
+        func record(daysAgo: Int, minutes: Int) -> SessionRecord {
+            SessionRecord(
+                date: calendar.date(byAdding: .day, value: -daysAgo, to: Date()) ?? Date(),
+                plannedDuration: minutes * 60,
+                actualDuration: minutes * 60,
+                accompaniment: .guided,
+                isComplete: true
+            )
+        }
+
+        switch scenario {
+        case "empty":
+            return []
+        case "light":
+            return [
+                record(daysAgo: 0, minutes: 12),
+                record(daysAgo: 3, minutes: 10),
+                record(daysAgo: 11, minutes: 18),
+                record(daysAgo: 27, minutes: 25)
+            ]
+        case "filled":
+            let evenDays = stride(from: 0, through: 88, by: 2).map {
+                record(daysAgo: $0, minutes: 10 + ($0 % 3) * 4)
+            }
+            let recentCluster = [1, 4, 5, 6, 9, 13].map {
+                record(daysAgo: $0, minutes: 14)
+            }
+            return evenDays + recentCluster
+        default:
+            return nil
+        }
+    }
+    #endif
 }
