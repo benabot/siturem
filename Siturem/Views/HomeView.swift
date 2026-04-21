@@ -33,24 +33,14 @@ struct HomeView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: LayoutMetrics.md) {
-                    if let lastUsedFrame {
-                        lastFrameSection(lastUsedFrame)
-                    }
-                    durationSection
-                    optionsSection
+                    sessionSection
+                    signalsSection
                 }
                 .padding(.horizontal, LayoutMetrics.hPadding)
                 .padding(.top, LayoutMetrics.sm)
                 .padding(.bottom, LayoutMetrics.md)
             }
             .background(Theme.background)
-            .safeAreaInset(edge: .bottom) {
-                startButton
-                    .padding(.horizontal, LayoutMetrics.hPadding)
-                    .padding(.top, 12)
-                    .padding(.bottom, LayoutMetrics.sm)
-                    .background(Theme.background)
-            }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -79,9 +69,21 @@ struct HomeView: View {
         frameStore.lastUsedFrame
     }
 
-    // MARK: - Dernier cadre
+    // MARK: - Séance
 
-    private func lastFrameSection(_ frame: PracticeFrame) -> some View {
+    private var sessionSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            sectionLabel("SÉANCE")
+
+            if let lastUsedFrame {
+                lastFrameCard(lastUsedFrame)
+            }
+
+            durationCard
+        }
+    }
+
+    private func lastFrameCard(_ frame: PracticeFrame) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             sectionLabel("DERNIER CADRE")
 
@@ -114,24 +116,15 @@ struct HomeView: View {
                     }
 
                     if frame.reminder != .off {
-                        detailRow("Rappels", value: frame.reminder.settingsLabel)
+                        detailRow("Rappels", value: frame.reminder.homeLabel)
                     }
                 }
 
-                HStack(spacing: 10) {
-                    Button("Charger") {
-                        apply(frame: frame)
-                    }
-                    .buttonStyle(.bordered)
-                    .tint(Theme.textSecondary)
-
-                    Button("Commencer") {
-                        start(frame: frame)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(Theme.accent)
-                    .foregroundStyle(Theme.background)
+                Button("Charger") {
+                    apply(frame: frame)
                 }
+                .buttonStyle(.bordered)
+                .tint(Theme.textSecondary)
 
                 if let frameEditFeedback {
                     Text(frameEditFeedback.message)
@@ -141,52 +134,52 @@ struct HomeView: View {
                 }
             }
             .padding(LayoutMetrics.md)
-            .background(Theme.surface)
+            .background(Theme.surfaceHigh)
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
     }
 
-    // MARK: - Durée
+    // MARK: - Signaux
 
-    private var durationSection: some View {
+    private var durationCard: some View {
         VStack(alignment: .leading, spacing: 14) {
             sectionLabel("DURÉE")
 
-            HStack(spacing: LayoutMetrics.md) {
-                // Valeur sélectionnée mise en avant
-                Text("\(selectedMinutes)")
-                    .font(.system(size: 52, weight: .ultraLight, design: .monospaced))
-                    .foregroundStyle(Theme.textPrimary)
-                    + Text(" min")
-                    .font(.system(size: 20, weight: .light, design: .monospaced))
-                    .foregroundStyle(Theme.textSecondary)
+            VStack(alignment: .leading, spacing: 16) {
+                HStack(spacing: LayoutMetrics.md) {
+                    Text("\(selectedMinutes)")
+                        .font(.system(size: 52, weight: .ultraLight, design: .monospaced))
+                        .foregroundStyle(Theme.textPrimary)
+                        + Text(" min")
+                        .font(.system(size: 20, weight: .light, design: .monospaced))
+                        .foregroundStyle(Theme.textSecondary)
 
-                Spacer()
+                    Spacer()
 
-                // Wheel picker compact
-                Picker("Durée", selection: $selectedMinutes) {
-                    ForEach(6...60, id: \.self) { m in
-                        Text("\(m) min")
-                            .font(.system(.body, design: .monospaced))
-                            .tag(m)
+                    Picker("Durée", selection: $selectedMinutes) {
+                        ForEach(6...60, id: \.self) { m in
+                            Text("\(m) min")
+                                .font(.system(.body, design: .monospaced))
+                                .tag(m)
+                        }
                     }
+                    .pickerStyle(.wheel)
+                    .frame(width: 110, height: 110)
+                    .clipped()
                 }
-                .pickerStyle(.wheel)
-                .frame(width: 110, height: 110)
-                .clipped()
+
+                startButton
             }
             .padding(.horizontal, LayoutMetrics.sm)
-            .padding(.vertical, LayoutMetrics.sm)
+            .padding(.vertical, LayoutMetrics.md)
             .background(Theme.surface)
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
     }
 
-    // MARK: - Options
-
-    private var optionsSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionLabel("OPTIONS")
+    private var signalsSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            sectionLabel("SIGNAUX")
             VStack(spacing: 1) {
                 optionRow("Accompagnement") {
                     Picker("", selection: $prefs.accompaniment) {
@@ -204,7 +197,7 @@ struct HomeView: View {
                     .pickerStyle(.menu)
                     .tint(Theme.textSecondary)
                 }
-                optionRow("Ambiance", isLast: true) {
+                optionRow("Ambiance") {
                     Picker("", selection: $prefs.ambient) {
                         ForEach(AmbientSound.allCases) { s in Text(s.displayLabel).tag(s) }
                     }
@@ -212,10 +205,23 @@ struct HomeView: View {
                     .pickerStyle(.menu)
                     .tint(Theme.textSecondary)
                 }
+                optionRow("Rappels", isLast: true) {
+                    Picker("", selection: $prefs.reminder) {
+                        ForEach(ReminderInterval.allCases) { interval in
+                            Text(interval.homeLabel).tag(interval)
+                        }
+                    }
+                    .labelsHidden()
+                    .pickerStyle(.menu)
+                    .tint(Theme.textSecondary)
+                }
             }
+            .background(Theme.surface)
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
     }
+
+    // MARK: - Actions
 
     @ViewBuilder
     private func optionRow<Content: View>(_ label: LocalizedStringResource, isLast: Bool = false, @ViewBuilder content: () -> Content) -> some View {
@@ -228,7 +234,6 @@ struct HomeView: View {
         }
         .padding(.horizontal, LayoutMetrics.sm)
         .padding(.vertical, LayoutMetrics.sm)
-        .background(Theme.surface)
         .overlay(alignment: .bottom) {
             if !isLast {
                 Theme.surfaceHigh.frame(height: 0.5)
@@ -236,18 +241,9 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - Démarrage
-
     private var startButton: some View {
         Button {
-            start(config: SessionConfiguration(
-                totalDuration: selectedDuration,
-                accompaniment: prefs.accompaniment,
-                gong: prefs.gong,
-                ambient: prefs.ambient,
-                reminder: prefs.reminder,
-                audioLocale: prefs.audioLocale
-            ))
+            start(config: currentSessionConfiguration)
         } label: {
             Text("COMMENCER")
                 .font(.system(.subheadline, weight: .light))
@@ -291,6 +287,17 @@ struct HomeView: View {
                 .font(.system(.caption))
                 .foregroundStyle(Theme.textPrimary)
         }
+    }
+
+    private var currentSessionConfiguration: SessionConfiguration {
+        SessionConfiguration(
+            totalDuration: selectedDuration,
+            accompaniment: prefs.accompaniment,
+            gong: prefs.gong,
+            ambient: prefs.ambient,
+            reminder: prefs.reminder,
+            audioLocale: prefs.audioLocale
+        )
     }
 
     private func migrateFramesIfNeeded() {

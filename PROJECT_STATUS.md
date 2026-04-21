@@ -49,14 +49,14 @@ Le bundle identifier Xcode est désormais `fr.beabot.siturem` dans `project.yml`
 - **Assets audio** : arborescence `Audio/{fr,en,es,de}/...` en place, `Siturem/Audio` déclaré explicitement dans `project.yml`. Les locales audio effectivement traitées comme disponibles sont `fr`, `en`, `es`. `de` reste borné côté bundle mais n'est pas sélectionné automatiquement.
 - **Localisation audio** : la langue audio suit désormais la langue UI effective avec fallback global `en`. La séparation d'architecture UI / audio reste conservée ; seule la règle de résolution a changé.
 - **HealthKit** : synchro V1 optionnelle activée côté app. Permission demandée seulement depuis `SettingsView`. Écriture tentée uniquement pour les séances terminées normalement ; refus, indisponibilité et échec restent silencieux et non bloquants
-- **Flux UI** : `HomeView` affiche maintenant le dernier cadre persistant via `PracticeFrameStore` et peut relancer immédiatement une séance à partir de ce cadre, tout en continuant à lancer le runtime via `SessionConfiguration`. `SessionView` et `SessionSummaryView` restent inchangées et session-centric pour ce ticket
+- **Flux UI** : `HomeView` affiche maintenant le dernier cadre persistant via `PracticeFrameStore`. Le bloc `Dernier cadre` reste un point de chargement honnête vers les réglages visibles, tandis que `Commencer` lance toujours le runtime via `SessionConfiguration`. `SessionView` et `SessionSummaryView` restent inchangées et session-centric pour ce ticket
 - **Stats / persistance** : `StatsStore` et `SessionRecord` restent inchangés. Les stats par cadre attendront un identifiant de cadre persistant dans un futur `PracticeFrameStore` ou dans une évolution ciblée de `SessionRecord`
 - **HealthKit** : aucun ajustement frame n'est écrit dans Santé. La couche HealthKit reste strictement session-centric
 - **Tests** : aucun test unitaire ou UI en place
 - **Cartographie V2** : les impacts techniques Home / Session / Stats / Settings sont maintenant documentés dans `docs/2026-04-21-s1-v2-impact-mapping.md` pour préparer l'introduction d'un futur `PracticeFrameStore` sans refactor large
 - **PracticeFrameStore** : store V2 local avec persistance `UserDefaults + JSON`, CRUD, favoris, dernier cadre utilisé et ordre d'affichage porté par l'ordre du tableau persisté. `PreferencesStore` reste inchangé et conserve les réglages actifs V1
 - **Migration V1 -> V2** : stratégie lazy et idempotente préparée. Si aucun cadre n'existe encore, un futur premier accès aux frames pourra seed un cadre unique depuis les réglages de séance V1 persistés; si aucun héritage V1 n'existe, aucune création automatique n'est faite
-- **Home V2** : le raccord minimal est en place. Si un dernier cadre existe, `HomeView` affiche un bloc sobre de relance rapide avec `Commencer` et `Modifier`. `Modifier` recharge les réglages actifs V1 dans l'écran d'accueil existant au lieu d'ouvrir un éditeur de cadre dédié
+- **Home V2** : le raccord minimal est en place. `HomeView` revient à une hiérarchie plus calme centrée sur `Séance`, avec `Dernier cadre`, `Durée` et `Commencer` comme noyau principal. `Signaux` reste présent sous forme secondaire et légère. Aucun bloc `Accès` redondant n'est affiché au-dessus de la tab bar
 - **Premier lancement** : le bloc `Dernier cadre` n'apparaît pas sur un vrai premier lancement absolu. La migration lazy ne seed un cadre que pour un utilisateur V1 dont au moins une vraie préférence de séance est déjà persistée. Le faux positif observé pendant les vérifications venait d'un état résiduel du simulateur, pas d'un bug de logique
 
 ## Références locales
@@ -129,9 +129,9 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - monétisation sobre, stats par cadre, Siri Shortcuts / App Intents
 
 ## Prochain focus
-`[S3] Home — bloc Dernier cadre branché`
+`[S3] Home — hiérarchie simplifiée`
 
-- `HomeView` affiche maintenant le dernier cadre persistant et peut relancer immédiatement une séance via sa conversion explicite vers `SessionConfiguration`
-- si aucun cadre n'existe, y compris après la migration lazy éventuelle depuis `PreferencesStore`, l'accueil garde son flux V1 actuel sans bloc additionnel
-- `Modifier` recharge le cadre dans les réglages actifs existants de `HomeView`, sans ouvrir d'éditeur V2 artificiel
-- `SessionView`, `SessionSummaryView`, `StatsStore` et `SettingsView` restent volontairement hors propagation de l'identité de cadre à ce stade
+- `HomeView` recentre l’écran sur `Séance`, avec `Dernier cadre`, `Durée` et `Commencer` dans la zone dominante
+- `Charger` conserve un comportement honnête de copie vers les réglages visibles, sans créer de second CTA primaire
+- `Signaux` reste en dessous comme bloc secondaire léger, et aucun bloc `Accès` redondant n'est affiché
+- les prochaines retouches Home devront préserver cette lecture simple et éviter tout retour à une interface dense

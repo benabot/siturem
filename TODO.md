@@ -2,31 +2,31 @@
 
 ## Priorité active
 
-### [S3] Home — dernier cadre et démarrage immédiat
+### [S3] Home — hiérarchie simplifiée
 
 **Statut**
-Le premier raccord UI V2 est en place : `HomeView` affiche le dernier cadre persistant quand il existe et peut lancer immédiatement une séance depuis ce cadre sans toucher au runtime de séance.
+`HomeView` revient à une hiérarchie plus simple: `Séance` reste dominante avec `Dernier cadre`, `Durée` et `Commencer`, tandis que `Signaux` reste secondaire et léger.
 
 **Objectif**
-Faire de l'accueil un point de relance rapide, tout en gardant `PreferencesStore` comme source de vérité des réglages actifs.
+Rendre l’accueil plus lisible sans changer le runtime de séance ni réintroduire un écran trop chargé.
 
 **Tâches**
-- [x] injecter `PracticeFrameStore` dans `HomeView`
-- [x] afficher le dernier cadre si disponible
-- [x] déclencher la migration lazy au premier accès réel si nécessaire
-- [x] lancer une séance depuis le cadre via `SessionConfiguration`
-- [x] proposer un `Modifier` honnête sans écran d'édition artificiel
+- [x] garder le bloc `Dernier cadre` en tête du bloc Séance
+- [x] regrouper durée et CTA dans le bloc Séance
+- [x] reléguer accompagnement, gong, ambiance et rappels dans le bloc Signaux
+- [x] supprimer le bloc `Accès` redondant avec la tab bar
+- [x] conserver un seul CTA primaire
 
 **Critère de fin**
-- [x] le dernier cadre s'affiche correctement quand il existe
-- [x] le démarrage immédiat fonctionne
-- [x] l'accueil reste propre si aucun cadre n'est disponible
-- [x] le flux `Home -> Session` continue de reposer sur `SessionConfiguration`
+- [x] la hiérarchie visuelle est nette
+- [x] l’écran reste lisible sur petit iPhone
+- [x] le CTA principal reste unique
+- [x] aucun bloc `Accès` redondant n'est affiché
+- [x] le build local passe
 
 **Suites identifiées**
-- [ ] décider si `SessionSummaryView` doit réafficher le cadre utilisé
-- [ ] décider comment exposer plus tard l'édition complète d'un cadre nommé
-- [ ] propager l'identité de cadre vers l'historique seulement après stabilisation du flux Home
+- [ ] décider si un accès futur aux cadres favoris mérite un bloc dédié
+- [ ] ne réétendre `HomeView` que si un nouveau point d'entrée apporte une vraie valeur au lancement
 
 ### [S2] Infra — stratégie de migration des préférences
 

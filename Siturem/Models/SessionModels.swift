@@ -112,6 +112,14 @@ enum ReminderInterval: String, CaseIterable, Identifiable, Codable {
         case .every150sec: "Occasionnelles"
         }
     }
+
+    var homeLabel: LocalizedStringResource {
+        switch self {
+        case .off: "Aucun"
+        case .every90sec: "Fréquents"
+        case .every150sec: "Occasionnels"
+        }
+    }
 }
 
 // MARK: - Session Phase
