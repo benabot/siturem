@@ -9,10 +9,12 @@ final class PracticeFrameStore {
     private enum StorageKey {
         static let frames = "siturem.practiceFrames"
         static let lastUsedFrameID = "siturem.practiceFrames.lastUsedFrameID"
+        static let didCompletePreferencesMigration = "siturem.practiceFrames.didCompletePreferencesMigration"
     }
 
     private let defaults: UserDefaults
     private let isPersistenceEnabled: Bool
+    private var didCompletePreferencesMigration: Bool
 
     /// L'ordre du tableau persisté fait foi pour le futur affichage côté Home.
     private(set) var frames: [PracticeFrame]
@@ -23,6 +25,7 @@ final class PracticeFrameStore {
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         self.isPersistenceEnabled = true
+        self.didCompletePreferencesMigration = false
         self.frames = []
         self.lastUsedFrameID = nil
         load()
@@ -35,6 +38,7 @@ final class PracticeFrameStore {
     ) {
         self.defaults = .standard
         self.isPersistenceEnabled = false
+        self.didCompletePreferencesMigration = true
         self.frames = previewFrames
         self.lastUsedFrameID = lastUsedFrameID ?? previewFrames.first?.id
     }
@@ -50,6 +54,10 @@ final class PracticeFrameStore {
     var lastUsedFrame: PracticeFrame? {
         guard let lastUsedFrameID else { return nil }
         return frame(id: lastUsedFrameID)
+    }
+
+    var needsPreferencesMigration: Bool {
+        !didCompletePreferencesMigration && frames.isEmpty
     }
 
     func frame(id: UUID) -> PracticeFrame? {
@@ -125,6 +133,35 @@ final class PracticeFrameStore {
         persistLastUsedFrameID()
     }
 
+    /// Seed one-shot du premier cadre à partir des réglages V1 actifs.
+    /// La migration est lazy : elle n'a vocation à être appelée qu'au premier accès futur aux cadres.
+    func migratePreferencesIfNeeded(
+        from preferences: PreferencesStore,
+        frameName: String,
+        isFavorite: Bool = false
+    ) {
+        guard isPersistenceEnabled else { return }
+        guard !didCompletePreferencesMigration else { return }
+
+        if !frames.isEmpty {
+            didCompletePreferencesMigration = true
+            persistMigrationState()
+            return
+        }
+
+        guard preferences.hasPersistedSessionPreferences else {
+            didCompletePreferencesMigration = true
+            persistMigrationState()
+            return
+        }
+
+        let migratedFrame = preferences.makePracticeFrame(name: frameName, isFavorite: isFavorite)
+        frames = [migratedFrame]
+        lastUsedFrameID = migratedFrame.id
+        didCompletePreferencesMigration = true
+        persist()
+    }
+
     private func persist() {
         guard isPersistenceEnabled else { return }
 
@@ -133,6 +170,7 @@ final class PracticeFrameStore {
         }
 
         persistLastUsedFrameID()
+        persistMigrationState()
     }
 
     private func persistLastUsedFrameID() {
@@ -145,9 +183,15 @@ final class PracticeFrameStore {
         }
     }
 
+    private func persistMigrationState() {
+        guard isPersistenceEnabled else { return }
+        defaults.set(didCompletePreferencesMigration, forKey: StorageKey.didCompletePreferencesMigration)
+    }
+
     private func load() {
         guard isPersistenceEnabled else { return }
         var requiresPersistenceCleanup = false
+        didCompletePreferencesMigration = defaults.bool(forKey: StorageKey.didCompletePreferencesMigration)
 
         if let data = defaults.data(forKey: StorageKey.frames) {
             if let savedFrames = try? JSONDecoder().decode([PracticeFrame].self, from: data) {

@@ -2,6 +2,31 @@
 
 ## Priorité active
 
+### [S2] Infra — stratégie de migration des préférences
+
+**Statut**
+La stratégie de migration entre réglages actifs V1 et cadres persistés V2 est maintenant cadrée et encodée sous forme de helper lazy, sans brancher encore la refonte `HomeView`.
+
+**Objectif**
+Éviter une rupture entre `PreferencesStore` et `PracticeFrameStore` au moment du premier raccord UI.
+
+**Tâches**
+- [x] cartographier les préférences V1 et leur destination
+- [x] définir ce qui migre dans un premier cadre
+- [x] définir ce qui reste dans `PreferencesStore`
+- [x] définir le moment d'exécution de la migration
+- [x] rendre la migration idempotente et sûre face aux états partiels
+
+**Critère de fin**
+- [x] une stratégie claire existe
+- [x] les cas principaux sont couverts
+- [x] la migration ne change pas encore l'UX ni le runtime de séance
+
+**Suites identifiées**
+- [ ] appeler la migration au premier accès réel aux frames lors du raccord `HomeView`
+- [ ] fournir le nom localisé du cadre seedé au point d'appel UI futur
+- [ ] garder `PreferencesStore` comme source de vérité des réglages actifs tant que Home n'est pas migrée
+
 ### [S2] V2.0 — persistance du dernier cadre et des favoris
 
 **Statut**
@@ -50,7 +75,7 @@ Persister les `PracticeFrame` sans refactor large, avec CRUD de base, favoris et
 
 **Suites identifiées**
 - [ ] raccorder `ContentView` puis `HomeView` au store
-- [ ] définir comment un réglage actif devient un cadre enregistré sans ambiguïté
+- [x] définir comment un réglage actif devient un cadre enregistré sans ambiguïté
 - [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView`
 - [ ] reconsidérer `SessionRecord` / `StatsStore` seulement après stabilisation de l'identité de cadre
 
@@ -76,7 +101,7 @@ Identifier les zones à raccorder et l'ordre d'implémentation réaliste avant d
 - [x] l'ordre de raccord V2 est exploitable
 
 **Suites identifiées**
-- [ ] définir la frontière exacte entre réglages actifs V1 et cadres persistés V2
+- [x] définir la frontière exacte entre réglages actifs V1 et cadres persistés V2
 - [ ] raccorder `HomeView`
 - [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView`
 - [ ] reconsidérer `SessionRecord` / `StatsStore` seulement après stabilisation du contrat de persistance

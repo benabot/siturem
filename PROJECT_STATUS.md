@@ -55,6 +55,7 @@ Le bundle identifier Xcode est désormais `com.beabot.siturem` dans `project.yml
 - **Tests** : aucun test unitaire ou UI en place
 - **Cartographie V2** : les impacts techniques Home / Session / Stats / Settings sont maintenant documentés dans `docs/2026-04-21-s1-v2-impact-mapping.md` pour préparer l'introduction d'un futur `PracticeFrameStore` sans refactor large
 - **PracticeFrameStore** : store V2 local avec persistance `UserDefaults + JSON`, CRUD, favoris, dernier cadre utilisé et ordre d'affichage porté par l'ordre du tableau persisté. `PreferencesStore` reste inchangé et conserve les réglages actifs V1
+- **Migration V1 -> V2** : stratégie lazy et idempotente préparée. Si aucun cadre n'existe encore, un futur premier accès aux frames pourra seed un cadre unique depuis les réglages de séance V1 persistés; si aucun héritage V1 n'existe, aucune création automatique n'est faite
 
 ## Références locales
 - `docs/BrandingGuideline.md` — identité visuelle, ton, territoire
@@ -104,6 +105,7 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - **Livraison V1.2** : la V1.2 clôture les dernières réserves audio / stabilité avant reprise de la V2
 - **Cadres V2** : le modèle `PracticeFrame` est stabilisé comme couche conceptuelle et `PracticeFrameStore` couvre maintenant la persistance locale du dernier cadre, des favoris et de l'ordre d'affichage. Le prochain chantier est le raccord contrôlé de `HomeView`
 - **Persistance frames V2** : `PracticeFrameStore` persiste `[PracticeFrame]` en JSON dans `UserDefaults`, conserve le dernier cadre utilisé via un identifiant séparé, et réutilise l'ordre du tableau comme ordre d'affichage. L'initialisation retombe sur un état sain si l'état persisté est vide, partiel ou incohérent. Cette couche ne remplace pas `PreferencesStore` et ne branche pas encore l'UI
+- **Migration des préférences** : seuls `durée`, `accompagnement`, `gong`, `ambiance` et `rappels` sont migrables vers un premier `PracticeFrame`. `uiLanguageOverride`, `audioLocale` dérivée, `healthKitEnabled` et l'onboarding restent hors cadre et dans `PreferencesStore` / `AppStorage`
 - **Impact mapping S1** : la cartographie confirme que `HomeView` et `PreferencesStore` sont les points de risque principaux, que `SessionConfiguration` doit rester le contrat d'exécution, et que `StatsStore` / `SettingsView` doivent rester découplés tant que la persistance des cadres n'est pas stabilisée
 - **Pilotage opérationnel** : le GitHub Project `Siturem — Delivery` (`github.com/users/benabot/projects/2`) est le tableau de pilotage principal du repo
 - **Cycle de travail** : lire une issue, la passer en `En cours`, implémenter, valider localement, faire un commit documenté au format `type(area): action concise (#issue)`, commenter / fermer l’issue, puis synchroniser `TODO.md` et `PROJECT_STATUS.md` si nécessaire
@@ -124,8 +126,9 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - monétisation sobre, stats par cadre, Siri Shortcuts / App Intents
 
 ## Prochain focus
-`[S2] Frames — persistance des cadres prête avant HomeView`
+`[S2] Infra — stratégie de migration des préférences prête`
 
 - `PracticeFrameStore` persiste maintenant le dernier cadre utilisé, les favoris et l'ordre d'affichage sans modifier la source de vérité V1 des réglages actifs
+- la migration future sera lazy, idempotente, et ne seedera un premier cadre que pour les utilisateurs V1 avec réglages de séance déjà persistés
 - `HomeView` reste le premier point de raccord à traiter, avant toute propagation vers `SessionView` et `SessionSummaryView`
 - `StatsStore` et `SettingsView` restent volontairement hors migration tant que l'identité de cadre persistée n'est pas stabilisée
