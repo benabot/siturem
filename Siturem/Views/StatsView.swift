@@ -19,6 +19,7 @@ struct StatsView: View {
                 VStack(alignment: .leading, spacing: LayoutMetrics.md) {
                     sectionLabel("Pratique")
                     essentialsCard
+                    rhythmCard
                     heatmapCard
                 }
                 .padding(.horizontal, LayoutMetrics.hPadding)
@@ -59,6 +60,28 @@ struct StatsView: View {
             metricGroup(title: "Régularité") {
                 metricRow("Streak actuel", value: "\(stats.currentStreak) \(dayAbbreviation)")
                 metricRow("Meilleur streak", value: "\(stats.bestStreak) \(dayAbbreviation)")
+            }
+        }
+        .padding(LayoutMetrics.sm)
+        .background(Theme.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+
+    private var rhythmCard: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("Repères")
+                .font(.system(.caption, design: .monospaced))
+                .foregroundStyle(Theme.textSecondary)
+                .tracking(2)
+
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach(stats.recentMonthlyTotals) { month in
+                    metricRow(label: monthLabel(for: month.monthStart), value: formatMinutes(month.totalSeconds))
+                }
+
+                cardSeparator
+
+                metricRow("Moyenne hebdo", value: formatMinutes(stats.averageWeeklySeconds))
             }
         }
         .padding(LayoutMetrics.sm)
@@ -126,6 +149,17 @@ struct StatsView: View {
         }
     }
 
+    private func metricRow(label: String, value: String) -> some View {
+        HStack {
+            Text(label)
+                .foregroundStyle(Theme.textPrimary)
+            Spacer()
+            Text(value)
+                .foregroundStyle(Theme.textSecondary)
+                .font(.system(.body, design: .monospaced))
+        }
+    }
+
     private var cardSeparator: some View {
         Theme.surfaceHigh
             .frame(height: 0.5)
@@ -165,5 +199,14 @@ struct StatsView: View {
 
     private var hourAbbreviation: String {
         locale.identifier.hasPrefix("de") ? "Std." : "h"
+    }
+
+    private func monthLabel(for date: Date) -> String {
+        date.formatted(
+            .dateTime
+            .locale(locale)
+            .month(.abbreviated)
+            .year()
+        )
     }
 }

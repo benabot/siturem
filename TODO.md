@@ -2,6 +2,31 @@
 
 ## Priorité active
 
+### [S8] Stats — totaux mensuels et moyenne hebdomadaire
+
+**Statut**
+`StatsView` affiche maintenant un niveau secondaire compact avec deux totaux mensuels récents et une moyenne hebdomadaire calculés depuis les `SessionRecord`.
+
+**Objectif**
+Ajouter des repères utiles au-dessus du registre essentiel, sans dérive dashboard ni logique fitness.
+
+**Tâches**
+- [x] définir des agrégats simples compatibles avec les données existantes
+- [x] calculer deux totaux mensuels récents dans `StatsStore`
+- [x] calculer une moyenne hebdomadaire stable sans migration de persistance
+- [x] intégrer ces repères dans une présentation secondaire compacte
+- [x] revalider le rendu iPhone avec historique vide, léger et plus rempli
+
+**Critère de fin**
+- [x] les totaux mensuels sont lisibles et plausibles
+- [x] la moyenne hebdomadaire reste stable sur peu de données
+- [x] la hiérarchie de `StatsView` reste calme
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] garder les stats par cadre hors périmètre tant qu'un identifiant de cadre n'existe pas dans l'historique
+- [ ] éviter toute visualisation ou agrégation supplémentaire sans besoin produit explicite
+
 ### [S8] Stats — heatmap 90 jours
 
 **Statut**

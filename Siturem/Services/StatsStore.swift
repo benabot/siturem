@@ -13,6 +13,13 @@ final class StatsStore {
         var id: Date { date }
     }
 
+    struct MonthlyPracticeTotal: Identifiable, Hashable {
+        let monthStart: Date
+        let totalSeconds: Int
+
+        var id: Date { monthStart }
+    }
+
     private let key = "siturem.sessions"
     private(set) var records: [SessionRecord] = []
 
@@ -70,6 +77,14 @@ final class StatsStore {
         practiceDays(last: 90)
     }
 
+    var recentMonthlyTotals: [MonthlyPracticeTotal] {
+        monthlyTotals(last: 2)
+    }
+
+    var averageWeeklySeconds: Int {
+        recentAverageWeeklySeconds(windowDays: 28)
+    }
+
     // MARK: - Private
 
     private func practiceDays(last days: Int, endingOn endDate: Date = Date()) -> [PracticeDay] {
@@ -90,6 +105,61 @@ final class StatsStore {
                 didPractice: practicedDays.contains(date)
             )
         }
+    }
+
+    private func monthlyTotals(last months: Int, endingOn endDate: Date = Date()) -> [MonthlyPracticeTotal] {
+        guard months > 0 else { return [] }
+
+        let calendar = Calendar.current
+        let currentMonthStart = monthStart(for: endDate, calendar: calendar)
+        let totalsByMonth = Dictionary(grouping: records) { record in
+            monthStart(for: record.date, calendar: calendar)
+        }
+
+        return (0..<months).compactMap { offset in
+            guard let monthStart = calendar.date(byAdding: .month, value: -offset, to: currentMonthStart) else {
+                return nil
+            }
+
+            let totalSeconds = totalsByMonth[monthStart]?.reduce(0) { partialResult, record in
+                partialResult + record.actualDuration
+            } ?? 0
+
+            return MonthlyPracticeTotal(
+                monthStart: monthStart,
+                totalSeconds: totalSeconds
+            )
+        }
+    }
+
+    private func recentAverageWeeklySeconds(windowDays: Int, endingOn endDate: Date = Date()) -> Int {
+        guard !records.isEmpty, windowDays > 0 else { return 0 }
+
+        let calendar = Calendar.current
+        let lastDay = calendar.startOfDay(for: endDate)
+        let requestedWindowStart = calendar.date(byAdding: .day, value: -(windowDays - 1), to: lastDay) ?? lastDay
+        let firstRecordedDay = records
+            .map { calendar.startOfDay(for: $0.date) }
+            .min() ?? lastDay
+        let windowStart = max(requestedWindowStart, firstRecordedDay)
+
+        let totalSecondsInWindow = records.reduce(0) { partialResult, record in
+            let recordDay = calendar.startOfDay(for: record.date)
+            guard recordDay >= windowStart, recordDay <= lastDay else {
+                return partialResult
+            }
+            return partialResult + record.actualDuration
+        }
+
+        let observedDays = (calendar.dateComponents([.day], from: windowStart, to: lastDay).day ?? 0) + 1
+        guard observedDays > 0 else { return 0 }
+
+        return Int((Double(totalSecondsInWindow) / Double(observedDays) * 7).rounded())
+    }
+
+    private func monthStart(for date: Date, calendar: Calendar) -> Date {
+        calendar.date(from: calendar.dateComponents([.year, .month], from: date))
+            ?? calendar.startOfDay(for: date)
     }
 
     private func streak(from date: Date) -> Int {
