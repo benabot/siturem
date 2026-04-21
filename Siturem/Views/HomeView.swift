@@ -73,7 +73,7 @@ struct HomeView: View {
 
     private var sessionSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-            sectionLabel("SÉANCE")
+            primarySectionLabel("Séance")
 
             if let lastUsedFrame {
                 lastFrameCard(lastUsedFrame)
@@ -263,6 +263,12 @@ struct HomeView: View {
             .font(.system(.caption2, design: .monospaced))
             .foregroundStyle(Theme.textSecondary)
             .tracking(2)
+    }
+
+    private func primarySectionLabel(_ text: LocalizedStringResource) -> some View {
+        Text(text)
+            .font(.system(.title3, design: .rounded, weight: .light))
+            .foregroundStyle(Theme.textPrimary)
     }
 
     private func detailPill(_ label: LocalizedStringResource) -> some View {
