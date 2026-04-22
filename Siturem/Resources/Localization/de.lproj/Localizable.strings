@@ -13,12 +13,19 @@
 
 /* Home */
 "DURÉE" = "DAUER";
+"DERNIER CADRE" = "LETZTER RAHMEN";
+"SIGNAUX" = "SIGNALE";
 "Durée" = "Dauer";
 "OPTIONS" = "OPTIONEN";
 "Accompagnement" = "Begleitung";
 "Gong" = "Gong";
 "Ambiance" = "Ambiente";
+"Rappels" = "Erinnerungen";
+"Charger" = "Laden";
 "COMMENCER" = "Beginnen";
+"Cadre favori" = "Bevorzugter Rahmen";
+"Cadre chargé dans les réglages" = "Rahmen in die Einstellungen geladen";
+"Cadre déjà chargé dans les réglages" = "Rahmen ist bereits in die Einstellungen geladen";
 
 /* Splash, onboarding, logo */
 "Le cadre discret de votre pratique." = "Der diskrete Rahmen deiner Praxis.";
@@ -45,6 +52,8 @@
 "Meilleur streak" = "Beste Serie";
 "Repères" = "Anhaltspunkte";
 "Moyenne hebdo" = "Wochendurchschnitt";
+"90 derniers jours" = "Letzte 90 Tage";
+"Aucune séance sur les 90 derniers jours" = "Keine Sitzungen in den letzten 90 Tagen";
 "Séances récentes" = "Letzte Sitzungen";
 "Séance" = "Sitzung";
 "Durée prévue" = "Geplante Dauer";
@@ -105,8 +114,11 @@
 "Forêt" = "Wald";
 "Bruit blanc" = "Weißes Rauschen";
 "Aucune" = "Keine";
+"Aucun" = "Kein";
 "Occasionnelles" = "Gelegentlich";
+"Occasionnels" = "Gelegentlich";
 "Fréquentes" = "Häufig";
+"Fréquents" = "Häufig";
 "Introduction" = "Einführung";
 "Méditation" = "Meditation";
 "Retour au calme" = "Rückkehr zur Ruhe";

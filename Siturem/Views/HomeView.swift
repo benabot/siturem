@@ -22,6 +22,7 @@ struct HomeView: View {
     @Bindable var prefs: PreferencesStore
     @Bindable var frameStore: PracticeFrameStore
     let onStart: (SessionConfiguration) -> Void
+    @Environment(\.locale) private var locale
 
     @State private var selectedMinutes: Int = 10
     @State private var showDurationError: Bool = false
@@ -89,7 +90,7 @@ struct HomeView: View {
 
             VStack(alignment: .leading, spacing: 14) {
                 HStack(alignment: .firstTextBaseline, spacing: 10) {
-                    Text(frame.name)
+                    Text(displayName(for: frame))
                         .font(.system(.title3, design: .rounded, weight: .light))
                         .foregroundStyle(Theme.textPrimary)
 
@@ -104,7 +105,7 @@ struct HomeView: View {
                 }
 
                 HStack(spacing: 8) {
-                    detailPill("\(frame.duration / 60) min")
+                    durationDetailPill(minutes: frame.duration / 60)
                     detailPill(frame.accompaniment.displayLabel)
                 }
 
@@ -150,7 +151,7 @@ struct HomeView: View {
                     Text("\(selectedMinutes)")
                         .font(.system(size: 52, weight: .ultraLight, design: .monospaced))
                         .foregroundStyle(Theme.textPrimary)
-                        + Text(" min")
+                        + Text(verbatim: " \(minuteAbbreviation)")
                         .font(.system(size: 20, weight: .light, design: .monospaced))
                         .foregroundStyle(Theme.textSecondary)
 
@@ -158,7 +159,7 @@ struct HomeView: View {
 
                     Picker("Durée", selection: $selectedMinutes) {
                         ForEach(6...60, id: \.self) { m in
-                            Text("\(m) min")
+                            Text(verbatim: durationLabel(minutes: m))
                                 .font(.system(.body, design: .monospaced))
                                 .tag(m)
                         }
@@ -271,6 +272,16 @@ struct HomeView: View {
             .clipShape(Capsule())
     }
 
+    private func durationDetailPill(minutes: Int) -> some View {
+        Text(verbatim: durationLabel(minutes: minutes))
+            .font(.system(.caption, design: .monospaced))
+            .foregroundStyle(Theme.textSecondary)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(Theme.surfaceHigh)
+            .clipShape(Capsule())
+    }
+
     private func detailRow(_ title: LocalizedStringResource, value: LocalizedStringResource) -> some View {
         HStack(spacing: 8) {
             Text(title)
@@ -342,8 +353,22 @@ struct HomeView: View {
         case .es:
             "Marco habitual"
         case .de:
-            "Ueblicher Rahmen"
+            "Üblicher Rahmen"
         }
+    }
+
+    private func displayName(for frame: PracticeFrame) -> String {
+        seededFrameAliases.contains(frame.name) ? seededFrameName : frame.name
+    }
+
+    private var seededFrameAliases: Set<String> {
+        [
+            "Cadre habituel",
+            "Usual frame",
+            "Marco habitual",
+            "Ueblicher Rahmen",
+            "Üblicher Rahmen"
+        ]
     }
 
     private func showFrameEditFeedback(_ feedback: FrameEditFeedback) {
@@ -358,5 +383,13 @@ struct HomeView: View {
                 frameEditFeedback = nil
             }
         }
+    }
+
+    private func durationLabel(minutes: Int) -> String {
+        "\(minutes) \(minuteAbbreviation)"
+    }
+
+    private var minuteAbbreviation: String {
+        locale.identifier.hasPrefix("de") ? "Min." : "min"
     }
 }
