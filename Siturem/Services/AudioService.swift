@@ -24,7 +24,7 @@ protocol AudioServicing: AnyObject {
 final class AudioService: AudioServicing {
 
     private enum Constants {
-        static let ambientVolume: Float = 0.07
+        static let ambientVolume: Float = 0.10
         static let gongVolume: Float = 0.48
         static let voiceVolume: Float = 1.0
         static let reminderVolume: Float = 0.78
@@ -675,7 +675,7 @@ final class AudioService: AudioServicing {
     }
 
     private func estimatedPlaybackDuration(for asset: AudioAsset) -> TimeInterval {
-        let cacheKey = "\(configuration.audioLocale.rawValue):\(asset.group.rawValue):\(asset.baseName)"
+        let cacheKey = "\(configuration.audioLocale.rawValue):\(asset.location.cacheKeyComponent):\(asset.baseName)"
 
         if let cachedDuration = assetDurationCache[cacheKey] {
             return cachedDuration
