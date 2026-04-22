@@ -6,48 +6,69 @@ import Foundation
 @Observable
 final class PreferencesStore {
 
+    private enum StorageKey {
+        static let totalDuration = "pref.totalDuration"
+        static let accompaniment = "pref.accompaniment"
+        static let gong = "pref.gong"
+        static let ambient = "pref.ambient"
+        static let reminder = "pref.reminder"
+        static let showSessionProgress = "pref.showSessionProgress"
+        static let transitionHaptics = "pref.transitionHaptics"
+        static let uiLanguage = "pref.uiLanguage"
+        static let healthKit = "pref.healthKit"
+        static let audioLocale = "pref.audioLocale"
+    }
+
     private let defaults = UserDefaults.standard
 
     var totalDuration: Int {
-        didSet { defaults.set(totalDuration, forKey: "pref.totalDuration") }
+        didSet { defaults.set(totalDuration, forKey: StorageKey.totalDuration) }
     }
     var accompaniment: AccompanimentMode {
-        didSet { defaults.set(accompaniment.rawValue, forKey: "pref.accompaniment") }
+        didSet { defaults.set(accompaniment.rawValue, forKey: StorageKey.accompaniment) }
     }
     var gong: GongMode {
-        didSet { defaults.set(gong.rawValue, forKey: "pref.gong") }
+        didSet { defaults.set(gong.rawValue, forKey: StorageKey.gong) }
     }
     var ambient: AmbientSound {
-        didSet { defaults.set(ambient.rawValue, forKey: "pref.ambient") }
+        didSet { defaults.set(ambient.rawValue, forKey: StorageKey.ambient) }
     }
     var reminder: ReminderInterval {
-        didSet { defaults.set(reminder.rawValue, forKey: "pref.reminder") }
+        didSet { defaults.set(reminder.rawValue, forKey: StorageKey.reminder) }
+    }
+    var showsSessionProgress: Bool {
+        didSet { defaults.set(showsSessionProgress, forKey: StorageKey.showSessionProgress) }
+    }
+    var enableTransitionHaptics: Bool {
+        didSet { defaults.set(enableTransitionHaptics, forKey: StorageKey.transitionHaptics) }
     }
     var uiLanguageOverride: AppLanguage? {
         didSet {
             if let uiLanguageOverride {
-                defaults.set(uiLanguageOverride.rawValue, forKey: "pref.uiLanguage")
+                defaults.set(uiLanguageOverride.rawValue, forKey: StorageKey.uiLanguage)
             } else {
-                defaults.removeObject(forKey: "pref.uiLanguage")
+                defaults.removeObject(forKey: StorageKey.uiLanguage)
             }
         }
     }
     var healthKitEnabled: Bool {
-        didSet { defaults.set(healthKitEnabled, forKey: "pref.healthKit") }
+        didSet { defaults.set(healthKitEnabled, forKey: StorageKey.healthKit) }
     }
 
     init() {
         let d = UserDefaults.standard
-        totalDuration = d.object(forKey: "pref.totalDuration") as? Int ?? 600
-        accompaniment = PreferencesStore.resolveAccompanimentMode(from: d.string(forKey: "pref.accompaniment"))
-        gong = PreferencesStore.resolveGongMode(from: d.string(forKey: "pref.gong")) ?? .sessionBounds
-        ambient = AmbientSound(rawValue: d.string(forKey: "pref.ambient") ?? "") ?? .off
-        reminder = PreferencesStore.resolveReminderInterval(from: d.string(forKey: "pref.reminder")) ?? .off
-        uiLanguageOverride = PreferencesStore.resolveUILanguageOverride(from: d.string(forKey: "pref.uiLanguage"))
-        healthKitEnabled = d.bool(forKey: "pref.healthKit")
+        totalDuration = d.object(forKey: StorageKey.totalDuration) as? Int ?? 600
+        accompaniment = PreferencesStore.resolveAccompanimentMode(from: d.string(forKey: StorageKey.accompaniment))
+        gong = PreferencesStore.resolveGongMode(from: d.string(forKey: StorageKey.gong)) ?? .sessionBounds
+        ambient = AmbientSound(rawValue: d.string(forKey: StorageKey.ambient) ?? "") ?? .off
+        reminder = PreferencesStore.resolveReminderInterval(from: d.string(forKey: StorageKey.reminder)) ?? .off
+        showsSessionProgress = d.object(forKey: StorageKey.showSessionProgress) as? Bool ?? true
+        enableTransitionHaptics = d.object(forKey: StorageKey.transitionHaptics) as? Bool ?? true
+        uiLanguageOverride = PreferencesStore.resolveUILanguageOverride(from: d.string(forKey: StorageKey.uiLanguage))
+        healthKitEnabled = d.bool(forKey: StorageKey.healthKit)
 
         // Legacy key kept from the earlier UI/audio split. Audio now follows the active UI language.
-        d.removeObject(forKey: "pref.audioLocale")
+        d.removeObject(forKey: StorageKey.audioLocale)
     }
 
     var uiLanguage: AppLanguage {
@@ -71,6 +92,25 @@ final class PreferencesStore {
             ambient: ambient,
             reminder: reminder,
             audioLocale: audioLocale
+        )
+    }
+
+    /// Indique si l'utilisateur a déjà persisté au moins un réglage de séance V1.
+    /// Ce signal sert au seed one-shot du premier cadre sans toucher aux préférences durables.
+    var hasPersistedSessionPreferences: Bool {
+        defaults.object(forKey: StorageKey.totalDuration) != nil
+            || defaults.object(forKey: StorageKey.accompaniment) != nil
+            || defaults.object(forKey: StorageKey.gong) != nil
+            || defaults.object(forKey: StorageKey.ambient) != nil
+            || defaults.object(forKey: StorageKey.reminder) != nil
+    }
+
+    /// Snapshot du V1 courant sous forme de cadre nommé, sans changer la source de vérité.
+    func makePracticeFrame(name: String, isFavorite: Bool = false) -> PracticeFrame {
+        PracticeFrame(
+            name: name,
+            sessionConfiguration: sessionConfiguration,
+            isFavorite: isFavorite
         )
     }
 

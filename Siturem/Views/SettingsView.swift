@@ -1,8 +1,8 @@
 import SwiftUI
 
 // MARK: - Settings View
-// Préférences système : HealthKit, interface, accessibilité, informations.
-// La configuration de séance (accompagnement, gong, ambiance, rappels) est dans HomeView.
+// Préférences durables : interface, rendu de séance, santé, informations.
+// Les réglages de lancement rapide restent dans HomeView.
 
 struct SettingsView: View {
 
@@ -10,14 +10,14 @@ struct SettingsView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     private let healthKit = HealthKitService()
+    private let privacyPolicyURL = URL(string: "https://beabot.fr/apps/siturem/#privacy")!
 
     @State private var healthAuthorizationStatus: HealthKitAuthorizationState = .unavailable
 
     var body: some View {
         NavigationStack {
             Form {
-                principlesSection
-                languageSection
+                interfaceSection
                 sessionSection
                 healthSection
                 aboutSection
@@ -38,33 +38,7 @@ struct SettingsView: View {
         }
     }
 
-    // MARK: - Principes
-
-    private var principlesSection: some View {
-        Section {
-            principleRow(
-                title: "Trois phases fixes",
-                detail: "Introduction (2 min 30) — Méditation (durée choisie) — Retour (1 min 32). La structure ne change pas d'une séance à l'autre."
-            )
-            principleRow(
-                title: "Pour qui",
-                detail: "Pratiquants qui savent déjà méditer et veulent un cadre stable, reproductible, sans distraction."
-            )
-            principleRow(
-                title: "Philosophie",
-                detail: "Siturem tient le cadre et s'efface. Pas de narration, pas de score, pas de gamification. L'app réduit la friction et disparaît."
-            )
-            principleRow(
-                title: "Durée minimale",
-                detail: "6 minutes (intro + méditation courte + retour). Durée par défaut : 10 minutes."
-            )
-        } header: {
-            sectionHeader("PRINCIPES")
-        }
-        .listRowBackground(Theme.surface)
-    }
-
-    private var languageSection: some View {
+    private var interfaceSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Langue de l'interface")
@@ -82,32 +56,16 @@ struct SettingsView: View {
             }
             .padding(.vertical, 4)
         } header: {
-            sectionHeader("LANGUE")
-        } footer: {
-            Text("Par défaut, l'interface suit la langue du système si elle est prise en charge, sinon l'anglais. La langue de l'interface reste distincte de la langue audio.")
-                .foregroundStyle(Theme.textSecondary)
+            sectionHeader("INTERFACE")
         }
         .listRowBackground(Theme.surface)
-    }
-
-    private func principleRow(title: LocalizedStringResource, detail: LocalizedStringResource) -> some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Text(title)
-                .font(.system(.subheadline))
-                .foregroundStyle(Theme.textPrimary)
-            Text(detail)
-                .font(.system(.caption))
-                .foregroundStyle(Theme.textSecondary)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(.vertical, 2)
     }
 
     // MARK: - Séance
 
     private var sessionSection: some View {
         Section {
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 16) {
                 Text("Rappels pendant la méditation")
                     .font(.system(.subheadline))
                     .foregroundStyle(Theme.textPrimary)
@@ -117,13 +75,16 @@ struct SettingsView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+
+                Toggle("Afficher la progression", isOn: $prefs.showsSessionProgress)
+                    .tint(Theme.accent)
+
+                Toggle("Retours haptiques", isOn: $prefs.enableTransitionHaptics)
+                    .tint(Theme.accent)
             }
             .padding(.vertical, 4)
         } header: {
             sectionHeader("SÉANCE")
-        } footer: {
-            Text("Définit la fréquence des rappels vocaux pendant la phase de méditation en mode guidé.")
-                .foregroundStyle(Theme.textSecondary)
         }
         .listRowBackground(Theme.surface)
     }
@@ -141,7 +102,7 @@ struct SettingsView: View {
             }
 
             if !healthKit.isAvailable {
-                Text("HealthKit n'est pas disponible sur cet appareil.")
+                Text("Santé indisponible sur cet appareil.")
                     .font(.caption)
                     .foregroundStyle(Theme.textSecondary)
             } else if prefs.healthKitEnabled {
@@ -154,20 +115,17 @@ struct SettingsView: View {
                     .foregroundStyle(Theme.textSecondary)
                 }
 
-                Text(healthAuthorizationStatusDetail)
-                    .font(.caption)
-                    .foregroundStyle(Theme.textSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            } else {
-                Text("Activez la synchronisation pour autoriser l'écriture des séances terminées dans Santé.")
-                    .font(.caption)
-                    .foregroundStyle(Theme.textSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                if let healthAuthorizationStatusDetail {
+                    Text(healthAuthorizationStatusDetail)
+                        .font(.caption)
+                        .foregroundStyle(Theme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
         } header: {
             sectionHeader("SANTÉ")
         } footer: {
-            Text("Seules les séances terminées normalement sont candidates à la synchronisation.")
+            Text("Séances terminées uniquement.")
                 .foregroundStyle(Theme.textSecondary)
         }
         .listRowBackground(Theme.surface)
@@ -177,11 +135,22 @@ struct SettingsView: View {
 
     private var aboutSection: some View {
         Section {
+            Link(destination: privacyPolicyURL) {
+                HStack {
+                    Text("Politique de confidentialité")
+                        .foregroundStyle(Theme.textPrimary)
+                    Spacer()
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(.footnote, weight: .medium))
+                        .foregroundStyle(Theme.textSecondary)
+                }
+            }
+
             HStack {
                 Text("Version")
                     .foregroundStyle(Theme.textPrimary)
                 Spacer()
-                Text("1.0.0")
+                Text(appVersionDisplay)
                     .foregroundStyle(Theme.textSecondary)
             }
         } header: {
@@ -206,6 +175,17 @@ struct SettingsView: View {
         )
     }
 
+    private var appVersionDisplay: String {
+        let marketingVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        let buildVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+
+        if let marketingVersion, let buildVersion, !buildVersion.isEmpty {
+            return "\(marketingVersion) (\(buildVersion))"
+        }
+
+        return marketingVersion ?? "-"
+    }
+
     private var healthAuthorizationStatusLabel: LocalizedStringResource {
         switch healthAuthorizationStatus {
         case .unavailable:
@@ -219,16 +199,16 @@ struct SettingsView: View {
         }
     }
 
-    private var healthAuthorizationStatusDetail: LocalizedStringResource {
+    private var healthAuthorizationStatusDetail: LocalizedStringResource? {
         switch healthAuthorizationStatus {
         case .unavailable:
-            "HealthKit n'est pas disponible sur cet appareil."
+            "Santé indisponible sur cet appareil."
         case .notDetermined:
-            "L'autorisation est requise pour écrire les séances terminées normalement dans Santé."
+            "Autorisation requise."
         case .authorized:
-            "Les séances terminées normalement peuvent être enregistrées dans l'app Santé."
+            nil
         case .denied:
-            "L'accès à Santé a été refusé. Vous pouvez le modifier depuis l'app Santé."
+            "Accès refusé dans Santé."
         }
     }
 

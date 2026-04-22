@@ -17,7 +17,7 @@ enum AppLanguage: String, CaseIterable, Identifiable, Codable {
         case .fr:
             "Français"
         case .enUS:
-            "English (US)"
+            "en"
         case .es:
             "Español"
         case .de:
@@ -107,7 +107,7 @@ enum AppLanguageSelection: String, CaseIterable, Identifiable {
         case .fr:
             "Français"
         case .enUS:
-            "English (US)"
+            "en"
         case .es:
             "Español"
         case .de:

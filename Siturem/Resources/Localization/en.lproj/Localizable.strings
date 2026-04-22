@@ -13,12 +13,19 @@
 
 /* Home */
 "DURÉE" = "DURATION";
+"DERNIER CADRE" = "LAST FRAME";
+"SIGNAUX" = "SIGNALS";
 "Durée" = "Duration";
 "OPTIONS" = "OPTIONS";
 "Accompagnement" = "Guidance";
 "Gong" = "Gong";
 "Ambiance" = "Ambient sound";
+"Rappels" = "Reminders";
+"Charger" = "Load";
 "COMMENCER" = "Start";
+"Cadre favori" = "Favorite frame";
+"Cadre chargé dans les réglages" = "Frame loaded into settings";
+"Cadre déjà chargé dans les réglages" = "Frame already loaded into settings";
 
 /* Splash, onboarding, logo */
 "Le cadre discret de votre pratique." = "The discreet framework for your practice.";
@@ -29,6 +36,9 @@
 "Elle fournit un cadre stable, discret et reproductible pour lancer rapidement une séance structurée." = "It provides a stable, discreet, repeatable framework to start a structured session quickly.";
 "Une séance prête à l'emploi, sobre, stable et structurée." = "A ready-to-use session, restrained, stable, and structured.";
 "Séance terminée" = "Session complete";
+"Durée réalisée" = "Actual duration";
+"Aujourd'hui" = "Today";
+"Relancer" = "Restart";
 "Terminer" = "Done";
 
 /* Stats */
@@ -40,6 +50,14 @@
 "Régularité" = "Consistency";
 "Streak actuel" = "Current streak";
 "Meilleur streak" = "Best streak";
+"Repères" = "Highlights";
+"Moyenne hebdo" = "Weekly average";
+"90 derniers jours" = "Last 90 days";
+"Aucune séance sur les 90 derniers jours" = "No sessions in the last 90 days";
+"Séances récentes" = "Recent sessions";
+"Séance" = "Session";
+"Durée prévue" = "Planned duration";
+"Ouvre le détail de la séance" = "Opens the session detail";
 
 /* Settings */
 "PRINCIPES" = "PRINCIPLES";
@@ -51,12 +69,20 @@
 "Siturem tient le cadre et s'efface. Pas de narration, pas de score, pas de gamification. L'app réduit la friction et disparaît." = "Siturem holds the frame and steps aside. No narration, no score, no gamification. The app reduces friction and gets out of the way.";
 "Durée minimale" = "Minimum duration";
 "6 minutes (intro + méditation courte + retour). Durée par défaut : 10 minutes." = "6 minutes (intro + short meditation + return). Default duration: 10 minutes.";
+"INTERFACE" = "INTERFACE";
 "LANGUE" = "LANGUAGE";
 "Langue de l'interface" = "Interface language";
+"Santé indisponible sur cet appareil." = "Health is unavailable on this device.";
+"Autorisation requise." = "Authorization required.";
+"Accès refusé dans Santé." = "Access denied in Health.";
+"Séances terminées uniquement." = "Completed sessions only.";
 "La langue de l'interface est distincte de la langue audio." = "The interface language is separate from the audio language.";
 "Par défaut, l'interface suit la langue du système si elle est prise en charge, sinon l'anglais. La langue de l'interface reste distincte de la langue audio." = "By default, the interface follows the system language when it is supported, otherwise English. The interface language remains separate from the audio language.";
 "SÉANCE" = "SESSION";
 "Rappels pendant la méditation" = "Reminders during meditation";
+"Afficher la progression" = "Show progress";
+"Retours haptiques" = "Haptic feedback";
+"Les réglages de lancement rapide restent sur l'accueil. Ici, seules les préférences durables de rendu sont conservées." = "Quick launch settings stay on Home. Only durable session rendering preferences are kept here.";
 "Définit la fréquence des rappels vocaux pendant la phase de méditation en mode guidé." = "Sets how often voice reminders play during the meditation phase in guided mode.";
 "SANTÉ" = "HEALTH";
 "Synchroniser avec Santé" = "Sync with Health";
@@ -75,6 +101,7 @@
 "Seules les séances terminées normalement sont candidates à la synchronisation." = "Only normally completed sessions are eligible for sync.";
 "Autorisation demandée" = "Authorization requested";
 "Enregistre les minutes de pleine conscience dans l'app Santé d'Apple." = "Saves mindful minutes to Apple Health.";
+"Politique de confidentialité" = "Privacy Policy";
 "Version" = "Version";
 "À PROPOS" = "ABOUT";
 
@@ -88,8 +115,11 @@
 "Forêt" = "Forest";
 "Bruit blanc" = "White noise";
 "Aucune" = "None";
+"Aucun" = "None";
 "Occasionnelles" = "Occasional";
+"Occasionnels" = "Occasional";
 "Fréquentes" = "Frequent";
+"Fréquents" = "Frequent";
 "Introduction" = "Introduction";
 "Méditation" = "Meditation";
 "Retour au calme" = "Return to calm";

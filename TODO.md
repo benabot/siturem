@@ -2,40 +2,360 @@
 
 ## Priorité active
 
-### [S0] V1.2 — Polish & stability
+### [S9] Settings — préférences durables de rendu de séance
 
 **Statut**
-Sprint courant de reprise avant réouverture effective de la V2.
+`SettingsView` porte maintenant les préférences durables de rendu de séance, sans redoubler les réglages de lancement rapide de `HomeView`.
 
 **Objectif**
-Fermer proprement les réserves audio et stabilité encore ouvertes, puis revalider le flux complet avant de remettre la V2 au premier plan.
+Clarifier la frontière entre lancement immédiat et préférences longues, avec un écran Réglages sobre et cohérent.
 
 **Tâches**
-- [ ] refaire et valider les sons d’ambiance encore en réserve qualité
-- [ ] finaliser les assets localisés `en` / `es` / `de` selon la matrice réellement retenue
-- [x] ajouter des haptics légers aux transitions
-- [ ] revalider le flux complet après les derniers ajustements
-- [ ] resynchroniser la documentation partagée si l’état réel change
+- [x] définir la frontière entre `HomeView` et `SettingsView`
+- [x] garder `durée`, `accompagnement`, `gong` et `ambiance` côté `HomeView`
+- [x] conserver `rappels`, `progression` et `haptics` côté `SettingsView`
+- [x] brancher les préférences durables sur `PreferencesStore` et `SessionView`
+- [x] retirer le doublon `Rappels` de `HomeView`
 
 **Critère de fin**
-- [ ] le rendu audio résiduel est jugé propre
-- [ ] les langues audio effectivement supportées sont bornées clairement
-- [ ] le flux complet est revalidé
-- [ ] `TODO.md` et `PROJECT_STATUS.md` reflètent l’état final de la reprise V1.x
+- [x] `SettingsView` reste un écran de préférences durables
+- [x] `HomeView` reste l'écran de lancement
+- [x] aucune seconde source de vérité n'est introduite
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] ne considérer `temps visible` qu'au moment où un affichage du temps doit réellement être exposé dans `SessionView`
+- [ ] éviter de remonter d'autres réglages de signaux dans `SettingsView` tant qu'ils restent utiles au démarrage rapide
+
+### [S8] Stats — détail d'une séance
+
+**Statut**
+`StatsView` propose maintenant une zone `Séances récentes` qui ouvre un détail de séance simple depuis l'historique local.
+
+**Objectif**
+Permettre de consulter une séance passée sans transformer la zone stats en écran analytique dense.
+
+**Tâches**
+- [x] définir le sous-ensemble utile d'informations déjà disponibles dans `SessionRecord`
+- [x] ajouter un point d'entrée discret depuis `StatsView`
+- [x] créer une vue dédiée avec navigation aller / retour simple
+- [x] revalider le rendu iPhone avec historique léger et historique vide
+
+**Critère de fin**
+- [x] une séance récente peut être ouverte depuis `StatsView`
+- [x] le détail reste sobre et utile
+- [x] le retour vers `Suivi` est propre
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] garder hors périmètre toute comparaison entre séances ou métrique dérivée
+- [ ] ne considérer d'autres champs de configuration que si `SessionRecord` les porte déjà de façon stable
+
+### [S8] Stats — totaux mensuels et moyenne hebdomadaire
+
+**Statut**
+`StatsView` affiche maintenant un niveau secondaire compact avec deux totaux mensuels récents et une moyenne hebdomadaire calculés depuis les `SessionRecord`.
+
+**Objectif**
+Ajouter des repères utiles au-dessus du registre essentiel, sans dérive dashboard ni logique fitness.
+
+**Tâches**
+- [x] définir des agrégats simples compatibles avec les données existantes
+- [x] calculer deux totaux mensuels récents dans `StatsStore`
+- [x] calculer une moyenne hebdomadaire stable sans migration de persistance
+- [x] intégrer ces repères dans une présentation secondaire compacte
+- [x] revalider le rendu iPhone avec historique vide, léger et plus rempli
+
+**Critère de fin**
+- [x] les totaux mensuels sont lisibles et plausibles
+- [x] la moyenne hebdomadaire reste stable sur peu de données
+- [x] la hiérarchie de `StatsView` reste calme
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] garder les stats par cadre hors périmètre tant qu'un identifiant de cadre n'existe pas dans l'historique
+- [ ] éviter toute visualisation ou agrégation supplémentaire sans besoin produit explicite
+
+### [S8] Stats — heatmap 90 jours
+
+**Statut**
+`StatsView` affiche maintenant une heatmap 90 jours binaire calculée depuis les `SessionRecord`, en complément discret du registre essentiel.
+
+**Objectif**
+Rendre la continuité de pratique visible d'un coup d'œil sans dérive dashboard ni logique gamifiée.
+
+**Tâches**
+- [x] définir une structure journalière minimale compatible avec les données existantes
+- [x] calculer l'activité quotidienne sans migration de persistance
+- [x] intégrer une heatmap 90 jours sobre dans `StatsView`
+- [x] revalider le rendu sur petit iPhone
+
+**Critère de fin**
+- [x] les jours actifs et inactifs sont lisibles
+- [x] la heatmap reste secondaire par rapport au registre essentiel
+- [x] aucune nouvelle persistance complexe n'est introduite
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] garder le détail de séance hors du périmètre tant qu'un ticket dédié n'est pas ouvert
+- [ ] ne considérer un niveau d'intensité ou des agrégations plus fines qu'avec un besoin produit explicite
+
+### [S7] Stats — registre essentiel
+
+**Statut**
+`StatsView` est recentrée sur un registre essentiel unique, avec `Temps total` comme entrée principale puis `Séances`, `7 jours`, `30 jours`, `Streak actuel` et `Meilleur streak` en lecture secondaire.
+
+**Objectif**
+Rendre `StatsView` plus calme et plus lisible, sans dérive dashboard ni logique fitness.
+
+**Tâches**
+- [x] remettre le temps total en tête de lecture
+- [x] garder les métriques essentielles déjà disponibles
+- [x] regrouper période et régularité sans multiplier les cartes
+- [x] revalider le rendu iPhone pour éviter l'effet "fitness dashboard"
+
+**Critère de fin**
+- [x] la hiérarchie essentielle est claire
+- [x] la vue reste sobre et lisible
+- [x] aucune nouvelle persistance n'est introduite
+- [x] le build local passe
+
+**Suites identifiées**
+- [x] ajouter une heatmap 90 jours sobre
+- [ ] garder le détail de séance et les stats par cadre hors du périmètre tant qu'un ticket dédié n'est pas ouvert
+- [ ] ne réenrichir `StatsView` qu'avec une vraie nécessité produit, sans retour vers un dashboard
+
+### [S6] Summary — clôture utile et relance sobre
+
+**Statut**
+`SessionSummaryView` affiche maintenant la durée réalisée, un cumul simple `Aujourd'hui`, et une relance directe de la même configuration.
+
+**Objectif**
+Rendre la fin de séance plus utile sans transformer l'écran en tableau de bord ni ajouter de ton célébratoire.
+
+**Tâches**
+- [x] afficher la durée réalisée de façon claire
+- [x] choisir un seul cumul simple et le garder discret
+- [x] ajouter une relance sobre de la même configuration
+- [x] revalider la continuité du flux en fin de séance
+
+**Critère de fin**
+- [x] l'écran reste calme et lisible
+- [x] la durée et le cumul choisi sont visibles
+- [x] `Relancer` repart sur une nouvelle séance cohérente
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] ne considérer un autre cumul ou des stats plus riches qu'après stabilisation de ce bilan minimal
+- [ ] garder tout futur enrichissement Summary en dehors d'une logique de dashboard
+
+### [S5] Session — contrôles stables
+
+**Statut**
+Pause / reprise / arrêt sont maintenant stabilisés dans `SessionView` avec un garde-fou local pendant la confirmation d'arrêt.
+
+**Objectif**
+Éviter les états intermédiaires incohérents entre timer, audio et UI sans changer le rôle de `SessionEngine`.
+
+**Tâches**
+- [x] figer la séance pendant l'alerte d'arrêt si elle était en cours
+- [x] reprendre proprement sur annulation seulement si la séance tournait avant l'alerte
+- [x] conserver un arrêt confirmé simple, sans refactor du moteur
+- [x] revalider pause, reprise, arrêt annulé, arrêt confirmé et fin normale
+
+**Critère de fin**
+- [x] pause / reprise restent fiables
+- [x] l'arrêt confirmé quitte proprement la séance
+- [x] l'annulation d'arrêt ne laisse pas l'UI dans un état ambigu
+- [x] la fin normale arrive toujours sur le bilan
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] revisiter les contrôles seulement si une future V2 de `SessionView` change leur hiérarchie visuelle
+- [ ] ne pas étendre ce ticket à une refonte audio ou à un changement de rôle de `SessionEngine`
+
+### [S3] Home — hiérarchie simplifiée
+
+**Statut**
+`HomeView` revient à une hiérarchie plus simple: `Séance` reste dominante avec `Dernier cadre`, `Durée` et `Commencer`, tandis que `Signaux` reste secondaire et léger autour de `accompagnement`, `gong` et `ambiance`.
+
+**Objectif**
+Rendre l’accueil plus lisible sans changer le runtime de séance ni réintroduire un écran trop chargé.
+
+**Tâches**
+- [x] garder le bloc `Dernier cadre` en tête du bloc Séance
+- [x] regrouper durée et CTA dans le bloc Séance
+- [x] reléguer accompagnement, gong et ambiance dans le bloc Signaux
+- [x] supprimer le bloc `Accès` redondant avec la tab bar
+- [x] conserver un seul CTA primaire
+
+**Critère de fin**
+- [x] la hiérarchie visuelle est nette
+- [x] l’écran reste lisible sur petit iPhone
+- [x] le CTA principal reste unique
+- [x] aucun bloc `Accès` redondant n'est affiché
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] décider si un accès futur aux cadres favoris mérite un bloc dédié
+- [ ] ne réétendre `HomeView` que si un nouveau point d'entrée apporte une vraie valeur au lancement
+
+### [S2] Infra — stratégie de migration des préférences
+
+**Statut**
+La stratégie de migration entre réglages actifs V1 et cadres persistés V2 est cadrée et déjà appelée au premier accès réel aux frames dans `HomeView`, sans refonte large de l'accueil.
+
+**Objectif**
+Éviter une rupture entre `PreferencesStore` et `PracticeFrameStore` au moment du premier raccord UI.
+
+**Tâches**
+- [x] cartographier les préférences V1 et leur destination
+- [x] définir ce qui migre dans un premier cadre
+- [x] définir ce qui reste dans `PreferencesStore`
+- [x] définir le moment d'exécution de la migration
+- [x] rendre la migration idempotente et sûre face aux états partiels
+
+**Critère de fin**
+- [x] une stratégie claire existe
+- [x] les cas principaux sont couverts
+- [x] la migration ne change pas encore l'UX ni le runtime de séance
+
+**Suites identifiées**
+- [x] appeler la migration au premier accès réel aux frames lors du raccord `HomeView`
+- [x] fournir le nom initial du cadre seedé au point d'appel UI
+- [x] garder `PreferencesStore` comme source de vérité des réglages actifs tant que Home n'est pas migrée
+- [x] confirmer que le premier lancement absolu n'affiche pas `Dernier cadre`
+- [x] documenter que la migration lazy ne seed un cadre que depuis de vraies préférences V1 persistées
+- [x] noter que le faux positif observé venait d'un état résiduel du simulateur
+- [ ] revisiter le nom seedé si l'édition ou la localisation complète des cadres évolue
+
+### [S2] V2.0 — persistance du dernier cadre et des favoris
+
+**Statut**
+Le store de cadres couvre maintenant le dernier cadre utilisé, les favoris, l'ordre d'affichage et les cas d'initialisation partiels, avec un premier raccord contrôlé dans `HomeView`.
+
+**Objectif**
+Durcir la persistance du socle V2 avant le premier branchement UI.
+
+**Tâches**
+- [x] confirmer où persister le dernier cadre utilisé
+- [x] confirmer où persister les favoris
+- [x] prévoir l'ordre d'affichage
+- [x] couvrir les cas sans cadre existant ou avec état persisté incohérent
+- [x] garder `PreferencesStore` séparé des cadres persistés
+
+**Critère de fin**
+- [x] le dernier cadre est conservé
+- [x] les favoris sont persistés
+- [x] l'ordre d'affichage est prévu proprement
+- [x] l'initialisation retombe sur un état sain
+
+**Suites identifiées**
+- [x] raccorder `HomeView` au store sans mélanger réglages actifs et cadres enregistrés
+- [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView` si nécessaire
+- [ ] ne reconsidérer `SessionRecord` / `StatsStore` qu'après stabilisation du raccord Home
+
+### [S2] V2.0 — store minimal des cadres
+
+**Statut**
+Le store local des cadres V2 est maintenant en place avec une persistance simple, lisible et séparée des réglages actifs V1.
+
+**Objectif**
+Persister les `PracticeFrame` sans refactor large, avec CRUD de base, favoris et dernier cadre utilisé.
+
+**Tâches**
+- [x] choisir une stratégie de persistance cohérente avec le repo
+- [x] rendre `PracticeFrame` persistant de façon propre
+- [x] créer `PracticeFrameStore`
+- [x] couvrir CRUD, favoris et dernier cadre utilisé
+- [x] documenter la frontière avec `PreferencesStore`
+
+**Critère de fin**
+- [x] le store compile et persiste localement
+- [x] `PreferencesStore` reste la source de vérité V1 pour les réglages actifs
+- [x] aucun raccord UI large n'est introduit
+
+**Suites identifiées**
+- [x] raccorder `ContentView` puis `HomeView` au store
+- [x] définir comment un réglage actif devient un cadre enregistré sans ambiguïté
+- [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView`
+- [ ] reconsidérer `SessionRecord` / `StatsStore` seulement après stabilisation de l'identité de cadre
+
+### [S1] V2.0 — cartographie d'impact des cadres
+
+**Statut**
+La fondation conceptuelle `PracticeFrame` est en place. La cartographie technique Home / Session / Stats / Settings est maintenant posée pour préparer la suite sans refactor large.
+
+**Objectif**
+Identifier les zones à raccorder et l'ordre d'implémentation réaliste avant d'introduire le store minimal des cadres.
+
+**Tâches**
+- [x] cartographier les impacts côté Home
+- [x] cartographier les impacts côté Session
+- [x] cartographier les impacts côté Summary / Stats / Settings
+- [x] documenter les dépendances critiques
+- [x] documenter les risques de migration
+- [x] proposer un ordre d'implémentation par petits diffs
+
+**Critère de fin**
+- [x] les zones de code touchées sont identifiées
+- [x] les dépendances et risques sont documentés
+- [x] l'ordre de raccord V2 est exploitable
+
+**Suites identifiées**
+- [x] définir la frontière exacte entre réglages actifs V1 et cadres persistés V2
+- [x] raccorder `HomeView`
+- [ ] propager le cadre utilisé vers `SessionView` et `SessionSummaryView`
+- [ ] reconsidérer `SessionRecord` / `StatsStore` seulement après stabilisation du contrat de persistance
+
+### [S1] V2.0 — fondation des cadres
+
+**Statut**
+La V1.2 est livrée. Le socle V2 des cadres de pratique est maintenant stabilisé autour de `PracticeFrame`, sans migration de persistance ni changement de flux V1.
+
+**Objectif**
+Définir le socle minimal des cadres de pratique avant d’ouvrir les écrans V2.
+
+**Tâches**
+- [x] définir le modèle `PracticeFrame`
+- [x] borner les propriétés réellement nécessaires pour `V2.0 strict`
+- [x] vérifier la compatibilité avec `HomeView`, `SessionView`, `SessionSummaryView` et les préférences existantes
+- [x] documenter les impacts techniques immédiats sans ouvrir de refactor large
+
+**Critère de fin**
+- [x] le modèle conceptuel est stabilisé
+- [x] les impacts techniques directs sont connus
+- [x] l’ordre d’implémentation du socle V2 reste séquentiel et réaliste
+
+**Suites identifiées**
+- [x] créer `PracticeFrameStore`
+- [x] persister le dernier cadre utilisé par identifiant
+- [x] persister les favoris
+- [x] persister l'ordre d'affichage
+- [x] brancher `HomeView` sur ce store
+- [ ] brancher `SessionSummaryView` sur ce store
+
+## V1.2 — livrée
+
+La V1.2 clôture les dernières réserves V1.x. Elle est considérée comme livrée côté app, audio, intégration et validation manuelle.
+
+### Clos
+- [x] refaire et valider les sons d’ambiance
+- [x] borner les packs audio localisés `en` / `es` / `de`
+- [x] ajouter des haptics légers aux transitions
+- [x] revalider le flux complet après les derniers ajustements
+- [x] synchroniser `TODO.md` et `PROJECT_STATUS.md`
 
 ## Cadrage V2 — prêt
 
-Le cadrage documentaire V2 est posé. Il sert de filtre pour éviter d’ouvrir trop de sujets en parallèle, mais il n’est plus la priorité active tant que la reprise `V1.2` n’est pas terminée.
+Le cadrage documentaire V2 est posé. Il sert de filtre pour éviter d’ouvrir trop de sujets en parallèle et reste la base de référence pour le redémarrage séquentiel de la V2.
 
 ### Acté
 - [x] le périmètre **V2.0 strict** est défini
 - [x] les extensions **V2.1+** sont repoussées explicitement
 - [x] l’ordre de livraison retenu est documenté
 
-## V1.1 — validée avec réserve
-
-La V1.1 est considérée comme validée côté app, intégration et périmètre fonctionnel.
-La réserve restante porte sur la qualité finale de certains sons d’ambiance, à refaire côté assets pour obtenir un rendu plus propre.
+## V1.1 — validée
 
 ### Clos
 - [x] base applicative V1.1 stable
@@ -45,11 +365,6 @@ La réserve restante porte sur la qualité finale de certains sons d’ambiance,
 - [x] phase de closing fixée à `92 s`
 - [x] intégration HealthKit V1 non bloquante
 - [x] documentation de statut partagée remise à jour
-
-### Réserve assets
-- [ ] refaire certains sons d’ambiance pour obtenir un rendu plus propre
-- [ ] redéposer puis revalider les assets d’ambiance concernés dans le bundle
-- [ ] finaliser et valider les packs audio localisés `en`, `es`, `de` selon la matrice UI / audio retenue
 
 ## Référence V2
 

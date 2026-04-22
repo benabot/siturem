@@ -9,11 +9,11 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.10"
-    MARKETING_VERSION: "1.0.0"
-    CURRENT_PROJECT_VERSION: "1"
+    MARKETING_VERSION: "1.2.0"
+    CURRENT_PROJECT_VERSION: "2"
     DEVELOPMENT_TEAM: ""
     DEVELOPMENT_LANGUAGE: fr
-    PRODUCT_BUNDLE_IDENTIFIER: com.beabot.siturem
+    PRODUCT_BUNDLE_IDENTIFIER: fr.beabot.siturem
 
 targets:
   Siturem:
@@ -29,6 +29,8 @@ targets:
         buildPhase: resources
     entitlements:
       path: Siturem/Siturem.entitlements
+      properties:
+        com.apple.developer.healthkit: true
     info:
       path: Siturem/Info.plist
       properties:
@@ -44,8 +46,19 @@ targets:
         NSHealthUpdateUsageDescription: "Siturem enregistre vos séances de méditation dans l'app Santé."
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beabot.siturem
+        PRODUCT_BUNDLE_IDENTIFIER: fr.beabot.siturem
         INFOPLIST_FILE: Siturem/Info.plist
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
     dependencies: []
+
+schemes:
+  Siturem:
+    shared: true
+    build:
+      targets:
+        Siturem: all
+    run:
+      config: Debug
+    archive:
+      config: Release

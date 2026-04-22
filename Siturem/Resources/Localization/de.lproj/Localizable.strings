@@ -13,12 +13,19 @@
 
 /* Home */
 "DURÉE" = "DAUER";
+"DERNIER CADRE" = "LETZTER RAHMEN";
+"SIGNAUX" = "SIGNALE";
 "Durée" = "Dauer";
 "OPTIONS" = "OPTIONEN";
 "Accompagnement" = "Begleitung";
 "Gong" = "Gong";
 "Ambiance" = "Ambiente";
+"Rappels" = "Erinnerungen";
+"Charger" = "Laden";
 "COMMENCER" = "Beginnen";
+"Cadre favori" = "Bevorzugter Rahmen";
+"Cadre chargé dans les réglages" = "Rahmen in die Einstellungen geladen";
+"Cadre déjà chargé dans les réglages" = "Rahmen ist bereits in die Einstellungen geladen";
 
 /* Splash, onboarding, logo */
 "Le cadre discret de votre pratique." = "Der diskrete Rahmen deiner Praxis.";
@@ -29,6 +36,9 @@
 "Elle fournit un cadre stable, discret et reproductible pour lancer rapidement une séance structurée." = "Sie bietet einen stabilen, diskreten und wiederholbaren Rahmen, um schnell eine strukturierte Sitzung zu starten.";
 "Une séance prête à l'emploi, sobre, stable et structurée." = "Eine sofort nutzbare Sitzung, reduziert, stabil und strukturiert.";
 "Séance terminée" = "Sitzung beendet";
+"Durée réalisée" = "Tatsächliche Dauer";
+"Aujourd'hui" = "Heute";
+"Relancer" = "Neu starten";
 "Terminer" = "Fertig";
 
 /* Stats */
@@ -40,6 +50,14 @@
 "Régularité" = "Regelmäßigkeit";
 "Streak actuel" = "Aktuelle Serie";
 "Meilleur streak" = "Beste Serie";
+"Repères" = "Anhaltspunkte";
+"Moyenne hebdo" = "Wochendurchschnitt";
+"90 derniers jours" = "Letzte 90 Tage";
+"Aucune séance sur les 90 derniers jours" = "Keine Sitzungen in den letzten 90 Tagen";
+"Séances récentes" = "Letzte Sitzungen";
+"Séance" = "Sitzung";
+"Durée prévue" = "Geplante Dauer";
+"Ouvre le détail de la séance" = "Öffnet die Sitzungsdetails";
 
 /* Settings */
 "PRINCIPES" = "PRINZIPIEN";
@@ -51,12 +69,20 @@
 "Siturem tient le cadre et s'efface. Pas de narration, pas de score, pas de gamification. L'app réduit la friction et disparaît." = "Siturem hält den Rahmen und tritt zurück. Keine Erzählung, keine Punkte, keine Gamification. Die App reduziert Reibung und verschwindet im Hintergrund.";
 "Durée minimale" = "Mindestdauer";
 "6 minutes (intro + méditation courte + retour). Durée par défaut : 10 minutes." = "6 Minuten (Einführung + kurze Meditation + Rückkehr). Standarddauer: 10 Minuten.";
+"INTERFACE" = "OBERFLÄCHE";
 "LANGUE" = "SPRACHE";
 "Langue de l'interface" = "Oberflächensprache";
+"Santé indisponible sur cet appareil." = "Health ist auf diesem Gerät nicht verfügbar.";
+"Autorisation requise." = "Autorisierung erforderlich.";
+"Accès refusé dans Santé." = "Zugriff in Health verweigert.";
+"Séances terminées uniquement." = "Nur abgeschlossene Sitzungen.";
 "La langue de l'interface est distincte de la langue audio." = "Die Oberflächensprache ist getrennt von der Audiosprache.";
 "Par défaut, l'interface suit la langue du système si elle est prise en charge, sinon l'anglais. La langue de l'interface reste distincte de la langue audio." = "Standardmäßig folgt die Oberfläche der Systemsprache, wenn sie unterstützt wird, sonst Englisch. Die Oberflächensprache bleibt von der Audiosprache getrennt.";
 "SÉANCE" = "SITZUNG";
 "Rappels pendant la méditation" = "Erinnerungen während der Meditation";
+"Afficher la progression" = "Fortschritt anzeigen";
+"Retours haptiques" = "Haptisches Feedback";
+"Les réglages de lancement rapide restent sur l'accueil. Ici, seules les préférences durables de rendu sont conservées." = "Die Schnellstart-Einstellungen bleiben auf Home. Hier bleiben nur die dauerhaften Darstellungsoptionen der Sitzung.";
 "Définit la fréquence des rappels vocaux pendant la phase de méditation en mode guidé." = "Legt fest, wie oft in der geführten Phase Spracherinnerungen abgespielt werden.";
 "SANTÉ" = "GESUNDHEIT";
 "Synchroniser avec Santé" = "Mit Health synchronisieren";
@@ -75,6 +101,7 @@
 "Seules les séances terminées normalement sont candidates à la synchronisation." = "Nur normal abgeschlossene Sitzungen kommen für die Synchronisierung infrage.";
 "Autorisation demandée" = "Autorisierung angefordert";
 "Enregistre les minutes de pleine conscience dans l'app Santé d'Apple." = "Speichert Achtsamkeitsminuten in Apple Health.";
+"Politique de confidentialité" = "Datenschutzerklärung";
 "Version" = "Version";
 "À PROPOS" = "ÜBER";
 
@@ -88,8 +115,11 @@
 "Forêt" = "Wald";
 "Bruit blanc" = "Weißes Rauschen";
 "Aucune" = "Keine";
+"Aucun" = "Kein";
 "Occasionnelles" = "Gelegentlich";
+"Occasionnels" = "Gelegentlich";
 "Fréquentes" = "Häufig";
+"Fréquents" = "Häufig";
 "Introduction" = "Einführung";
 "Méditation" = "Meditation";
 "Retour au calme" = "Rückkehr zur Ruhe";

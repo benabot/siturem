@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 // MARK: - Session View
 // Écran affiché pendant une séance en cours.
@@ -11,20 +10,25 @@ struct SessionView: View {
     @Bindable var engine: SessionEngine
     let stats: StatsStore
     @Bindable var prefs: PreferencesStore
+    let onRestart: (SessionConfiguration) -> Void
     let onEnd: () -> Void
 
     private let healthKit = HealthKitService()
+    private let haptics = HapticsService()
 
     @State private var audioService: AudioService?
     @State private var showEndConfirmation = false
     @State private var showSummary = false
     @State private var sessionStartDate: Date?
+    @State private var shouldResumeAfterStopConfirmation = false
 
     var body: some View {
         Group {
             if showSummary {
                 SessionSummaryView(
                     duration: engine.totalElapsed,
+                    todayTotal: stats.secondsToday,
+                    onRestart: { onRestart(engine.config) },
                     onDone: onEnd
                 )
             } else {
@@ -35,6 +39,7 @@ struct SessionView: View {
         .onAppear {
             let audio = AudioService(config: engine.config)
             audioService = audio
+            haptics.prepareForSession()
             if sessionStartDate == nil {
                 sessionStartDate = Date()
             }
@@ -66,6 +71,7 @@ struct SessionView: View {
             audioService?.stopAll()
             audioService = nil
             engine.onSessionEnd = nil
+            shouldResumeAfterStopConfirmation = false
         }
     }
 
@@ -89,7 +95,9 @@ struct SessionView: View {
         // Barre + contrôles ancrés au bas de l'écran, juste au-dessus du home indicator
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: LayoutMetrics.progressToControlsSpacing) {
-                progressBar
+                if prefs.showsSessionProgress {
+                    progressBar
+                }
                 controls
             }
             .padding(.horizontal, LayoutMetrics.hPadding)
@@ -99,11 +107,11 @@ struct SessionView: View {
         }
         .alert("Arrêter la séance ?", isPresented: $showEndConfirmation) {
             Button("Arrêter", role: .destructive) {
-                audioService?.stopAll()
-                engine.stop()
-                onEnd()
+                stopSession()
             }
-            Button("Continuer", role: .cancel) {}
+            Button("Continuer", role: .cancel) {
+                cancelStopConfirmation()
+            }
         }
     }
 
@@ -155,7 +163,7 @@ struct SessionView: View {
     private var controls: some View {
         HStack(spacing: LayoutMetrics.lg * 0.88) {
             Button {
-                showEndConfirmation = true
+                requestStopConfirmation()
             } label: {
                 Image(systemName: "xmark")
                     .font(.title2)
@@ -163,13 +171,7 @@ struct SessionView: View {
             }
 
             Button {
-                if engine.state == .running {
-                    engine.pause()
-                    audioService?.pauseAll()
-                } else if engine.state == .paused {
-                    audioService?.resumeAll()
-                    engine.start()
-                }
+                togglePauseResume()
             } label: {
                 Image(systemName: engine.state == .running ? "pause" : "play.fill")
                     .font(.system(size: 44, weight: .thin))
@@ -183,17 +185,59 @@ struct SessionView: View {
     // MARK: - Fin de séance
 
     private func playPhaseTransitionHaptic(from oldPhase: SessionPhase, to newPhase: SessionPhase) {
-        switch (oldPhase, newPhase) {
-        case (.intro, .meditation), (.meditation, .closing):
-            let generator = UIImpactFeedbackGenerator(style: .soft)
-            generator.prepare()
-            generator.impactOccurred(intensity: 0.72)
+        guard prefs.enableTransitionHaptics else { return }
+        haptics.handlePhaseTransition(from: oldPhase, to: newPhase)
+    }
+
+    private func requestStopConfirmation() {
+        guard !showSummary else { return }
+        guard !showEndConfirmation else { return }
+
+        if engine.state == .running {
+            engine.pause()
+            audioService?.pauseAll()
+            shouldResumeAfterStopConfirmation = true
+        } else {
+            shouldResumeAfterStopConfirmation = false
+        }
+
+        showEndConfirmation = true
+    }
+
+    private func cancelStopConfirmation() {
+        guard shouldResumeAfterStopConfirmation else { return }
+        shouldResumeAfterStopConfirmation = false
+        audioService?.resumeAll()
+        engine.start()
+    }
+
+    private func stopSession() {
+        shouldResumeAfterStopConfirmation = false
+        audioService?.stopAll()
+        engine.stop()
+        onEnd()
+    }
+
+    private func togglePauseResume() {
+        guard !showEndConfirmation else { return }
+        guard !showSummary else { return }
+
+        switch engine.state {
+        case .running:
+            engine.pause()
+            audioService?.pauseAll()
+        case .paused:
+            audioService?.resumeAll()
+            engine.start()
         default:
             break
         }
     }
 
     private func handleEnd() {
+        showEndConfirmation = false
+        shouldResumeAfterStopConfirmation = false
+
         let endDate = Date()
         let startDate = sessionStartDate ?? endDate.addingTimeInterval(-TimeInterval(engine.totalElapsed))
         let record = SessionRecord(

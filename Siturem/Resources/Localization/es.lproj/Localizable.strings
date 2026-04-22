@@ -13,12 +13,19 @@
 
 /* Home */
 "DURÉE" = "DURACIÓN";
+"DERNIER CADRE" = "ÚLTIMO MARCO";
+"SIGNAUX" = "SEÑALES";
 "Durée" = "Duración";
 "OPTIONS" = "OPCIONES";
 "Accompagnement" = "Guía";
 "Gong" = "Gong";
 "Ambiance" = "Sonido ambiental";
+"Rappels" = "Recordatorios";
+"Charger" = "Cargar";
 "COMMENCER" = "Comenzar";
+"Cadre favori" = "Marco favorito";
+"Cadre chargé dans les réglages" = "Marco cargado en los ajustes";
+"Cadre déjà chargé dans les réglages" = "El marco ya está cargado en los ajustes";
 
 /* Splash, onboarding, logo */
 "Le cadre discret de votre pratique." = "El marco discreto de tu práctica.";
@@ -29,6 +36,9 @@
 "Elle fournit un cadre stable, discret et reproductible pour lancer rapidement une séance structurée." = "Ofrece un marco estable, discreto y repetible para iniciar rápidamente una sesión estructurada.";
 "Une séance prête à l'emploi, sobre, stable et structurée." = "Una sesión lista para usar, sobria, estable y estructurada.";
 "Séance terminée" = "Sesión terminada";
+"Durée réalisée" = "Duración real";
+"Aujourd'hui" = "Hoy";
+"Relancer" = "Reiniciar";
 "Terminer" = "Listo";
 
 /* Stats */
@@ -40,6 +50,14 @@
 "Régularité" = "Constancia";
 "Streak actuel" = "Racha actual";
 "Meilleur streak" = "Mejor racha";
+"Repères" = "Referencias";
+"Moyenne hebdo" = "Promedio semanal";
+"90 derniers jours" = "Últimos 90 días";
+"Aucune séance sur les 90 derniers jours" = "Ninguna sesión en los últimos 90 días";
+"Séances récentes" = "Sesiones recientes";
+"Séance" = "Sesión";
+"Durée prévue" = "Duración prevista";
+"Ouvre le détail de la séance" = "Abre el detalle de la sesión";
 
 /* Settings */
 "PRINCIPES" = "PRINCIPIOS";
@@ -51,12 +69,20 @@
 "Siturem tient le cadre et s'efface. Pas de narration, pas de score, pas de gamification. L'app réduit la friction et disparaît." = "Siturem sostiene el marco y se aparta. Sin narración, sin puntuación, sin gamificación. La app reduce la fricción y desaparece.";
 "Durée minimale" = "Duración mínima";
 "6 minutes (intro + méditation courte + retour). Durée par défaut : 10 minutes." = "6 minutos (introducción + meditación breve + retorno). Duración predeterminada: 10 minutos.";
+"INTERFACE" = "INTERFAZ";
 "LANGUE" = "IDIOMA";
 "Langue de l'interface" = "Idioma de la interfaz";
+"Santé indisponible sur cet appareil." = "Salud no está disponible en este dispositivo.";
+"Autorisation requise." = "Autorización requerida.";
+"Accès refusé dans Santé." = "Acceso denegado en Salud.";
+"Séances terminées uniquement." = "Solo sesiones completadas.";
 "La langue de l'interface est distincte de la langue audio." = "El idioma de la interfaz es distinto del idioma de audio.";
 "Par défaut, l'interface suit la langue du système si elle est prise en charge, sinon l'anglais. La langue de l'interface reste distincte de la langue audio." = "De forma predeterminada, la interfaz sigue el idioma del sistema si es compatible; de lo contrario, usa inglés. El idioma de la interfaz sigue siendo distinto del idioma de audio.";
 "SÉANCE" = "SESIÓN";
 "Rappels pendant la méditation" = "Recordatorios durante la meditación";
+"Afficher la progression" = "Mostrar el progreso";
+"Retours haptiques" = "Respuesta háptica";
+"Les réglages de lancement rapide restent sur l'accueil. Ici, seules les préférences durables de rendu sont conservées." = "Los ajustes de inicio rápido siguen en Inicio. Aquí solo se conservan las preferencias duraderas de renderizado de la sesión.";
 "Définit la fréquence des rappels vocaux pendant la phase de méditation en mode guidé." = "Define la frecuencia de los recordatorios de voz durante la fase de meditación en modo guiado.";
 "SANTÉ" = "SALUD";
 "Synchroniser avec Santé" = "Sincronizar con Salud";
@@ -75,6 +101,7 @@
 "Seules les séances terminées normalement sont candidates à la synchronisation." = "Solo las sesiones completadas normalmente pueden sincronizarse.";
 "Autorisation demandée" = "Autorización solicitada";
 "Enregistre les minutes de pleine conscience dans l'app Santé d'Apple." = "Registra los minutos de atención plena en Salud de Apple.";
+"Politique de confidentialité" = "Política de privacidad";
 "Version" = "Versión";
 "À PROPOS" = "ACERCA DE";
 
@@ -88,8 +115,11 @@
 "Forêt" = "Bosque";
 "Bruit blanc" = "Ruido blanco";
 "Aucune" = "Ninguna";
+"Aucun" = "Ninguno";
 "Occasionnelles" = "Ocasionales";
+"Occasionnels" = "Ocasionales";
 "Fréquentes" = "Frecuentes";
+"Fréquents" = "Frecuentes";
 "Introduction" = "Introducción";
 "Méditation" = "Meditación";
 "Retour au calme" = "Retorno a la calma";
