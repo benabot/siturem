@@ -141,3 +141,7 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - `Charger` conserve un comportement honnête de copie vers les réglages visibles, sans créer de second CTA primaire
 - `Signaux` reste en dessous comme bloc secondaire léger, et aucun bloc `Accès` redondant n'est affiché
 - les prochaines retouches Home devront préserver cette lecture simple et éviter tout retour à une interface dense
+
+## Politique de confidentialité
+- dans le dossier ./docs/ au format markdown dans toutes les langues
+- hébergées sur https://beabot.fr/apps/siturem/#privacy
