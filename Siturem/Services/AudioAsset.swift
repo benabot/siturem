@@ -21,15 +21,46 @@ enum AudioLocale: String, CaseIterable, Codable {
     }
 }
 
-enum AudioAssetGroup: String {
-    case gongs = "Gongs"
-    case ambiance = "Ambiance"
+enum SharedAudioAssetGroup: String {
+    case gongs = "Shared/Gongs"
+    case ambiance = "Shared/Ambiance"
+
+    var resourceSubdirectory: String {
+        "Audio/\(rawValue)"
+    }
+}
+
+enum LocalizedAudioAssetGroup: String {
     case intro = "VoiceGuidance/Intro"
     case reminders = "VoiceGuidance/Reminders"
     case outro = "VoiceGuidance/Outro"
 
     func resourceSubdirectory(for locale: AudioLocale) -> String {
         "Audio/\(locale.rawValue)/\(rawValue)"
+    }
+}
+
+enum AudioAssetLocation {
+    case shared(SharedAudioAssetGroup)
+    case localized(LocalizedAudioAssetGroup)
+
+    var cacheKeyComponent: String {
+        switch self {
+        case .shared(let group):
+            "shared:\(group.rawValue)"
+        case .localized(let group):
+            "localized:\(group.rawValue)"
+        }
+    }
+
+    func resourceSubdirectories(for locale: AudioLocale, fallback: AudioLocale) -> [String] {
+        switch self {
+        case .shared(let group):
+            return [group.resourceSubdirectory]
+        case .localized(let group):
+            let locales: [AudioLocale] = locale == fallback ? [fallback] : [locale, fallback]
+            return locales.map { group.resourceSubdirectory(for: $0) }
+        }
     }
 }
 
@@ -40,18 +71,18 @@ enum AudioAsset {
     case reminder
     case outro(OutroGuidanceClip)
 
-    var group: AudioAssetGroup {
+    var location: AudioAssetLocation {
         switch self {
         case .gong:
-            .gongs
+            .shared(.gongs)
         case .ambient:
-            .ambiance
+            .shared(.ambiance)
         case .intro:
-            .intro
+            .localized(.intro)
         case .reminder:
-            .reminders
+            .localized(.reminders)
         case .outro:
-            .outro
+            .localized(.outro)
         }
     }
 
@@ -121,7 +152,7 @@ struct OrderedGuidanceStep {
     let placement: GuidanceSequencePlacement
 
     var fileName: String { asset.baseName }
-    var group: AudioAssetGroup { asset.group }
+    var location: AudioAssetLocation { asset.location }
 }
 
 extension OrderedGuidanceStep {
@@ -184,7 +215,7 @@ struct AudioAssetResolver {
         return url(
             for: asset.baseName,
             locale: locale,
-            group: asset.group,
+            location: asset.location,
             supportedExtensions: asset.supportedExtensions
         )
     }
@@ -192,15 +223,15 @@ struct AudioAssetResolver {
     func url(
         for fileName: String,
         locale: AudioLocale,
-        group: AudioAssetGroup,
+        location: AudioAssetLocation,
         supportedExtensions: [String]
     ) -> URL? {
-        for candidateLocale in candidateLocales(for: locale) {
+        for subdirectory in location.resourceSubdirectories(for: locale, fallback: .fallback) {
             for fileExtension in supportedExtensions {
                 if let url = bundle.url(
                     forResource: fileName,
                     withExtension: fileExtension,
-                    subdirectory: group.resourceSubdirectory(for: candidateLocale)
+                    subdirectory: subdirectory
                 ) {
                     return url
                 }
@@ -208,9 +239,5 @@ struct AudioAssetResolver {
         }
 
         return nil
-    }
-
-    private func candidateLocales(for locale: AudioLocale) -> [AudioLocale] {
-        locale == .fallback ? [.fallback] : [locale, .fallback]
     }
 }

@@ -27,16 +27,17 @@ Siturem/
 ├── Views/        Vues SwiftUI
 ├── Services/     Logique métier (SessionEngine, AudioService, StatsStore, PreferencesStore, HealthKitService)
 ├── Audio/        Assets audio
-│   ├── fr/             Locale audio par défaut
+│   ├── Shared/         Assets non localisés
 │   │   ├── Gongs/          gong.caf
-│   │   ├── Ambiance/       rain-loop, river-loop, forest-loop, white-noise-loop (.m4a ou .caf)
+│   │   └── Ambiance/       rain-loop, river-loop, forest-loop, white-noise-loop (.m4a ou .caf)
+│   ├── fr/             Locale audio par défaut
 │   │   └── VoiceGuidance/  Consignes vocales séquencées
 │   │       ├── Intro/      Séquence ordonnée de l'intro, gong après Bonjour, dernier clip ancré 5 s avant la fin
 │   │       ├── Reminders/  Rappels discrets phase centrale
 │   │       └── Outro/      Séquence ordonnée du retour avec longues pauses et gong final inclus
-│   ├── en/             Structure prête pour les assets localisés
-│   ├── es/             Structure prête pour les assets localisés
-│   └── de/             Structure prête pour les assets localisés
+│   ├── en/             VoiceGuidance localisée
+│   ├── es/             VoiceGuidance localisée
+│   └── de/             Structure prête pour VoiceGuidance, avec fallback voix vers `en`
 └── Resources/    Assets.xcassets + localisation UI (`Localization/*.lproj`)
 ```
 
@@ -55,6 +56,7 @@ Siturem/
 
 ## Audio guidé
 - `AudioService` orchestre le séquençage des clips vocaux, le ducking d'ambiance et les rappels, sans déplacer cette logique dans `SessionEngine`
+- Les ambiances et le gong sont partagés dans `Audio/Shared`, sans duplication par langue
 - L'intro guidée FR est jouée dans l'ordre des clips, avec gaps configurés, respiration élargie entre `intro_05_points_de_contact` et `intro_06_conscience_environnement`, et `intro_08_concentration_souffle` maintenu 5 s avant la fin d'intro
 - Les rappels restent limités à la phase de méditation guidée, sur paliers d'intervalle, avec reprise correcte après pause
 - L'ambiance reste sous la voix, avec un profil pluie plus discret pour rendre la jointure moins perceptible
