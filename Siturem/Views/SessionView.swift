@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 // MARK: - Session View
 // Écran affiché pendant une séance en cours.
@@ -15,6 +14,7 @@ struct SessionView: View {
     let onEnd: () -> Void
 
     private let healthKit = HealthKitService()
+    private let haptics = HapticsService()
 
     @State private var audioService: AudioService?
     @State private var showEndConfirmation = false
@@ -39,6 +39,7 @@ struct SessionView: View {
         .onAppear {
             let audio = AudioService(config: engine.config)
             audioService = audio
+            haptics.prepareForSession()
             if sessionStartDate == nil {
                 sessionStartDate = Date()
             }
@@ -94,7 +95,9 @@ struct SessionView: View {
         // Barre + contrôles ancrés au bas de l'écran, juste au-dessus du home indicator
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: LayoutMetrics.progressToControlsSpacing) {
-                progressBar
+                if prefs.showsSessionProgress {
+                    progressBar
+                }
                 controls
             }
             .padding(.horizontal, LayoutMetrics.hPadding)
@@ -182,14 +185,8 @@ struct SessionView: View {
     // MARK: - Fin de séance
 
     private func playPhaseTransitionHaptic(from oldPhase: SessionPhase, to newPhase: SessionPhase) {
-        switch (oldPhase, newPhase) {
-        case (.intro, .meditation), (.meditation, .closing):
-            let generator = UIImpactFeedbackGenerator(style: .soft)
-            generator.prepare()
-            generator.impactOccurred(intensity: 0.72)
-        default:
-            break
-        }
+        guard prefs.enableTransitionHaptics else { return }
+        haptics.handlePhaseTransition(from: oldPhase, to: newPhase)
     }
 
     private func requestStopConfirmation() {

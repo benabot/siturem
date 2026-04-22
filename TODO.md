@@ -2,6 +2,31 @@
 
 ## Priorité active
 
+### [S9] Settings — préférences durables de rendu de séance
+
+**Statut**
+`SettingsView` porte maintenant les préférences durables de rendu de séance, sans redoubler les réglages de lancement rapide de `HomeView`.
+
+**Objectif**
+Clarifier la frontière entre lancement immédiat et préférences longues, avec un écran Réglages sobre et cohérent.
+
+**Tâches**
+- [x] définir la frontière entre `HomeView` et `SettingsView`
+- [x] garder `durée`, `accompagnement`, `gong` et `ambiance` côté `HomeView`
+- [x] conserver `rappels`, `progression` et `haptics` côté `SettingsView`
+- [x] brancher les préférences durables sur `PreferencesStore` et `SessionView`
+- [x] retirer le doublon `Rappels` de `HomeView`
+
+**Critère de fin**
+- [x] `SettingsView` reste un écran de préférences durables
+- [x] `HomeView` reste l'écran de lancement
+- [x] aucune seconde source de vérité n'est introduite
+- [x] le build local passe
+
+**Suites identifiées**
+- [ ] ne considérer `temps visible` qu'au moment où un affichage du temps doit réellement être exposé dans `SessionView`
+- [ ] éviter de remonter d'autres réglages de signaux dans `SettingsView` tant qu'ils restent utiles au démarrage rapide
+
 ### [S8] Stats — détail d'une séance
 
 **Statut**
@@ -152,7 +177,7 @@ Pause / reprise / arrêt sont maintenant stabilisés dans `SessionView` avec un 
 ### [S3] Home — hiérarchie simplifiée
 
 **Statut**
-`HomeView` revient à une hiérarchie plus simple: `Séance` reste dominante avec `Dernier cadre`, `Durée` et `Commencer`, tandis que `Signaux` reste secondaire et léger.
+`HomeView` revient à une hiérarchie plus simple: `Séance` reste dominante avec `Dernier cadre`, `Durée` et `Commencer`, tandis que `Signaux` reste secondaire et léger autour de `accompagnement`, `gong` et `ambiance`.
 
 **Objectif**
 Rendre l’accueil plus lisible sans changer le runtime de séance ni réintroduire un écran trop chargé.
@@ -160,7 +185,7 @@ Rendre l’accueil plus lisible sans changer le runtime de séance ni réintrodu
 **Tâches**
 - [x] garder le bloc `Dernier cadre` en tête du bloc Séance
 - [x] regrouper durée et CTA dans le bloc Séance
-- [x] reléguer accompagnement, gong, ambiance et rappels dans le bloc Signaux
+- [x] reléguer accompagnement, gong et ambiance dans le bloc Signaux
 - [x] supprimer le bloc `Accès` redondant avec la tab bar
 - [x] conserver un seul CTA primaire
 

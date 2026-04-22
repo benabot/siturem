@@ -12,6 +12,8 @@ final class PreferencesStore {
         static let gong = "pref.gong"
         static let ambient = "pref.ambient"
         static let reminder = "pref.reminder"
+        static let showSessionProgress = "pref.showSessionProgress"
+        static let transitionHaptics = "pref.transitionHaptics"
         static let uiLanguage = "pref.uiLanguage"
         static let healthKit = "pref.healthKit"
         static let audioLocale = "pref.audioLocale"
@@ -34,6 +36,12 @@ final class PreferencesStore {
     var reminder: ReminderInterval {
         didSet { defaults.set(reminder.rawValue, forKey: StorageKey.reminder) }
     }
+    var showsSessionProgress: Bool {
+        didSet { defaults.set(showsSessionProgress, forKey: StorageKey.showSessionProgress) }
+    }
+    var enableTransitionHaptics: Bool {
+        didSet { defaults.set(enableTransitionHaptics, forKey: StorageKey.transitionHaptics) }
+    }
     var uiLanguageOverride: AppLanguage? {
         didSet {
             if let uiLanguageOverride {
@@ -54,6 +62,8 @@ final class PreferencesStore {
         gong = PreferencesStore.resolveGongMode(from: d.string(forKey: StorageKey.gong)) ?? .sessionBounds
         ambient = AmbientSound(rawValue: d.string(forKey: StorageKey.ambient) ?? "") ?? .off
         reminder = PreferencesStore.resolveReminderInterval(from: d.string(forKey: StorageKey.reminder)) ?? .off
+        showsSessionProgress = d.object(forKey: StorageKey.showSessionProgress) as? Bool ?? true
+        enableTransitionHaptics = d.object(forKey: StorageKey.transitionHaptics) as? Bool ?? true
         uiLanguageOverride = PreferencesStore.resolveUILanguageOverride(from: d.string(forKey: StorageKey.uiLanguage))
         healthKitEnabled = d.bool(forKey: StorageKey.healthKit)
 

@@ -205,16 +205,6 @@ struct HomeView: View {
                     .pickerStyle(.menu)
                     .tint(Theme.textSecondary)
                 }
-                optionRow("Rappels", isLast: true) {
-                    Picker("", selection: $prefs.reminder) {
-                        ForEach(ReminderInterval.allCases) { interval in
-                            Text(interval.homeLabel).tag(interval)
-                        }
-                    }
-                    .labelsHidden()
-                    .pickerStyle(.menu)
-                    .tint(Theme.textSecondary)
-                }
             }
             .background(Theme.surface)
             .clipShape(RoundedRectangle(cornerRadius: 12))

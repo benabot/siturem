@@ -36,7 +36,7 @@ Le bundle identifier Xcode est désormais `fr.beabot.siturem` dans `project.yml`
 | SessionView (séance en cours) | ✅ Complet |
 | SessionSummaryView (bilan) | ✅ Sobre et utile — durée réalisée, cumul aujourd'hui, relance simple |
 | StatsView (statistiques) | ✅ Registre essentiel + repères mensuels / hebdo + heatmap 90 jours + détail de séance |
-| SettingsView (préférences système) | ✅ Refondue — sections PRINCIPES + LANGUE (UI), SÉANCE (ReminderInterval aligné sur ses vraies cadences 1m30 / 2m30), HealthKit + À propos |
+| SettingsView (préférences système) | ✅ Refondue — sections PRINCIPES + INTERFACE (langue UI), SÉANCE (rappels, progression, haptics), HealthKit + À propos |
 | Localisation UI | ✅ fr / en-US / es / de, switcher persistant dans SettingsView avec option `Système`, fallback anglais pour locale non supportée |
 | OnboardingView (4 pages, premier lancement) | ✅ Textes refondus et localisés — 4 phrases sobres, délai synchronisé avec nouvelle durée splash |
 | AppIcon | ✅ Intégrée — 5 tailles PNG via `scripts/generate-icons.swift`, `Assets.xcassets` correctement référencé |
@@ -91,7 +91,7 @@ Application iOS minimaliste de méditation structurée pour pratiquants autonome
 - Phases de séance fixes : intro 150 s + méditation variable + closing 92 s
 - **Refonte visuelle** : palette anthracite + accent bleu ardoise (pas de noir pur), blob animé en séance à la place du compteur, barre de progression globale (pas par phase)
 - **Ajustements récents du layout** : barre de progression centrée avec largeur plafonnée, remontée pour conserver une respiration nette au-dessus des contrôles ; blob redimensionné avec canevas et padding internes élargis, sans rasterisation contrainte, pour éviter l'effet de bloc carré ou de cadre visible
-- **Refonte SettingsView** : séparation claire entre configuration de séance (HomeView) et préférences système (SettingsView). SettingsView recentrée sur : langue UI, rappels, HealthKit, version. La langue audio n'est pas exposée en réglage dédié à ce stade.
+- **Refonte SettingsView** : séparation claire entre lancement rapide (`HomeView`) et préférences durables (`SettingsView`). `HomeView` garde `durée`, `accompagnement`, `gong` et `ambiance`, tandis que `SettingsView` porte la langue UI, les rappels guidés, la visibilité de progression, les haptics de transition, HealthKit et la version. La langue audio n'est pas exposée en réglage dédié à ce stade.
 - **HealthKit V1** : le toggle `PreferencesStore.healthKitEnabled` est le garde-fou applicatif. `SessionView.handleEnd` tente l'écriture après persistance locale et affichage du bilan, sans bloquer l'UX et sans logique HealthKit dans `SessionEngine`
 - **PracticeFrame** : modèle conceptuel léger et nommé, centré sur les réglages actifs du V1. La locale audio reste hors du cadre et le passage à `SessionConfiguration` se fait via un mapping explicite avec la locale fournie par `PreferencesStore`
 - **Règle de langue UI** : priorité `choix explicite utilisateur > langue système supportée > anglais`. Au premier lancement, aucune langue UI n'est forcée côté app.
