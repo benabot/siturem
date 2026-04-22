@@ -13,12 +13,19 @@
 
 /* Home */
 "DURÉE" = "DURÉE";
+"DERNIER CADRE" = "DERNIER CADRE";
+"SIGNAUX" = "SIGNAUX";
 "Durée" = "Durée";
 "OPTIONS" = "OPTIONS";
 "Accompagnement" = "Accompagnement";
 "Gong" = "Gong";
 "Ambiance" = "Ambiance";
+"Rappels" = "Rappels";
+"Charger" = "Charger";
 "COMMENCER" = "COMMENCER";
+"Cadre favori" = "Cadre favori";
+"Cadre chargé dans les réglages" = "Cadre chargé dans les réglages";
+"Cadre déjà chargé dans les réglages" = "Cadre déjà chargé dans les réglages";
 
 /* Splash, onboarding, logo */
 "Le cadre discret de votre pratique." = "Le cadre discret de votre pratique.";
@@ -45,6 +52,8 @@
 "Meilleur streak" = "Meilleur streak";
 "Repères" = "Repères";
 "Moyenne hebdo" = "Moyenne hebdo";
+"90 derniers jours" = "90 derniers jours";
+"Aucune séance sur les 90 derniers jours" = "Aucune séance sur les 90 derniers jours";
 "Séances récentes" = "Séances récentes";
 "Séance" = "Séance";
 "Durée prévue" = "Durée prévue";
@@ -105,8 +114,11 @@
 "Forêt" = "Forêt";
 "Bruit blanc" = "Bruit blanc";
 "Aucune" = "Aucune";
+"Aucun" = "Aucun";
 "Occasionnelles" = "Occasionnelles";
+"Occasionnels" = "Occasionnels";
 "Fréquentes" = "Fréquentes";
+"Fréquents" = "Fréquents";
 "Introduction" = "Introduction";
 "Méditation" = "Méditation";
 "Retour au calme" = "Retour au calme";
