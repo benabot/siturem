@@ -10,6 +10,7 @@ struct SettingsView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     private let healthKit = HealthKitService()
+    private let privacyPolicyURL = URL(string: "https://beabot.fr/apps/siturem/#privacy")!
 
     @State private var healthAuthorizationStatus: HealthKitAuthorizationState = .unavailable
 
@@ -134,6 +135,17 @@ struct SettingsView: View {
 
     private var aboutSection: some View {
         Section {
+            Link(destination: privacyPolicyURL) {
+                HStack {
+                    Text("Politique de confidentialité")
+                        .foregroundStyle(Theme.textPrimary)
+                    Spacer()
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(.footnote, weight: .medium))
+                        .foregroundStyle(Theme.textSecondary)
+                }
+            }
+
             HStack {
                 Text("Version")
                     .foregroundStyle(Theme.textPrimary)
